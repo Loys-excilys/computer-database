@@ -10,9 +10,10 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.settings/
+.settings/*
 .loadpath
 .recommenders
+.classpath
 
 # External tool builders
 .externalToolBuilders/
