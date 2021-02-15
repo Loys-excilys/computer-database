@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import contract.IModel;
+import data.Company;
+import data.Computer;
 
 public class Model implements IModel{
 	
@@ -17,7 +19,15 @@ public class Model implements IModel{
 		}
 	}
 
-	public List<DataComputer> listComputer() {
+	public List<Computer> getListComputer() {
 		return this.database.getComputer();		
+	}
+	
+	public List<Company> getListCompany(){
+		return this.database.getCompany();
+	}
+	
+	public Computer getDetailComputer(int id) {
+		return this.database.getDetailComputer(id);
 	}
 }

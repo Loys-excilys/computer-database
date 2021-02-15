@@ -2,10 +2,17 @@ package contract;
 
 import java.util.List;
 
-import model.DataComputer;
+import data.Company;
+import data.Computer;
 
 public interface IView {
 
-	void printListComputer(List<DataComputer> listComputer);
+	void printListComputer(List<Computer> listComputer);
+
+	void printListCompany(List<Company> listCompany);
+	
+	public void askIdDetailComputer();
+	
+	void printDetailComputer(Computer computer);
 
 }

@@ -1,21 +1,21 @@
-package model;
+package data;
 
 import java.sql.Date;
 
-public class DataComputer {
+public class Computer {
 	
 	private int id;
 	private String name;
 	private Date introduced;
 	private Date discontinued;
-	private int companyId;
+	private String company;
 	
-	public DataComputer(int id, String name, Date introduced, Date discontinued, int companyId) {
+	public Computer(int id, String name, Date introduced, Date discontinued, String company) {
 		this.setId(id);
 		this.setName(name);
 		this.setIntroduced(introduced);
 		this.setDiscontinued(discontinued);
-		this.setCompanyId(companyId);
+		this.setCompany(company);
 	}
 	
 	public void setId(int id) {
@@ -46,10 +46,10 @@ public class DataComputer {
 		return this.discontinued;
 	}
 	
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
+	public void setCompany(String company) {
+		this.company = company;
 	}
-	public int getCompanyId() {
-		return this.companyId;
+	public String getCompany() {
+		return this.company;
 	}
 }

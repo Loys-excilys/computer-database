@@ -1,7 +1,6 @@
 package controller;
 
 import contract.IView;
-import model.Model;
 import contract.IController;
 import contract.IModel;
 
@@ -15,14 +14,19 @@ public class Controller implements IController{
 		this.view = view;
 	}
 
-	@Override
-	public boolean action(String commande, boolean boucle) {
+	public boolean action(int commande, boolean boucle) {
 		switch(commande) {
-		case "1" : this.view.printListComputer(this.model.listComputer());
-			break;
+		case 1 : this.view.printListComputer(this.model.getListComputer());break;
+		case 2 : this.view.printListCompany(this.model.getListCompany()); break;
+		case 3 : this.view.askIdDetailComputer();break;
+		case 0: ;
 		default : boucle = false;
 		}
 		
 		return boucle;		
+	}
+
+	public void chooseIdDetailcomputer(int commande) {
+		this.view.printDetailComputer(this.model.getDetailComputer(commande));
 	}
 }

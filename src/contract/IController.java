@@ -2,5 +2,7 @@ package contract;
 
 public interface IController {
 
-	boolean action(String commande, boolean boucle);
+	boolean action(int commande, boolean boucle);
+
+	void chooseIdDetailcomputer(int commande);
 }

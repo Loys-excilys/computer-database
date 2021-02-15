@@ -1,11 +1,11 @@
-package model;
+package data;
 
-public class DataCompany {
+public class Company {
 
 	public int id;
 	public String name;
 	
-	public DataCompany(int id, String name) {
+	public Company(int id, String name) {
 		this.setId(id);
 		this.setName(name);
 	}
