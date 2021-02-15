@@ -30,4 +30,8 @@ public class Model implements IModel{
 	public Computer getDetailComputer(int id) {
 		return this.database.getDetailComputer(id);
 	}
+	
+	public void addComputer(Computer computer) {
+		this.database.insertComputer(computer);
+	}
 }

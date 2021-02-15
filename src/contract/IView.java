@@ -14,5 +14,7 @@ public interface IView {
 	public void askIdDetailComputer();
 	
 	void printDetailComputer(Computer computer);
+	
+	public void addComputer();
 
 }

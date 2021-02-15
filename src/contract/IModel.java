@@ -12,5 +12,7 @@ public interface IModel {
 	List<Company> getListCompany();
 	
 	public Computer getDetailComputer(int id);
+	
+	public void addComputer(Computer computer);
 
 }

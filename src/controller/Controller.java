@@ -19,6 +19,7 @@ public class Controller implements IController{
 		case 1 : this.view.printListComputer(this.model.getListComputer());break;
 		case 2 : this.view.printListCompany(this.model.getListCompany()); break;
 		case 3 : this.view.askIdDetailComputer();break;
+		case 4 : this.view.addComputer();break;
 		case 0: ;
 		default : boucle = false;
 		}

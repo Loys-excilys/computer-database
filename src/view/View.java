@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,14 +25,15 @@ public class View implements IView{
 	
 	public void cli() {
 		boolean boucle = true;
+		Scanner saisieUtilisateur = new Scanner(System.in);
 		while(boucle) {
 		
-			Scanner saisieUtilisateur = new Scanner(System.in);
 			System.out.println("1 : Lister les ordinateurs");
 			System.out.println("2 : Lister les companies");
 			System.out.println("3 : Afficher détail d'un ordinateur");
+			System.out.println("4 : Création d'un ordinateur");
 			System.out.println("0 : éteindre l'application");
-			System.out.println("Veuillez saisir un code d'action :");
+			System.out.print("Veuillez saisir un code d'action :");
 			int commande = saisieUtilisateur.nextInt();
 			
 			boucle = this.controller.action(commande, boucle);
@@ -65,6 +67,24 @@ public class View implements IView{
 		+ ", Date introduce : " + computer.getIntroduced() 
 		+ ", Date discontinued : " + computer.getDiscontinued()
 		+ ", Company name : " + computer.getCompany());
+		this.space();
+	}
+	
+	public void addComputer() {
+		Computer computer = new Computer();
+		Scanner saisieUtilisateur = new Scanner(System.in);
+		System.out.print("Can you give me the Name ? : ");
+		computer.setName(saisieUtilisateur.next());
+		System.out.print("Can you give me the date of introduce ?(yyyy-mm-dd) : ");
+		computer.setIntroduced(Date.valueOf(saisieUtilisateur.next()));
+		System.out.print("Can you give me the date of discontinue ? (yyyy-mm-dd) : ");
+		computer.setDiscontinued(Date.valueOf(saisieUtilisateur.next()));
+		System.out.print("Can you give me the company id ? : ");
+		computer.setCompanyId(saisieUtilisateur.nextInt());
+		
+		this.model.addComputer(computer);
+		
+		System.out.println("Done");
 		this.space();
 	}
 	

@@ -2,7 +2,7 @@ package data;
 
 public class Company {
 
-	public int id;
+	public long id;
 	public String name;
 	
 	public Company(int id, String name) {
@@ -10,10 +10,10 @@ public class Company {
 		this.setName(name);
 	}
 	
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 	
