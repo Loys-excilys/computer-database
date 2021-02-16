@@ -11,10 +11,12 @@ public interface IView {
 
 	void printListCompany(List<Company> listCompany);
 	
-	public void askIdDetailComputer();
+	public void printAskIdDetailComputer();
 	
 	void printDetailComputer(Computer computer);
 	
-	public void addComputer();
+	public void printAddComputer();
+	
+	public void printUpdateComputer();
 
 }

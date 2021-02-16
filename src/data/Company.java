@@ -5,8 +5,8 @@ public class Company {
 	public long id;
 	public String name;
 	
-	public Company(int id, String name) {
-		this.setId(id);
+	public Company(long l, String name) {
+		this.setId(l);
 		this.setName(name);
 	}
 	

@@ -18,9 +18,10 @@ public class Controller implements IController{
 		switch(commande) {
 		case 1 : this.view.printListComputer(this.model.getListComputer());break;
 		case 2 : this.view.printListCompany(this.model.getListCompany()); break;
-		case 3 : this.view.askIdDetailComputer();break;
-		case 4 : this.view.addComputer();break;
-		case 0: ;
+		case 3 : this.view.printAskIdDetailComputer();break;
+		case 4 : this.view.printAddComputer();break;
+		case 5 : this.view.printUpdateComputer();break;
+		case 0 : ;
 		default : boucle = false;
 		}
 		
@@ -28,6 +29,6 @@ public class Controller implements IController{
 	}
 
 	public void chooseIdDetailcomputer(int commande) {
-		this.view.printDetailComputer(this.model.getDetailComputer(commande));
+		this.view.printDetailComputer(this.model.getComputer(commande));
 	}
 }

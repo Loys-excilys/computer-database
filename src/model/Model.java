@@ -18,20 +18,28 @@ public class Model implements IModel{
 			e.printStackTrace();
 		}
 	}
+	
+	public Computer getComputer(int id) {
+		return this.database.getComputer(id);
+	}
+	
+	public Company getCompany(String nameCompany) {
+		return this.database.getCompany(nameCompany);
+	}
 
 	public List<Computer> getListComputer() {
-		return this.database.getComputer();		
+		return this.database.getListComputer();		
 	}
 	
 	public List<Company> getListCompany(){
-		return this.database.getCompany();
-	}
-	
-	public Computer getDetailComputer(int id) {
-		return this.database.getDetailComputer(id);
+		return this.database.getListCompany();
 	}
 	
 	public void addComputer(Computer computer) {
 		this.database.insertComputer(computer);
+	}
+	
+	public void updateComputer(Computer computer) {
+		this.database.updateComputer(computer);
 	}
 }

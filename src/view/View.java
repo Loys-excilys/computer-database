@@ -1,6 +1,6 @@
 package view;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +15,8 @@ public class View implements IView{
 	private IController controller;
 	private IModel model;
 	
+	private Scanner saisieUser = new Scanner(System.in);
+	
 	public View(IModel model) {
 		this.model = model;
 	}
@@ -25,16 +27,16 @@ public class View implements IView{
 	
 	public void cli() {
 		boolean boucle = true;
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		
 		while(boucle) {
 		
-			System.out.println("1 : Lister les ordinateurs");
-			System.out.println("2 : Lister les companies");
-			System.out.println("3 : Afficher détail d'un ordinateur");
-			System.out.println("4 : Création d'un ordinateur");
-			System.out.println("0 : éteindre l'application");
-			System.out.print("Veuillez saisir un code d'action :");
-			int commande = saisieUtilisateur.nextInt();
+			int commande = this.printAskEntryInt(" 1 : Lister les ordinateurs"
+					+ "\n 2 : Lister les companies"
+					+ "\n 3 : Afficher détail d'un ordinateur"
+					+ "\n 4 : Création d'un ordinateur"
+					+ "\n 5 : Update d'un ordinateur"
+					+ "\n 0 : éteindre l'application"
+					+ "\n Veuillez saisir un code d'action : ");
 			
 			boucle = this.controller.action(commande, boucle);
 		}
@@ -54,10 +56,8 @@ public class View implements IView{
 		this.space();
 	}
 	
-	public void askIdDetailComputer() {
-		Scanner saisieUtilisateur = new Scanner(System.in);
-		System.out.println("Veuillez saisir l'Id de l'ordinateur :");
-		int commande = saisieUtilisateur.nextInt();
+	public void printAskIdDetailComputer() {
+		int commande = this.printAskEntryInt("Veuillez saisir l'Id de l'ordinateur : ");
 		
 		this.controller.chooseIdDetailcomputer(commande);
 	}
@@ -66,21 +66,18 @@ public class View implements IView{
 		System.out.println("Name : " + computer.getName() 
 		+ ", Date introduce : " + computer.getIntroduced() 
 		+ ", Date discontinued : " + computer.getDiscontinued()
-		+ ", Company name : " + computer.getCompany());
+		+ ", Company name : " + computer.getCompany().getName());
 		this.space();
 	}
 	
-	public void addComputer() {
+	public void printAddComputer() {
 		Computer computer = new Computer();
-		Scanner saisieUtilisateur = new Scanner(System.in);
-		System.out.print("Can you give me the Name ? : ");
-		computer.setName(saisieUtilisateur.next());
-		System.out.print("Can you give me the date of introduce ?(yyyy-mm-dd) : ");
-		computer.setIntroduced(Date.valueOf(saisieUtilisateur.next()));
-		System.out.print("Can you give me the date of discontinue ? (yyyy-mm-dd) : ");
-		computer.setDiscontinued(Date.valueOf(saisieUtilisateur.next()));
-		System.out.print("Can you give me the company id ? : ");
-		computer.setCompanyId(saisieUtilisateur.nextInt());
+		computer.setName(this.printAskEntryString("Can you give me the Name ? : "));
+		computer.setIntroduced(LocalDate.parse(
+				this.printAskEntryString("Can you give me the date of introduce ?(yyyy-mm-dd) : ")));
+		computer.setDiscontinued(LocalDate.parse(
+				this.printAskEntryString("Can you give me the date of discontinue ? (yyyy-mm-dd) : ")));
+		computer.setCompany(this.model.getCompany(this.printAskEntryString("Can you give me the name company ? : ")));
 		
 		this.model.addComputer(computer);
 		
@@ -88,7 +85,55 @@ public class View implements IView{
 		this.space();
 	}
 	
+	public void printUpdateComputer() {
+		Computer computer = this.model.getComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
+		computer.setName(this.verifAskNewValueStringComputer(
+				"What is the new name ? (actual = " + computer.getName() + ") :", computer.getName()));
+		
+		computer.setIntroduced(LocalDate.parse(this.verifAskNewValueStringComputer(
+				"What is the new date of introduce ? (actual = " + computer.getIntroduced() + ") :",
+				computer.getIntroduced().toString())));
+		
+		computer.setDiscontinued(LocalDate.parse(this.verifAskNewValueStringComputer(
+				"What is the new date of discontinued ? (actual = " + computer.getDiscontinued() + ") :",
+				computer.getDiscontinued().toString())));
+		
+		computer.setCompany(this.verifAskNewValueCompanyComputer(
+				"What is the new company owner ? (actual = " + computer.getCompany().getName() + ") :",
+				computer.getCompany()));
+		this.model.updateComputer(computer);
+	}
+	
+	public String verifAskNewValueStringComputer(String message, String actualValue) {
+		String value = null;
+		if((value = this.printAskEntryString(message)).compareTo("") != 0) {
+			return value;
+		}else {
+			return actualValue;
+		}
+	}
+	
+	public Company verifAskNewValueCompanyComputer(String message, Company actualCompany) {
+		Company company = null;
+		if((company = this.model.getCompany(this.printAskEntryString(message))) != null) {
+			return company;
+		}else {
+			return actualCompany;
+		}
+	}
+	
+	public String printAskEntryString(String message) {
+		System.out.println(message);
+		return this.saisieUser.next();
+	}
+	
+	public int printAskEntryInt(String message) {
+		System.out.println(message);
+		return this.saisieUser.nextInt();
+	}
+		
 	public void space() {
 		System.out.println("\n\n\n");
 	}
+
 }
