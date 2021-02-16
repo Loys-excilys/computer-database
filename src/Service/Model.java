@@ -1,8 +1,9 @@
-package model;
+package Service;
 
 import java.sql.SQLException;
 import java.util.List;
 
+import DAO.DAODatabase;
 import contract.IModel;
 import data.Company;
 import data.Computer;
@@ -14,7 +15,7 @@ public class Model implements IModel{
 	
 	public Model() {
 		try {
-			this.database = new DAODatabase(DBConnection.getInstance().getConnection());
+			this.database = new DAODatabase();
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

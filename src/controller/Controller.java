@@ -8,6 +8,14 @@ public class Controller implements IController{
 	
 	private IModel model;
 	private IView view;
+	
+	private final int LIST_COMPUTER = 1;
+	private final int LIST_COMPANY = 2;
+	private final int DETAIL_COMPUTER = 3;
+	private final int ADD_COMPUTER = 4;
+	private final int UPDATE_COMPUTER = 5;
+	private final int DELETE_COMPUTER = 6;
+	private final int STOP = 0;
 
 	public Controller(IModel model, IView view) {
 		this.model = model;
@@ -15,14 +23,16 @@ public class Controller implements IController{
 	}
 
 	public boolean action(int commande, boolean boucle) {
+		
+		
 		switch(commande) {
-		case 1 : this.view.printListComputer(this.model.getListComputer());break;
-		case 2 : this.view.printListCompany(this.model.getListCompany()); break;
-		case 3 : this.view.printAskIdDetailComputer();break;
-		case 4 : this.view.printAddComputer();break;
-		case 5 : this.view.printUpdateComputer();break;
-		case 6 : this.view.printDeleteComputer(); break;
-		case 0 : ;
+		case LIST_COMPUTER : this.view.printListComputer(this.model.getListComputer());break;
+		case LIST_COMPANY : this.view.printListCompany(this.model.getListCompany()); break;
+		case DETAIL_COMPUTER : this.view.printAskIdDetailComputer();break;
+		case ADD_COMPUTER : this.view.printAddComputer();break;
+		case UPDATE_COMPUTER: this.view.printUpdateComputer();break;
+		case DELETE_COMPUTER : this.view.printDeleteComputer(); break;
+		case STOP : ;
 		default : boucle = false;
 		}
 		

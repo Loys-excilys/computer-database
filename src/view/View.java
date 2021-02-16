@@ -77,7 +77,6 @@ public class View implements IView{
 	
 	public void printAskIdDetailComputer() {
 		int commande = this.printAskEntryInt("Veuillez saisir l'Id de l'ordinateur : ");
-		
 		this.controller.chooseIdDetailcomputer(commande);
 	}
 	

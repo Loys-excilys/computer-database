@@ -1,7 +1,7 @@
 package main;
 
+import Service.Model;
 import controller.Controller;
-import model.Model;
 import view.View;
 
 public class main {
@@ -12,7 +12,6 @@ public class main {
 		final Controller controller = new Controller(model, view);
 		view.setController(controller);
 		view.cli();
-
 	}
 
 }

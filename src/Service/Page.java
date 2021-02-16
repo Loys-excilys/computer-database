@@ -1,4 +1,4 @@
-package model;
+package Service;
 
 public class Page {
 	
