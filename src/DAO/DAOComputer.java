@@ -11,7 +11,7 @@ import java.util.List;
 import data.Company;
 import data.Computer;
 
-public class DAODatabase{
+public class DAOComputer{
 	
 	private static final int MAX_ENTRY_PRINT = 25;
 	
@@ -47,10 +47,7 @@ public class DAODatabase{
 	
 	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
 	
-	private static final String SELECT_COMPANY_NAME = "Select * FROM company WHERE name = ?";
-	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
-	
-	public DAODatabase() throws SQLException {}
+	public DAOComputer(){}
 		
 	
 	public Computer getComputer(int id) {
@@ -73,21 +70,6 @@ public class DAODatabase{
 		return computer;
 	}
 	
-	public Company getCompany(String name) {
-		Company company = null;
-		try(Connection connection = DAO.DBConnection.getInstance().getConnection()) {
-        	PreparedStatement query = connection.prepareStatement(SELECT_COMPANY_NAME);
-        	query.setString(1, name);
-            ResultSet result = query.executeQuery();
-            result.next();
-            company = new Company(result.getInt("id"),
- 				   result.getString("name"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-		return company;
-	}
-	
 	public List<Computer> getListComputer(int page) {
 		List<Computer> resultList = new ArrayList<>();
 		
@@ -104,24 +86,6 @@ public class DAODatabase{
 	 				   result.getDate("discontinued") != null ?
 	 						   result.getDate("discontinued").toLocalDate() : result.getDate("discontinued"),
 	 				   new Company(result.getLong("companyID"), result.getString("companyName"))));
-		   }
-		} catch (SQLException e) {
-		   e.printStackTrace();
-		}
-		
-		return resultList;
-	}
-	
-	public List<Company> getListCompany(int page) {
-		List<Company> resultList = new ArrayList<>();
-		
-		try(Connection connection = DAO.DBConnection.getInstance().getConnection()){
-			PreparedStatement query = connection.prepareStatement(SELECT_COMPANY);
-			query.setInt(1, MAX_ENTRY_PRINT);
-			query.setInt(2, page*MAX_ENTRY_PRINT);
-	        ResultSet result = query.executeQuery();
-		   while(result.next()) {
-			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
 		} catch (SQLException e) {
 		   e.printStackTrace();
