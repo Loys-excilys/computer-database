@@ -21,6 +21,7 @@ public class Controller implements IController{
 		case 3 : this.view.printAskIdDetailComputer();break;
 		case 4 : this.view.printAddComputer();break;
 		case 5 : this.view.printUpdateComputer();break;
+		case 6 : this.view.printDeleteComputer(); break;
 		case 0 : ;
 		default : boucle = false;
 		}

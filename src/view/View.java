@@ -35,6 +35,7 @@ public class View implements IView{
 					+ "\n 3 : Afficher détail d'un ordinateur"
 					+ "\n 4 : Création d'un ordinateur"
 					+ "\n 5 : Update d'un ordinateur"
+					+ "\n 6 : Delete d'un ordianteur"
 					+ "\n 0 : éteindre l'application"
 					+ "\n Veuillez saisir un code d'action : ");
 			
@@ -43,17 +44,35 @@ public class View implements IView{
 	}
 
 	public void printListComputer(List<Computer> listComputer) {
-		for(int i = 0; i < listComputer.size(); i++) {
-			System.out.println("Name : " + listComputer.get(i).getName());
+		boolean next = true;
+		while(next) {
+			for(int i = 0; i < listComputer.size(); i++) {
+				System.out.println("Name : " + listComputer.get(i).getName());
+			}
+			if(this.printAskEntryString("continue ? (y or n) : ").compareTo("y") == 0){
+				listComputer = this.model.getListComputer();
+			}
+			else {
+				next = false;
+			}
+			this.space();
 		}
-		this.space();
 	}
 
 	public void printListCompany(List<Company> listCompany) {
-		for(int i = 0; i < listCompany.size(); i++) {
-			System.out.println("Name : " + listCompany.get(i).getName());
+		boolean next = true;
+		while(next) {
+			for(int i = 0; i < listCompany.size(); i++) {
+				System.out.println("Name : " + listCompany.get(i).getName());
+			}
+			if(this.printAskEntryString("continue ? (y or n) : ").compareTo("y") == 0){
+				listCompany = this.model.getListCompany();
+			}
+			else {
+				next = false;
+			}
+			this.space();
 		}
-		this.space();
 	}
 	
 	public void printAskIdDetailComputer() {
@@ -104,6 +123,16 @@ public class View implements IView{
 		this.model.updateComputer(computer);
 	}
 	
+	public void printDeleteComputer() {
+		this.model.deleteComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
+		System.out.println("done");
+		this.space();
+	}
+	
+	
+	
+	
+	
 	public String verifAskNewValueStringComputer(String message, String actualValue) {
 		String value = null;
 		if((value = this.printAskEntryString(message)).compareTo("") != 0) {
@@ -123,12 +152,12 @@ public class View implements IView{
 	}
 	
 	public String printAskEntryString(String message) {
-		System.out.println(message);
+		System.out.print(message);
 		return this.saisieUser.next();
 	}
 	
 	public int printAskEntryInt(String message) {
-		System.out.println(message);
+		System.out.print(message);
 		return this.saisieUser.nextInt();
 	}
 		

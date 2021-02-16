@@ -13,6 +13,8 @@ import data.Computer;
 
 class DAODatabase extends DAOEntity{
 	
+	private static final int MAX_ENTRY_PRINT = 25;
+	
 	private static final String SELECT_COMPUTER = "SELECT computer.id as id,"
 			+ " computer.name as name,"
 			+ " computer.introduced as introduced,"
@@ -20,7 +22,8 @@ class DAODatabase extends DAOEntity{
 			+ " company.id as companyId,"
 			+ " company.name as companyName"
 			+ " FROM computer "
-			+ " LEFT JOIN company ON computer.company_id = company.id;";
+			+ " LEFT JOIN company ON computer.company_id = company.id"
+			+ " LIMIT ? OFFSET ?";
 	
 	private static final String SELECT_COMPUTER_ID = "SELECT computer.id as id,"
 			+ " computer.name as name,"
@@ -30,7 +33,7 @@ class DAODatabase extends DAOEntity{
 			+ " company.name as companyName"
 			+ " FROM computer "
 			+ " LEFT JOIN company ON computer.company_id = company.id"
-			+ " WHERE computer.id = ?;";
+			+ " WHERE computer.id = ?";
 	
 	private static final String INSERT_COMPUTER = 
 			"INSERT INTO computer(name, introduced, discontinued, company_id)"
@@ -42,7 +45,10 @@ class DAODatabase extends DAOEntity{
 			+ " company_id = ?"
 			+ " WHERE id = ?";
 	
+	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
+	
 	private static final String SELECT_COMPANY_NAME = "Select * FROM company WHERE name = ?";
+	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
 	
 	public DAODatabase(final Connection connection) throws SQLException {
 		super(connection);
@@ -83,11 +89,13 @@ class DAODatabase extends DAOEntity{
 		return company;
 	}
 	
-	public List<Computer> getListComputer() {
+	public List<Computer> getListComputer(int page) {
 		List<Computer> resultList = new ArrayList<>();
 		
 		try {
 			PreparedStatement query = getConnection().prepareStatement(SELECT_COMPUTER);
+			query.setInt(1, MAX_ENTRY_PRINT);
+			query.setInt(2, page*MAX_ENTRY_PRINT);
 	        ResultSet result = query.executeQuery();
 	        while(result.next()) {
 			   resultList.add(new Computer(result.getInt("id"),
@@ -105,14 +113,14 @@ class DAODatabase extends DAOEntity{
 		return resultList;
 	}
 	
-	public List<Company> getListCompany() {
+	public List<Company> getListCompany(int page) {
 		List<Company> resultList = new ArrayList<>();
-		ResultSet result = null;
-		String requete = "SELECT * FROM company;";
 		
 		try {
-		   Statement stmt = getConnection().createStatement();
-		   result = stmt.executeQuery(requete);
+			PreparedStatement query = getConnection().prepareStatement(SELECT_COMPANY);
+			query.setInt(1, MAX_ENTRY_PRINT);
+			query.setInt(2, page*MAX_ENTRY_PRINT);
+	        ResultSet result = query.executeQuery();
 		   while(result.next()) {
 			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
@@ -151,6 +159,16 @@ class DAODatabase extends DAOEntity{
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void deleteComputer(int id) {
+		try {
+			PreparedStatement query = getConnection().prepareStatement(DELETE_COMPUTER);
+           	query.setLong(1, id);
+            query.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
 		}
 	}
 }

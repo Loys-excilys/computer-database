@@ -18,5 +18,7 @@ public interface IView {
 	public void printAddComputer();
 	
 	public void printUpdateComputer();
+	
+	public void printDeleteComputer();
 
 }

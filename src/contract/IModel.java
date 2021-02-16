@@ -19,4 +19,5 @@ public interface IModel {
 
 	public Company getCompany(String nameCompany);
 
+	public void deleteComputer(int id);
 }

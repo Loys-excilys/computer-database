@@ -18,7 +18,6 @@ final class DBConnection {
 			DBConnection.INSTANCE = new DBConnection();
 		}
 	return DBConnection.INSTANCE;
-	
 	}
 	
 	private Boolean open() {
