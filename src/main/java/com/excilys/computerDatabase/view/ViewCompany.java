@@ -19,7 +19,7 @@ public class ViewCompany extends View{
 		int page = 0;
 		while(next) {
 			for(int i = 0; i < listCompany.size(); i++) {
-				System.out.println("Name : " + listCompany.get(i).getName());
+				System.out.println(listCompany.get(i).toString());
 			}
 			if (next = this.printAskEntryBoolean("continue ? (y or n) : ")) {
 				listCompany = this.service.getServiceCompany().getListCompany(++page);

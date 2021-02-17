@@ -15,6 +15,10 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/excilys/eclipse-workspace/computer-database/lib/mysql-connector-java-5.1.15-bin.jar"/>
+	<classpathentry kind="lib" path="/home/excilys/eclipse-workspace/computer-database/lib/mysql-connector-java-5.1.15-bin.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

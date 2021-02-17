@@ -23,5 +23,9 @@ public class Company {
 	public String getName() {
 		return this.name;
 	}
+
+	public String toString() {
+		return "Name : " + this.getName();
+	}
 	
 }

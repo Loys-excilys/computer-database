@@ -15,7 +15,7 @@ public class View{
 	private ViewComputer viewComputer;
 	private ViewCompany viewCompany;
 	
-	private Scanner saisieUser = new Scanner(System.in);
+	protected Scanner saisieUser = new Scanner(System.in);
 	
 	public View(Service service) {
 		this.service = service;		
@@ -48,7 +48,7 @@ public class View{
 	protected String printAskEntryString(String message) {
 		System.out.print(message);
 		String entry = null;
-		entry = this.saisieUser.next();
+		entry = this.saisieUser.nextLine();
 		return entry;
 	}
 	

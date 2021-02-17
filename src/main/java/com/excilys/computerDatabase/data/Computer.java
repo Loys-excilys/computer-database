@@ -63,4 +63,11 @@ public class Computer {
 	public Company getCompany() {
 		return this.company;
 	}
+	
+	public String toString() {
+		return "Name : " + this.getName() 
+		+ ", Date introduce : " + this.getIntroduced() 
+		+ ", Date discontinued : " + this.getDiscontinued()
+		+ ", Company name : " + this.getCompany().getName();
+	}
 }

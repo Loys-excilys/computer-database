@@ -19,7 +19,7 @@ public class ViewComputer extends View{
 		int page = 0;
 		while(next) {
 			for(int i = 0; i < listComputer.size(); i++) {
-				System.out.println("Name : " + listComputer.get(i).getName());
+				System.out.println(listComputer.get(i).toString());
 			}
 			if(next = this.printAskEntryBoolean("continue ? (y or n) : ")){
 				listComputer = this.service.getServiceComputer().getListComputer(++page);
@@ -36,10 +36,7 @@ public class ViewComputer extends View{
 	}
 	
 	public void printDetailComputer(Computer computer) {
-		System.out.println("Name : " + computer.getName() 
-		+ ", Date introduce : " + computer.getIntroduced() 
-		+ ", Date discontinued : " + computer.getDiscontinued()
-		+ ", Company name : " + computer.getCompany().getName());
+		System.out.println(computer.toString());
 		this.space();
 	}
 	
