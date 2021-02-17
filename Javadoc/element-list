@@ -1,0 +1,6 @@
+com.excilys.computerDatabase.controller
+com.excilys.computerDatabase.dao
+com.excilys.computerDatabase.data
+com.excilys.computerDatabase.main
+com.excilys.computerDatabase.service
+com.excilys.computerDatabase.view

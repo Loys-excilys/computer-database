@@ -6,6 +6,13 @@ import com.excilys.computerDatabase.view.View;
 
 public class main {
 
+	/**
+	 * Class maim
+	 * 
+	 * initialise le programme
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		final Service service = new Service();
 		service.createService();

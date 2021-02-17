@@ -55,7 +55,7 @@ public class View{
 	protected Boolean printAskEntryBoolean(String message) {
 		System.out.print(message);
 		String entry = null;
-		entry = this.saisieUser.next();
+		entry = this.saisieUser.nextLine();
 		if(entry.compareTo("y") == 0) {
 			return true;
 		}else if(entry.compareTo("n") != 0) {
@@ -68,21 +68,23 @@ public class View{
 		System.out.print(message);
 		int num = -1;
 		try{
-			num = saisieUser.nextInt();
-		}catch(InputMismatchException e){
+			num = Integer.parseInt(this.saisieUser.nextLine());
+		}catch(NumberFormatException e){
 			System.out.println("Entrée incorrect");
 		}
 		return num;
 	}
 	
 	protected LocalDate printAskEntryDate(String message) {
-		System.out.print(message);
 		LocalDate date = null;
-		try{
-			date = LocalDate.parse(this.saisieUser.next());
+		System.out.print(message);
+		try{			
+			String text = this.saisieUser.nextLine();
+			if(!text.isEmpty()) {
+				date = LocalDate.parse(text);
+			}
 		}catch(DateTimeParseException  e){
 			System.out.println("Entrée incorrect, veuiller repecter les normes de notation");
-			System.exit(0);
 		}
 		return date;
 	}

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.excilys.computerDatabase.controller"},{"l":"com.excilys.computerDatabase.dao"},{"l":"com.excilys.computerDatabase.data"},{"l":"com.excilys.computerDatabase.main"},{"l":"com.excilys.computerDatabase.service"},{"l":"com.excilys.computerDatabase.view"}];updateSearchResults();

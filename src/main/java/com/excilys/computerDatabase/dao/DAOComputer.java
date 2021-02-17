@@ -99,8 +99,8 @@ public class DAOComputer{
             try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
             	PreparedStatement query = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
             	query.setString(1, computer.getName());
-            	query.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
-            	query.setDate(3, java.sql.Date.valueOf(computer.getDiscontinued()));
+            	query.setDate(2, computer.getIntroduced() != null ? java.sql.Date.valueOf(computer.getIntroduced()) : null);
+            	query.setDate(3, computer.getDiscontinued() != null ? java.sql.Date.valueOf(computer.getDiscontinued()) : null);
             	query.setLong(4, computer.getCompany().getId());
                 query.executeUpdate();
             } catch (SQLException e) {
@@ -114,8 +114,8 @@ public class DAOComputer{
 			try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
 				PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);
 				query.setString(1, computer.getName());
-            	query.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
-            	query.setDate(3, java.sql.Date.valueOf(computer.getDiscontinued()));
+            	query.setDate(2, computer.getIntroduced() != null ? java.sql.Date.valueOf(computer.getIntroduced()) : null);
+            	query.setDate(3, computer.getDiscontinued() != null ? java.sql.Date.valueOf(computer.getDiscontinued()) : null);
             	query.setLong(4, computer.getCompany().getId());
             	query.setLong(5, computer.getId());
                 query.executeUpdate();

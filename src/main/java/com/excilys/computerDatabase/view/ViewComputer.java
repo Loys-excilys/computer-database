@@ -62,7 +62,7 @@ public class ViewComputer extends View{
 		
 		computer.setIntroduced(this.printAskEntryDate(
 				"What is the new date of introduce ? (actual = " + computer.getIntroduced() + ") :"));
-		
+
 		computer.setDiscontinued(this.printAskEntryDate(
 				"What is the new date of discontinued ? (actual = " + computer.getDiscontinued() + ") :"));
 		
