@@ -1,4 +1,4 @@
-package DAO;
+package com.excilys.computerDatabase.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import data.Company;
-import data.Computer;
+import com.excilys.computerDatabase.data.Company;
+import com.excilys.computerDatabase.data.Computer;
 
 public class DAOComputer{
 	
@@ -52,7 +52,7 @@ public class DAOComputer{
 	
 	public Computer getComputer(int id) {
 		Computer computer = null;
-		try(Connection connection = DAO.DBConnection.getInstance().getConnection()){
+		try(Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
         	PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER_ID);
         	query.setLong(1, id);
             ResultSet result = query.executeQuery();
@@ -65,7 +65,7 @@ public class DAOComputer{
 	 						   result.getDate("discontinued").toLocalDate() : result.getDate("discontinued"),
 	 				   new Company(result.getLong("companyID"), result.getString("companyName")));
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Id : " + id + " doesn't exist");
         }
 		return computer;
 	}
@@ -73,7 +73,7 @@ public class DAOComputer{
 	public List<Computer> getListComputer(int page) {
 		List<Computer> resultList = new ArrayList<>();
 		
-		try (Connection connection = DAO.DBConnection.getInstance().getConnection()){
+		try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
 			PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER);
 			query.setInt(1, MAX_ENTRY_PRINT);
 			query.setInt(2, page*MAX_ENTRY_PRINT);
@@ -88,7 +88,7 @@ public class DAOComputer{
 	 				   new Company(result.getLong("companyID"), result.getString("companyName"))));
 		   }
 		} catch (SQLException e) {
-		   e.printStackTrace();
+			System.out.println("erreur system : List Computer inaccessible");
 		}
 		
 		return resultList;
@@ -96,7 +96,7 @@ public class DAOComputer{
 	
 	public void insertComputer(Computer computer) {
         if(computer != null) {
-            try (Connection connection = DAO.DBConnection.getInstance().getConnection()){
+            try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
             	PreparedStatement query = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
             	query.setString(1, computer.getName());
             	query.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
@@ -104,14 +104,14 @@ public class DAOComputer{
             	query.setLong(4, computer.getCompany().getId());
                 query.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+            	System.out.println("erreur system : insert computer impossible, vérifier les valeurs données");
             }
         }
     }
 	
 	public void updateComputer(Computer computer) {
 		if(computer != null) {
-			try (Connection connection = DAO.DBConnection.getInstance().getConnection()){
+			try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
 				PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);
 				query.setString(1, computer.getName());
             	query.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
@@ -120,18 +120,18 @@ public class DAOComputer{
             	query.setLong(5, computer.getId());
                 query.executeUpdate();
 			}catch(SQLException e){
-				e.printStackTrace();
+				System.out.println("erreur system : update computer impossible, vérifier les valeurs données");
 			}
 		}
 	}
 	
 	public void deleteComputer(int id) {
-		try (Connection connection = DAO.DBConnection.getInstance().getConnection()){
+		try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
 			PreparedStatement query = connection.prepareStatement(DELETE_COMPUTER);
            	query.setLong(1, id);
             query.executeUpdate();
 		}catch(SQLException e){
-			e.printStackTrace();
+			System.out.println("erreur system : Delete computer impossible, vérifier les valeurs données");
 		}
 	}
 }

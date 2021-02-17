@@ -1,11 +1,11 @@
-package service;
+package com.excilys.computerDatabase.service;
 
 import java.util.List;
 
-import DAO.DAOComputer;
-import data.Computer;
+import com.excilys.computerDatabase.dao.DAOComputer;
+import com.excilys.computerDatabase.data.Computer;
 
-public class ServiceComputer{
+public class ServiceComputer extends Service{
 	
 	private DAOComputer database;
 	
@@ -30,6 +30,8 @@ public class ServiceComputer{
 	}
 	
 	public void deleteComputer(int id) {
-		this.database.deleteComputer(id);
+		if(id != -1) {
+			this.database.deleteComputer(id);
+		}
 	}
 }

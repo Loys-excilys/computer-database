@@ -1,11 +1,11 @@
-package service;
+package com.excilys.computerDatabase.service;
 
 import java.util.List;
 
-import DAO.DAOCompany;
-import data.Company;
+import com.excilys.computerDatabase.dao.DAOCompany;
+import com.excilys.computerDatabase.data.Company;
 
-public class ServiceCompany {
+public class ServiceCompany extends Service{
 	private DAOCompany database;
 	
 	public ServiceCompany() {

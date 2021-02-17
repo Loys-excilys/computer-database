@@ -1,4 +1,4 @@
-package DAO;
+package com.excilys.computerDatabase.dao;
 
 import java.util.Properties;
 import java.io.InputStream;

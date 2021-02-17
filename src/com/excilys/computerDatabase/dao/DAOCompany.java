@@ -1,4 +1,4 @@
-package DAO;
+package com.excilys.computerDatabase.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import data.Company;
+import com.excilys.computerDatabase.data.Company;
 
 public class DAOCompany{
 	
@@ -23,7 +23,7 @@ public class DAOCompany{
 	
 	public Company getCompany(String name) {
 		Company company = null;
-		try(Connection connection = DAO.DBConnection.getInstance().getConnection()) {
+		try(Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()) {
         	PreparedStatement query = connection.prepareStatement(SELECT_COMPANY_NAME);
         	query.setString(1, name);
             ResultSet result = query.executeQuery();
@@ -31,7 +31,7 @@ public class DAOCompany{
             company = new Company(result.getInt("id"),
  				   result.getString("name"));
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(name + " doesn't exist");
         }
 		return company;
 	}
@@ -39,7 +39,7 @@ public class DAOCompany{
 	public List<Company> getListCompany(int page) {
 		List<Company> resultList = new ArrayList<>();
 		
-		try(Connection connection = DAO.DBConnection.getInstance().getConnection()){
+		try(Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
 			PreparedStatement query = connection.prepareStatement(SELECT_COMPANY);
 			query.setInt(1, MAX_ENTRY_PRINT);
 			query.setInt(2, page*MAX_ENTRY_PRINT);
@@ -48,7 +48,7 @@ public class DAOCompany{
 			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
 		} catch (SQLException e) {
-		   e.printStackTrace();
+		   System.out.println("erreur system : List Company inaccessible");
 		}
 		
 		return resultList;
