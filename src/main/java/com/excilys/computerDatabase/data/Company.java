@@ -1,4 +1,4 @@
-package data;
+package com.excilys.computerDatabase.data;
 
 public class Company {
 

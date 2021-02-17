@@ -1,4 +1,4 @@
-package model;
+package com.excilys.computerDatabase.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import data.Company;
-import data.Computer;
+import com.excilys.computerDatabase.data.Company;
+import com.excilys.computerDatabase.data.Computer;
 
-class DAODatabase extends DAOEntity{
+public class DAOComputer{
 	
 	private static final int MAX_ENTRY_PRINT = 25;
 	
@@ -47,17 +47,13 @@ class DAODatabase extends DAOEntity{
 	
 	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
 	
-	private static final String SELECT_COMPANY_NAME = "Select * FROM company WHERE name = ?";
-	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
-	
-	public DAODatabase(final Connection connection) throws SQLException {
-		super(connection);
-	}
+	public DAOComputer(){}
+		
 	
 	public Computer getComputer(int id) {
 		Computer computer = null;
-		try {
-        	PreparedStatement query = getConnection().prepareStatement(SELECT_COMPUTER_ID);
+		try(Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+        	PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER_ID);
         	query.setLong(1, id);
             ResultSet result = query.executeQuery();
             result.next();
@@ -69,31 +65,16 @@ class DAODatabase extends DAOEntity{
 	 						   result.getDate("discontinued").toLocalDate() : result.getDate("discontinued"),
 	 				   new Company(result.getLong("companyID"), result.getString("companyName")));
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Id : " + id + " doesn't exist");
         }
 		return computer;
-	}
-	
-	public Company getCompany(String name) {
-		Company company = null;
-		try {
-        	PreparedStatement query = getConnection().prepareStatement(SELECT_COMPANY_NAME);
-        	query.setString(1, name);
-            ResultSet result = query.executeQuery();
-            result.next();
-            company = new Company(result.getInt("id"),
- 				   result.getString("name"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-		return company;
 	}
 	
 	public List<Computer> getListComputer(int page) {
 		List<Computer> resultList = new ArrayList<>();
 		
-		try {
-			PreparedStatement query = getConnection().prepareStatement(SELECT_COMPUTER);
+		try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+			PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER);
 			query.setInt(1, MAX_ENTRY_PRINT);
 			query.setInt(2, page*MAX_ENTRY_PRINT);
 	        ResultSet result = query.executeQuery();
@@ -107,25 +88,7 @@ class DAODatabase extends DAOEntity{
 	 				   new Company(result.getLong("companyID"), result.getString("companyName"))));
 		   }
 		} catch (SQLException e) {
-		   e.printStackTrace();
-		}
-		
-		return resultList;
-	}
-	
-	public List<Company> getListCompany(int page) {
-		List<Company> resultList = new ArrayList<>();
-		
-		try {
-			PreparedStatement query = getConnection().prepareStatement(SELECT_COMPANY);
-			query.setInt(1, MAX_ENTRY_PRINT);
-			query.setInt(2, page*MAX_ENTRY_PRINT);
-	        ResultSet result = query.executeQuery();
-		   while(result.next()) {
-			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
-		   }
-		} catch (SQLException e) {
-		   //traitement de l'exception
+			System.out.println("erreur system : List Computer inaccessible");
 		}
 		
 		return resultList;
@@ -133,23 +96,23 @@ class DAODatabase extends DAOEntity{
 	
 	public void insertComputer(Computer computer) {
         if(computer != null) {
-            try {
-            	PreparedStatement query = getConnection().prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
+            try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+            	PreparedStatement query = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
             	query.setString(1, computer.getName());
             	query.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
             	query.setDate(3, java.sql.Date.valueOf(computer.getDiscontinued()));
             	query.setLong(4, computer.getCompany().getId());
                 query.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+            	System.out.println("erreur system : insert computer impossible, vérifier les valeurs données");
             }
         }
     }
 	
 	public void updateComputer(Computer computer) {
 		if(computer != null) {
-			try {
-				PreparedStatement query = getConnection().prepareStatement(UPDATE_COMPUTER);
+			try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+				PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);
 				query.setString(1, computer.getName());
             	query.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
             	query.setDate(3, java.sql.Date.valueOf(computer.getDiscontinued()));
@@ -157,18 +120,18 @@ class DAODatabase extends DAOEntity{
             	query.setLong(5, computer.getId());
                 query.executeUpdate();
 			}catch(SQLException e){
-				e.printStackTrace();
+				System.out.println("erreur system : update computer impossible, vérifier les valeurs données");
 			}
 		}
 	}
 	
 	public void deleteComputer(int id) {
-		try {
-			PreparedStatement query = getConnection().prepareStatement(DELETE_COMPUTER);
+		try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+			PreparedStatement query = connection.prepareStatement(DELETE_COMPUTER);
            	query.setLong(1, id);
             query.executeUpdate();
 		}catch(SQLException e){
-			e.printStackTrace();
+			System.out.println("erreur system : Delete computer impossible, vérifier les valeurs données");
 		}
 	}
 }

@@ -1,10 +1,10 @@
-package model;
+package com.excilys.computerDatabase.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-final class DBConnection {
+public final class DBConnection {
 	private static DBConnection INSTANCE = null;
 	
 	private Connection connection;
@@ -26,12 +26,20 @@ final class DBConnection {
 			Class.forName("com.mysql.jdbc.Driver");
 			this.connection = DriverManager.getConnection(dbProperties.getUrl(), dbProperties.getLogin(), dbProperties.getPassword());
 		}catch(SQLException | ClassNotFoundException e){
-			e.printStackTrace();			
+			e.printStackTrace();
 		}
 		return true;
 	}
 	
-	protected Connection getConnection() {
+	public Connection getConnection() {
+		try {
+			if(this.connection.isClosed()) {
+				this.open();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return this.connection;
 	}
 }

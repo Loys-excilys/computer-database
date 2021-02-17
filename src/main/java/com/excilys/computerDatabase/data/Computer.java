@@ -1,4 +1,4 @@
-package data;
+package com.excilys.computerDatabase.data;
 
 
 import java.time.LocalDate;
