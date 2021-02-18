@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class ErrorDAOCompany extends SQLException{
 	
-	private static final Logger logger = LoggerFactory.getLogger(ErrorDAOComputer.class);
+	private static final Logger logger = LoggerFactory.getLogger(ErrorDAOCompany.class);
 	
 	public void idInvalid() {
 		logger.error("Id renseigner incorrect");

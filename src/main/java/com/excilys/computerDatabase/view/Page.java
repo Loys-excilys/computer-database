@@ -11,7 +11,9 @@ public class Page {
 	}
 	
 	public void previous() {
-		this.numPage--;
+		if(this.numPage > 0) {
+			this.numPage--;
+		}
 	}
 	
 	public int getPage() {

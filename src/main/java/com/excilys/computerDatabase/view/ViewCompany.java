@@ -22,7 +22,7 @@ public class ViewCompany extends View{
 			for(int i = 0; i < listCompany.size(); i++) {
 				System.out.println(listCompany.get(i).toString());
 			}
-			if((next = this.printAskEntryTriChoice("(n)Next, (p)Previous or (q)Quit ? : ")).compareTo("next") == 0) {
+			if((next = this.printAskEntryTriChoice("(n)Next, (p)Previous or (q)Quit ? : ")).compareTo("quit") != 0) {
 				if (next.compareTo("next") == 0) {
 					page.next();
 				}else if(next.compareTo("previous") == 0) {
@@ -30,8 +30,10 @@ public class ViewCompany extends View{
 				}
 				try {
 					listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
+					if(listCompany.size() == 0) {
+						page.previous();
+					}
 				} catch (ErrorDAOCompany errorConnection) {
-					// TODO Auto-generated catch block
 					errorConnection.connectionLost();
 				}
 			}

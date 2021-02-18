@@ -32,6 +32,9 @@ public class ViewComputer extends View{
 				}
 				try {
 					listComputer = this.service.getServiceComputer().getListComputer(page.getPage());
+					if(listComputer.size() == 0) {
+						page.previous();
+					}
 				}catch(ErrorDAOComputer connectionLost) {
 					connectionLost.connectionLost();
 				}

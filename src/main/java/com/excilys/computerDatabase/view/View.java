@@ -7,6 +7,7 @@ import java.util.Scanner;
 import com.excilys.computerDatabase.controller.Controller;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
+import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 
 public class View{
@@ -51,26 +52,24 @@ public class View{
 	}
 	
 	protected String printAskEntryString(String message) {
-		System.out.print(message);
 		String entry = null;
-		entry = this.saisieUser.nextLine();
+		Boolean boucle = true;
+		do {
+			System.out.print("\n" + message);
+			entry = this.saisieUser.nextLine();
+			if(entry != null | entry.compareTo("") != 0) {
+				boucle = false;
+			}else {
+				ErrorSaisieUser error = new ErrorSaisieUser();
+				error.formatEntry();
+			}
+		}while(boucle);
+		
 		return entry;
 	}
 	
-	protected Boolean printAskEntryBoolean(String message) {
-		System.out.print(message);
-		String entry = null;
-		entry = this.saisieUser.nextLine();
-		if(entry.compareTo("y") == 0) {
-			return true;
-		}else if(entry.compareTo("n") != 0) {
-			System.out.println("Entrée incorrect, l'affichage va s'arréter");
-		}
-		return false;
-	}
-	
 	protected String printAskEntryTriChoice(String message) {
-		System.out.print(message);
+		System.out.print("\n" + message);
 		String entry = null;
 		entry = this.saisieUser.nextLine();
 		if(entry.compareTo("n") == 0) {
@@ -79,33 +78,44 @@ public class View{
 			return "previous";
 			
 		}else if(entry.compareTo("q") != 0) {
-			System.out.println("Entrée incorrect, l'affichage va s'arréter");
+			ErrorSaisieUser error = new ErrorSaisieUser();
+			error.formatEntry();
 		}
 		return "quit";
 	}
 	
 	protected int printAskEntryInt(String message) {
-		System.out.print(message);
-		int num = -1;
-		try{
-			num = Integer.parseInt(this.saisieUser.nextLine());
-		}catch(NumberFormatException e){
-			System.out.println("Entrée incorrect");
-		}
+				int num = -1;
+		do {
+			System.out.print("\n" + message);
+			try{
+				num = Integer.parseInt(this.saisieUser.nextLine());
+			}catch(NumberFormatException e){
+				ErrorSaisieUser error = new ErrorSaisieUser();
+				error.formatEntry();
+			}
+		}while(num == -1);
+		
 		return num;
 	}
 	
 	protected LocalDate printAskEntryDate(String message) {
 		LocalDate date = null;
-		System.out.print(message);
-		try{			
-			String text = this.saisieUser.nextLine();
-			if(!text.isEmpty()) {
-				date = LocalDate.parse(text);
+		Boolean boucle = false;
+		do {
+			System.out.print("\n" + message);
+			try{			
+				String text = this.saisieUser.nextLine();
+				if(!text.isEmpty()) {
+					date = LocalDate.parse(text);
+				}
+				boucle = true;
+			}catch(DateTimeParseException  e){
+				ErrorSaisieUser error = new ErrorSaisieUser();
+				error.formatEntry();
 			}
-		}catch(DateTimeParseException  e){
-			System.out.println("Entrée incorrect, veuiller repecter les normes de notation");
-		}
+		}while(!boucle);
+		
 		return date;
 	}
 		
