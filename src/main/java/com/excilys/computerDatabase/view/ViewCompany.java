@@ -15,14 +15,18 @@ public class ViewCompany extends View{
 	}
 	
 	public void printListCompany(List<Company> listCompany) {
-		boolean next = true;
-		int page = 0;
-		while(next) {
+		String next = "";
+		Page page = new Page();
+		while(next.compareTo("quit") != 0) {
 			for(int i = 0; i < listCompany.size(); i++) {
 				System.out.println(listCompany.get(i).toString());
 			}
-			if (next = this.printAskEntryBoolean("continue ? (y or n) : ")) {
-				listCompany = this.service.getServiceCompany().getListCompany(++page);
+			if ((next = this.printAskEntryTriChoice("(n)Next, (p)Previous or (q)Quit ? : ")).compareTo("next") == 0) {
+				page.next();
+				listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
+			}else if(next.compareTo("previous") == 0) {
+				page.previous();
+				listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
 			}
 			this.space();
 		}

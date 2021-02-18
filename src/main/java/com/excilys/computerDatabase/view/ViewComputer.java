@@ -15,14 +15,18 @@ public class ViewComputer extends View{
 	}
 	
 	public void printListComputer(List<Computer> listComputer) {
-		boolean next = true;
-		int page = 0;
-		while(next) {
+		String next = "";
+		Page page = new Page();
+		while(next.compareTo("quit") != 0) {
 			for(int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
 			}
-			if(next = this.printAskEntryBoolean("continue ? (y or n) : ")){
-				listComputer = this.service.getServiceComputer().getListComputer(++page);
+			if ((next = this.printAskEntryTriChoice("(n)Next, (p)Previous or (q)Quit ? : ")).compareTo("next") == 0) {
+				page.next();
+				listComputer = this.service.getServiceComputer().getListComputer(page.getPage());
+			}else if(next.compareTo("previous") == 0) {
+				page.previous();
+				listComputer = this.service.getServiceComputer().getListComputer(page.getPage());
 			}
 			this.space();
 		}

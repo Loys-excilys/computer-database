@@ -64,6 +64,21 @@ public class View{
 		return false;
 	}
 	
+	protected String printAskEntryTriChoice(String message) {
+		System.out.print(message);
+		String entry = null;
+		entry = this.saisieUser.nextLine();
+		if(entry.compareTo("n") == 0) {
+			return "next";
+		}else if(entry.compareTo("p") == 0){
+			return "previous";
+			
+		}else if(entry.compareTo("q") != 0) {
+			System.out.println("Entrée incorrect, l'affichage va s'arréter");
+		}
+		return "quit";
+	}
+	
 	protected int printAskEntryInt(String message) {
 		System.out.print(message);
 		int num = -1;
