@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.computerDatabase.controller.Controller;
 import com.excilys.computerDatabase.data.Company;
+import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.service.Service;
 
 public class ViewCompany extends View{
@@ -21,13 +22,20 @@ public class ViewCompany extends View{
 			for(int i = 0; i < listCompany.size(); i++) {
 				System.out.println(listCompany.get(i).toString());
 			}
-			if ((next = this.printAskEntryTriChoice("(n)Next, (p)Previous or (q)Quit ? : ")).compareTo("next") == 0) {
-				page.next();
-				listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
-			}else if(next.compareTo("previous") == 0) {
-				page.previous();
-				listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
+			if((next = this.printAskEntryTriChoice("(n)Next, (p)Previous or (q)Quit ? : ")).compareTo("next") == 0) {
+				if (next.compareTo("next") == 0) {
+					page.next();
+				}else if(next.compareTo("previous") == 0) {
+					page.previous();
+				}
+				try {
+					listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
+				} catch (ErrorDAOCompany errorConnection) {
+					// TODO Auto-generated catch block
+					errorConnection.connectionLost();
+				}
 			}
+			
 			this.space();
 		}
 	}

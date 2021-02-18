@@ -2,10 +2,11 @@ package com.excilys.computerDatabase.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.excilys.computerDatabase.controller.Controller;
+import com.excilys.computerDatabase.error.ErrorDAOCompany;
+import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.service.Service;
 
 public class View{
@@ -27,7 +28,7 @@ public class View{
 		this.viewComputer = new ViewComputer(service, controller);
 	}
 	
-	public void cli() {
+	public void cli(){
 		boolean boucle = true;
 		
 		while(boucle) {
@@ -41,7 +42,11 @@ public class View{
 					+ "\n 0 : éteindre l'application"
 					+ "\n Veuillez saisir un code d'action : ");
 			
-			boucle = this.controller.action(commande, boucle);
+			try {
+				boucle = this.controller.action(commande, boucle);
+			} catch (ErrorDAOComputer | ErrorDAOCompany errorConnection) {
+				((ErrorDAOCompany) errorConnection).connectionLost();
+			}
 		}
 	}
 	
@@ -105,7 +110,7 @@ public class View{
 	}
 		
 	protected void space() {
-		System.out.println("\n\n\n");
+		System.out.println("\n");
 	}
 	
 	public ViewComputer getViewComputer() {

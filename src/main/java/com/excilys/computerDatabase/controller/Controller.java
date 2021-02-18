@@ -1,5 +1,7 @@
 package com.excilys.computerDatabase.controller;
 
+import com.excilys.computerDatabase.error.ErrorDAOCompany;
+import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.service.Service;
 import com.excilys.computerDatabase.view.View;
 
@@ -21,7 +23,7 @@ public class Controller{
 		this.view = view;
 	}
 
-	public boolean action(int commande, boolean boucle) {
+	public boolean action(int commande, boolean boucle) throws ErrorDAOComputer, ErrorDAOCompany{
 		
 		
 		switch(commande) {
@@ -38,15 +40,15 @@ public class Controller{
 		return boucle;		
 	}
 
-	public void chooseIdDetailcomputer(int commande) {
+	public void chooseIdDetailcomputer(int commande) throws ErrorDAOComputer {
 		this.view.getViewComputer().printDetailComputer(this.service.getServiceComputer().getComputer(commande));
 	}
 	
-	public void changePageComputer(int page) {
+	public void changePageComputer(int page) throws ErrorDAOComputer {
 		this.view.getViewComputer().printListComputer(this.service.getServiceComputer().getListComputer(page));
 	}
 	
-	public void changePageCompany(int page) {
+	public void changePageCompany(int page) throws ErrorDAOCompany {
 		this.view.getViewCompany().printListCompany(this.service.getServiceCompany().getListCompany(page));
 	}
 }

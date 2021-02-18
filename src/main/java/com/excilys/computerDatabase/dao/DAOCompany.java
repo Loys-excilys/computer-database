@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerDatabase.data.Company;
+import com.excilys.computerDatabase.error.ErrorDAOCompany;
 
 public class DAOCompany{
 	
@@ -16,14 +17,13 @@ public class DAOCompany{
 	private static final String SELECT_COMPANY_NAME = "Select * FROM company WHERE name = ?";
 	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
 	
+	private DBConnection dbConnection = DBConnection.getInstance();
+	
 	public DAOCompany(){}
 		
-	
-	
-	
-	public Company getCompany(String name) {
+	public Company getCompany(String name) throws ErrorDAOCompany {
 		Company company = null;
-		try(Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()) {
+		try(Connection connection = this.dbConnection.getConnection()) {
         	PreparedStatement query = connection.prepareStatement(SELECT_COMPANY_NAME);
         	query.setString(1, name);
             ResultSet result = query.executeQuery();
@@ -31,15 +31,15 @@ public class DAOCompany{
             company = new Company(result.getInt("id"),
  				   result.getString("name"));
         } catch (SQLException e) {
-            System.out.println(name + " doesn't exist");
+            throw new ErrorDAOCompany();
         }
 		return company;
 	}
 	
-	public List<Company> getListCompany(int page) {
+	public List<Company> getListCompany(int page) throws ErrorDAOCompany {
 		List<Company> resultList = new ArrayList<>();
 		
-		try(Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+		try(Connection connection = this.dbConnection.getConnection()){
 			PreparedStatement query = connection.prepareStatement(SELECT_COMPANY);
 			query.setInt(1, MAX_ENTRY_PRINT);
 			query.setInt(2, page*MAX_ENTRY_PRINT);
@@ -48,7 +48,7 @@ public class DAOCompany{
 			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
 		} catch (SQLException e) {
-		   System.out.println("erreur system : List Company inaccessible");
+			throw new ErrorDAOCompany();
 		}
 		
 		return resultList;

@@ -7,15 +7,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.error.ErrorDAOComputer;
 
 public class DAOComputer{
+		
+	private final int MAX_ENTRY_PRINT = 25;
 	
-	private static final int MAX_ENTRY_PRINT = 25;
-	
-	private static final String SELECT_COMPUTER = "SELECT computer.id as id,"
+	private final String SELECT_COMPUTER = "SELECT computer.id as id,"
 			+ " computer.name as name,"
 			+ " computer.introduced as introduced,"
 			+ " computer.discontinued as discontinued,"
@@ -25,7 +27,7 @@ public class DAOComputer{
 			+ " LEFT JOIN company ON computer.company_id = company.id"
 			+ " LIMIT ? OFFSET ?";
 	
-	private static final String SELECT_COMPUTER_ID = "SELECT computer.id as id,"
+	private final String SELECT_COMPUTER_ID = "SELECT computer.id as id,"
 			+ " computer.name as name,"
 			+ " computer.introduced as introduced,"
 			+ " computer.discontinued as discontinued,"
@@ -35,24 +37,26 @@ public class DAOComputer{
 			+ " LEFT JOIN company ON computer.company_id = company.id"
 			+ " WHERE computer.id = ?";
 	
-	private static final String INSERT_COMPUTER = 
+	private final String INSERT_COMPUTER = 
 			"INSERT INTO computer(name, introduced, discontinued, company_id)"
 			+ " values(?,?,?,?) ";
-	private static final String UPDATE_COMPUTER = "UPDATE computer"
+	private final String UPDATE_COMPUTER = "UPDATE computer"
 			+ " SET name = ?,"
 			+ " introduced = ?,"
 			+ " discontinued = ?,"
 			+ " company_id = ?"
 			+ " WHERE id = ?";
 	
-	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
+	private final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
+	
+	private DBConnection dbConnection= DBConnection.getInstance();
 	
 	public DAOComputer(){}
 		
 	
-	public Computer getComputer(int id) {
+	public Optional<Computer> getComputer(int id) throws ErrorDAOComputer {
 		Computer computer = null;
-		try(Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+		try(Connection connection = this.dbConnection.getConnection()){
         	PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER_ID);
         	query.setLong(1, id);
             ResultSet result = query.executeQuery();
@@ -64,16 +68,16 @@ public class DAOComputer{
 	 				   result.getDate("discontinued") != null ?
 	 						   result.getDate("discontinued").toLocalDate() : result.getDate("discontinued"),
 	 				   new Company(result.getLong("companyID"), result.getString("companyName")));
-        } catch (SQLException e) {
-            System.out.println("Id : " + id + " doesn't exist");
+        } catch (SQLException errorSQL) {
+        	throw new ErrorDAOComputer();
         }
-		return computer;
+		return Optional.ofNullable(computer);
 	}
 	
-	public List<Computer> getListComputer(int page) {
+	public List<Computer> getListComputer(int page) throws ErrorDAOComputer {
 		List<Computer> resultList = new ArrayList<>();
 		
-		try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+		try (Connection connection = this.dbConnection.getConnection()){
 			PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER);
 			query.setInt(1, MAX_ENTRY_PRINT);
 			query.setInt(2, page*MAX_ENTRY_PRINT);
@@ -88,15 +92,15 @@ public class DAOComputer{
 	 				   new Company(result.getLong("companyID"), result.getString("companyName"))));
 		   }
 		} catch (SQLException e) {
-			System.out.println("erreur system : List Computer inaccessible");
+			throw new ErrorDAOComputer();
 		}
 		
 		return resultList;
 	}
 	
-	public void insertComputer(Computer computer) {
+	public void insertComputer(Computer computer) throws ErrorDAOComputer {
         if(computer != null) {
-            try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+            try (Connection connection = this.dbConnection.getConnection()){
             	PreparedStatement query = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
             	query.setString(1, computer.getName());
             	query.setDate(2, computer.getIntroduced() != null ? java.sql.Date.valueOf(computer.getIntroduced()) : null);
@@ -104,14 +108,14 @@ public class DAOComputer{
             	query.setLong(4, computer.getCompany().getId());
                 query.executeUpdate();
             } catch (SQLException e) {
-            	System.out.println("erreur system : insert computer impossible, vérifier les valeurs données");
+            	throw new ErrorDAOComputer();
             }
         }
     }
 	
-	public void updateComputer(Computer computer) {
+	public void updateComputer(Computer computer) throws ErrorDAOComputer {
 		if(computer != null) {
-			try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+			try (Connection connection = this.dbConnection.getConnection()){
 				PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);
 				query.setString(1, computer.getName());
             	query.setDate(2, computer.getIntroduced() != null ? java.sql.Date.valueOf(computer.getIntroduced()) : null);
@@ -120,18 +124,18 @@ public class DAOComputer{
             	query.setLong(5, computer.getId());
                 query.executeUpdate();
 			}catch(SQLException e){
-				System.out.println("erreur system : update computer impossible, vérifier les valeurs données");
+				throw new ErrorDAOComputer();
 			}
 		}
 	}
 	
-	public void deleteComputer(int id) {
-		try (Connection connection = com.excilys.computerDatabase.dao.DBConnection.getInstance().getConnection()){
+	public void deleteComputer(int id) throws ErrorDAOComputer {
+		try (Connection connection = this.dbConnection.getConnection()){
 			PreparedStatement query = connection.prepareStatement(DELETE_COMPUTER);
            	query.setLong(1, id);
             query.executeUpdate();
 		}catch(SQLException e){
-			System.out.println("erreur system : Delete computer impossible, vérifier les valeurs données");
+			throw new ErrorDAOComputer();
 		}
 	}
 }
