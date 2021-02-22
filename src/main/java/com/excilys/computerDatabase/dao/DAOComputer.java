@@ -98,7 +98,8 @@ public class DAOComputer{
 		return resultList;
 	}
 	
-	public void insertComputer(Computer computer) throws ErrorDAOComputer {
+	public long insertComputer(Computer computer) throws ErrorDAOComputer {
+		long newKey = 0;
         if(computer != null) {
             try (Connection connection = this.dbConnection.getConnection()){
             	PreparedStatement query = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
@@ -107,10 +108,14 @@ public class DAOComputer{
             	query.setDate(3, computer.getDiscontinued() != null ? java.sql.Date.valueOf(computer.getDiscontinued()) : null);
             	query.setLong(4, computer.getCompany().getId());
                 query.executeUpdate();
+                ResultSet key = query.getGeneratedKeys();
+                key.next();
+                newKey = key.getLong(1);
             } catch (SQLException e) {
             	throw new ErrorDAOComputer();
             }
         }
+        return newKey;
     }
 	
 	public void updateComputer(Computer computer) throws ErrorDAOComputer {

@@ -17,7 +17,13 @@ public class ServiceCompany extends Service{
 		return this.database.getCompany(nameCompany);
 	}
 
+	public List<Company> getListCompany() throws ErrorDAOCompany {
+		return this.database.getListCompany();
+	}
+	
 	public List<Company> getListCompany(int page) throws ErrorDAOCompany{
 		return this.database.getListCompany(page);
 	}
+
+
 }

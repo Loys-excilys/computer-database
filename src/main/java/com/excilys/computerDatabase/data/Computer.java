@@ -18,6 +18,13 @@ public class Computer {
 		this.setDiscontinued(discontinued);
 		this.setCompany(company);
 	}
+	
+	public Computer(String name, LocalDate introduced, LocalDate discontinued, Company company) {
+		this.setName(name);
+		this.setIntroduced(introduced);
+		this.setDiscontinued(discontinued);
+		this.setCompany(company);
+	}
 
 	public Computer() {}
 

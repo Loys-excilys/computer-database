@@ -23,8 +23,8 @@ public class ServiceComputer extends Service{
 		return this.database.getListComputer(page);	
 	}
 		
-	public void addComputer(Computer computer) throws ErrorDAOComputer {
-		this.database.insertComputer(computer);
+	public long addComputer(Computer computer) throws ErrorDAOComputer {
+		return this.database.insertComputer(computer);
 	}
 	
 	public void updateComputer(Computer computer) throws ErrorDAOComputer {
