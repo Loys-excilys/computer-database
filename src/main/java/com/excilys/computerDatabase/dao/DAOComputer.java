@@ -51,7 +51,7 @@ public class DAOComputer{
 	
 	private final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
 	
-	private DBConnection dbConnection= DBConnection.getInstance();
+	private DBConnection dbConnection = DBConnection.getInstance();
 	
 	public DAOComputer(){}
 	
@@ -65,7 +65,6 @@ public class DAOComputer{
             numberComputer = result.getInt(1);
             
         } catch (SQLException errorSQL) {
-        	errorSQL.printStackTrace();
         	throw new ErrorDAOComputer();
         }
 		return numberComputer;
