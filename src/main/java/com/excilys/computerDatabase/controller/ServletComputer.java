@@ -41,7 +41,13 @@ public class ServletComputer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response){
 		HttpSession session = request.getSession();
+		if(request.getParameter("page") != null) {
+			this.page.setPage(Integer.parseInt(request.getParameter("page")));
+		}
+		
 		try {
+			session.setAttribute("currentPage", this.page.getPage());
+			session.setAttribute("numberComputer", this.serviceComputer.getNumberComputer());
 			session.setAttribute("listComputer", this.serviceComputer.getListComputer(this.page.getPage()));
 			this.getServletContext().getRequestDispatcher("/JSP/Computer.jsp").forward(request, response);
 		} catch (ErrorDAOComputer errorListComputer) {
@@ -60,13 +66,13 @@ public class ServletComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-		String UserChoiceAction = (String) request.getParameter("UserChoiceAction");
+		String UserChoiceAction = (String) request.getParameter("userChoiceAction");
 		HttpSession session = request.getSession();
 		String pathRedirection = "/index";
 		switch(UserChoiceAction) {
 			case "nextPage" :this.page.next();doGet(request, response);break;
 			case "previousPage" :this.page.previous();doGet(request, response);break;
-			case "addComputer":
+			case "Add Computer":
 				try {
 					session.setAttribute("listCompany", this.serviceCompany.getListCompany());
 					pathRedirection = "/JSP/AddComputer.jsp";
@@ -76,7 +82,7 @@ public class ServletComputer extends HttpServlet {
 				}
 				break;
 			case "Valider le form" : 
-				List<Company> listCompany = (List)session.getAttribute("listCompany");
+				List<Company> listCompany = (List) session.getAttribute("listCompany");
 				Computer computer = new Computer(request.getParameter("computerName"),
 						LocalDate.parse(request.getParameter("dateIntroduced")),
 						LocalDate.parse(request.getParameter("dateDiscontinued")),

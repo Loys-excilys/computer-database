@@ -49,10 +49,29 @@ public class DAOComputer{
 	
 	private final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
 	
+	private final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
+	
 	private DBConnection dbConnection= DBConnection.getInstance();
 	
 	public DAOComputer(){}
-		
+	
+	
+	public int getNumberComputer() throws ErrorDAOComputer {
+		int numberComputer = 0;
+		try(Connection connection = this.dbConnection.getConnection()){
+        	PreparedStatement query = connection.prepareStatement(COUNT_COMPUTER);
+            ResultSet result = query.executeQuery();
+            result.next();
+            numberComputer = result.getInt(1);
+            
+        } catch (SQLException errorSQL) {
+        	errorSQL.printStackTrace();
+        	throw new ErrorDAOComputer();
+        }
+		return numberComputer;
+	}
+	
+	
 	
 	public Optional<Computer> getComputer(int id) throws ErrorDAOComputer {
 		Computer computer = null;

@@ -2,40 +2,68 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<script type="text/javascript" src="/computer-database/Javascript/AddComputer.js"></script>
-
 <%@ page import ="com.excilys.computerDatabase.data.Company" %>
 <%@ page import = "java.util.List" %>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>AddComputer</title>
+	<meta charset="UTF-8">
+	<title>Computer Database</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap -->
+	<link href="/computer-database/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="/computer-database/css/font-awesome.css" rel="stylesheet" media="screen">
+	<link href="/computer-database/css/main.css" rel="stylesheet" media="screen">
+	
+	<script type="text/javascript" src ="js/AddComputer.js"></script>
 </head>
 <body>
-	
-	<form action="/computer-database/ServletComputer" method="post">
-		<label>Computer Name</label>
-		<input name="computerName" size="20" maxlength="255" onchange="verifNameComputer(this.value)">
-		
-		<label>Date Introduced</label>
-		<input type="date" name="dateIntroduced" size="20" onchange="limitDate(this.value)">
-		
-		<label>Date Discontinued</label>
-		<input type="date" name="dateDiscontinued" size="20">
-		
-		<label>Company Name</label>
-		<select name="companyName">
-		<%
-		List<Company> listCompany = (List) session.getAttribute("listCompany");
-		for(Company company : listCompany){
-			out.println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
-		}
-		
-		%>
-		</select>
-		
-		<input type ="submit" name="UserChoiceAction" value="Valider le form"> 
-	
-	</form>
+	<header class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/computer-database/ServletComputer"> Application - Computer Database </a>
+        </div>
+    </header>
+    
+    <section id="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-8 col-xs-offset-2 box">
+                    <h1>Add Computer</h1>
+                    <form action="/computer-database/ServletComputer" method="POST">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="computerName">Computer name</label>
+                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" maxlength="255" onchange="verifNameComputer(this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label for="introduced">Introduced date</label>
+                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date" name="dateIntroduced" onchange="limitDate(this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label for="discontinued">Discontinued date</label>
+                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date"name="dateDiscontinued">
+                            </div>
+                            <div class="form-group">
+                                <label for="companyId">Company</label>
+                                <select class="form-control" id="companyId" name="companyName">
+									<%
+									List<Company> listCompany = (List) session.getAttribute("listCompany");
+									for(Company company : listCompany){
+										out.println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
+									}
+									
+									%>
+								</select>
+                            </div>                  
+                        </fieldset>
+                        <div class="actions pull-right">
+                            <input type="submit" value="Add" class="btn btn-primary">
+                            or
+                            <a href="/computer-database/ServletComputer" class="btn btn-default">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>

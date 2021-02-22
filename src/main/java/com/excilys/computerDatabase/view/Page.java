@@ -15,6 +15,9 @@ public class Page {
 			this.numPage--;
 		}
 	}
+	public void setPage(int page) {
+		this.numPage = page;
+	}
 	
 	public int getPage() {
 		return this.numPage;

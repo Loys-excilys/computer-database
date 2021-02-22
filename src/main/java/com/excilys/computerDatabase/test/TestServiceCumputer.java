@@ -31,6 +31,8 @@ public class TestServiceCumputer extends TestCase{
 		computer.setIntroduced(LocalDate.parse("2015-06-22"));
 		computer.setDiscontinued(LocalDate.parse("2021-04-30"));
 		computer.setCompany(service.getServiceCompany().getCompany("ASUS"));
+		
+		
 		idTest = (int) service.getServiceComputer().addComputer(computer);
 
 		assertEquals(computer.getName(), service.getServiceComputer().getComputer(idTest).get().getName());
@@ -56,14 +58,5 @@ public class TestServiceCumputer extends TestCase{
 		
 		service.getServiceComputer().updateComputer(computer);
 		assertEquals(computer.getName(), service.getServiceComputer().getComputer(idTest).get().getName());
-	}
-
-	public void testDeleteComputer() throws Exception {
-		Service service;
-		service = new Service();
-		service.createService();
-		
-		
-	}
-	
+	}	
 }

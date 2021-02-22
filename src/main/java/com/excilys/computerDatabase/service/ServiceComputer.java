@@ -36,4 +36,8 @@ public class ServiceComputer extends Service{
 			this.database.deleteComputer(id);
 		}
 	}
+	
+	public int getNumberComputer() throws ErrorDAOComputer{
+		return this.database.getNumberComputer();
+	}
 }
