@@ -3,8 +3,8 @@
     
 
 <%@ page import ="com.excilys.computerDatabase.data.Computer" %>
-<%@ page import = "java.util.List" %><%-- 
-<%@ taglib prefix="h" uri="/WEB-INF/testTag.tld"%> --%>
+<%@ page import = "java.util.List" %>
+
 
 <!DOCTYPE html>
 <html>
