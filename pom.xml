@@ -58,7 +58,6 @@
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-engine</artifactId>
 	    <version>5.1.0</version>
-	    <scope>test</scope>
 	</dependency>
 	
 	<dependency>
@@ -130,14 +129,7 @@
   
 
       <build>
-      
-      <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-      
+            
       
         <pluginManagement>
             <plugins>
