@@ -70,8 +70,6 @@ public class ServletComputer extends HttpServlet {
 		HttpSession session = request.getSession();
 		String pathRedirection = "/index";
 		switch(UserChoiceAction) {
-			case "nextPage" :this.page.next();doGet(request, response);break;
-			case "previousPage" :this.page.previous();doGet(request, response);break;
 			case "Add Computer":
 				try {
 					session.setAttribute("listCompany", this.serviceCompany.getListCompany());
@@ -84,9 +82,9 @@ public class ServletComputer extends HttpServlet {
 			case "Valider le form" : 
 				List<Company> listCompany = (List) session.getAttribute("listCompany");
 				Computer computer = new Computer(request.getParameter("computerName"),
-						LocalDate.parse(request.getParameter("dateIntroduced")),
-						LocalDate.parse(request.getParameter("dateDiscontinued")),
-						listCompany.get(Integer.parseInt(request.getParameter("companyName"))-1));
+						request.getParameter("dateIntroduced").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateIntroduced")) : null,
+						request.getParameter("dateDiscontinued").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateDiscontinued")) : null,
+						request.getParameter("companyName").compareTo("") != 0 ? listCompany.get(Integer.parseInt(request.getParameter("companyName"))-1) : null);
 				try {
 					this.serviceComputer.addComputer(computer);
 				} catch (ErrorDAOComputer e) {
