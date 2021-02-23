@@ -27,9 +27,9 @@ public class TagComputer extends SimpleTagSupport{
 			        +   	"<td>"
 			        +       	"<a href=\"editComputer.html\" onclick=\"\">" + computer.getName() + "</a>"
 			        +   	"</td>"
-			        +   	"<td>" + computer.getIntroduced() + "</td>"
-			        +   	"<td>" + computer.getDiscontinued() + "</td>"
-			        +   	"<td>" + computer.getCompany().getName() + "</td>"
+			        +   	"<td>" + (computer.getIntroduced() != null ? computer.getIntroduced() : "") + "</td>"
+			        +   	"<td>" + (computer.getDiscontinued() != null ? computer.getDiscontinued() : "") + "</td>"
+			        +   	"<td>" + (computer.getCompany().getName() != null ? computer.getCompany().getName() : "") + "</td>"
 			        +	"</tr>"
 						
 						);
