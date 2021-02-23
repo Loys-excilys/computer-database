@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-
-<%@ page import ="com.excilys.computerDatabase.data.Computer" %>
-<%@ page import = "java.util.List" %>
-
+<%@ taglib uri="/WEB-INF/TagComputer.tld" prefix="computer" %>
 
 <!DOCTYPE html>
 <html>
@@ -32,13 +29,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-            
-                            	<%
-	
-		int numberComputer = (int) session.getAttribute("numberComputer");
-			out.println(numberComputer + " Computers found");
-	
-	%>
+            <computer:NumberComputer numberComputer ="${ sessionScope.numberComputer }" />
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -97,27 +88,7 @@
                 <!-- Browse attribute computers -->
                 <tbody id="results">
                 
-                	<%
-	
-		List<Computer> listComputer = (List) session.getAttribute("listComputer");
-		for(Computer computer : listComputer){
-			out.println(
-					"<tr>"
-            	+		"<td class=\"editMode\">"
-                +       	"<input type=\"checkbox\" name=\"cb\" class=\"cb\" value=\"0\">"
-                +   	"</td>"
-                +   	"<td>"
-                +       	"<a href=\"editComputer.html\" onclick=\"\">" + computer.getName() + "</a>"
-                +   	"</td>"
-                +   	"<td>" + computer.getIntroduced() + "</td>"
-                +   	"<td>" + computer.getDiscontinued() + "</td>"
-                +   	"<td>" + computer.getCompany().getName() + "</td>"
-                +	"</tr>"
-					
-					);
-		}
-	
-	%>
+                	<computer:Computer listComputer="${sessionScope.listComputer}"/>
                     
                 </tbody>
             </table>
@@ -133,41 +104,7 @@
                   </a>
               </li>
               
-              <% 
-              
-              int numberPage = (numberComputer/25);
-              int currentPage = (int) session.getAttribute("currentPage");
-              if(currentPage < 4){
-            	  out.println(
-            			  	"<li><a href=\"?page=1\">1</a></li>"
-            			+  	"<li><a href=\"?page=2\">2</a></li>"
-            			+ 	"<li><a href=\"?page=3\">3</a></li>"
-            			+ 	"<li><a href=\"?page=4\">4</a></li>"
-            			+	"<li><a>...</a></li>"
-            			+	"<li><a href=\"?page=" + numberPage + "\">" + numberPage + "</a></li>"
-            			  );
-              }else if(currentPage > numberPage-3){
-            	  out.println(
-          			  	"<li><a href=\"?page=1\">1</a></li>"
-          			+	"<li><a>...</a></li>"
-          			+  	"<li><a href=\"?page=" + (numberPage-3) + "\">" + (numberPage-3) + "</a></li>"
-                  	+  	"<li><a href=\"?page=" + (numberPage-2) + "\">" + (numberPage-2) + "</a></li>"
-                  	+ 	"<li><a href=\"?page=" + (numberPage-1) + "\">" + (numberPage-1) + "</a></li>"
-          			+	"<li><a href=\"?page=" + numberPage + "\">" + numberPage + "</a></li>"
-          			  );
-            }else{
-              	  out.println(
-              			  	"<li><a href=\"?page=1\">1</a></li>"
-              			+	"<li><a>...</a></li>"
-              			+  	"<li><a href=\"?page=" + (currentPage-1) + "\">" + (currentPage-1) + "</a></li>"
-              			+  	"<li><a href=\"?page=" + currentPage + "\">" + currentPage + "</a></li>"
-              			+  	"<li><a href=\"?page=" + (currentPage+1) + "\">" + (currentPage+1) + "</a></li>"
-              			+	"<li><a>...</a></li>"
-              			+	"<li><a href=\"?page=" + numberPage + "\">" + numberPage + "</a></li>"
-              			  );
-            }
-              
-              %>
+              <computer:NumberPage numberComputer="${ sessionScope.numberComputer }" currentPage="${ sessionScope.currentPage }"/>
               	<li>
 	                <a href="#" aria-label="Next">
 	                    <span aria-hidden="true">&raquo;</span>

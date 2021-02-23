@@ -2,8 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<%@ page import ="com.excilys.computerDatabase.data.Company" %>
-<%@ page import = "java.util.List" %>
+<%@ taglib uri="/WEB-INF/TagCompany.tld" prefix="company" %>
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -45,13 +44,9 @@
                             <div class="form-group">
                                 <label for="companyId">Company</label>
                                 <select class="form-control" id="companyId" name="companyName">
-									<%
-									List<Company> listCompany = (List) session.getAttribute("listCompany");
-									for(Company company : listCompany){
-										out.println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
-									}
-									
-									%>
+
+								<company:Company listCompany="${sessionScope.listCompany}"/>
+
 								</select>
                             </div>                  
                         </fieldset>

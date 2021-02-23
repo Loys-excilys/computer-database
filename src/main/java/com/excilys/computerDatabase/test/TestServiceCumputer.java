@@ -1,18 +1,20 @@
 package com.excilys.computerDatabase.test;
 
-import junit.framework.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import org.junit.jupiter.api.Test;
 
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.service.Service;
 
 
-public class TestServiceCumputer extends TestCase{
+public class TestServiceCumputer{
 	
 	int idTest = 577;
-
+	@Test
 	public void testGetListComputer() throws Exception {
 		Service service;
 		service = new Service();
@@ -21,6 +23,7 @@ public class TestServiceCumputer extends TestCase{
 		assertEquals(ArrayList.class, service.getServiceComputer().getListComputer(0).getClass());
 	}
 	
+	@Test
 	public void testInsertComputer()throws Exception{
 		Service service;
 		service = new Service();
@@ -40,7 +43,8 @@ public class TestServiceCumputer extends TestCase{
 		service.getServiceComputer().deleteComputer(idTest);
 		
 	}
-
+	
+	@Test
 	public void testGetComputer() throws Exception {
 		Service service;
 		service = new Service();
@@ -48,6 +52,7 @@ public class TestServiceCumputer extends TestCase{
 		assertEquals(Computer.class, service.getServiceComputer().getComputer(idTest).get().getClass());
 	}
 
+	@Test
 	public void testUpdateComputer() throws Exception {
 		Service service;
 		service = new Service();
