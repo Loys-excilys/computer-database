@@ -69,7 +69,6 @@ public class ServletComputer extends HttpServlet {
 		String userChoiceAction = (String) request.getParameter("userChoiceAction");
 		HttpSession session = request.getSession();
 		String pathRedirection = "/index";
-
 		switch(userChoiceAction) {
 			case "Add Computer":
 				try {
@@ -95,15 +94,18 @@ public class ServletComputer extends HttpServlet {
 					}
 					pathRedirection = "/JSP/Computer";
 				}else {
-					pathRedirection = "/JSP/AddComputer.jsp";				
+					pathRedirection = "/JSP/AddComputer.jsp";
 				}
-				try {
-					this.getServletContext().getRequestDispatcher(pathRedirection).forward(request, response);
-				} catch (ServletException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				break;
+				
+		}
+		try {
+			this.getServletContext().getRequestDispatcher(pathRedirection).forward(request, response);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
+
 }
