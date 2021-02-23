@@ -51,7 +51,7 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" name="userChoiceAction" value="Valider le form" class="btn btn-primary">
+                            <input type="submit" value="Add" class="btn btn-primary">
                             or
                             <a href="/computer-database/ServletComputer" class="btn btn-default">Cancel</a>
                         </div>

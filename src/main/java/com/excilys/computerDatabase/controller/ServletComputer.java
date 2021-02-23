@@ -66,10 +66,10 @@ public class ServletComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-		String userChoiceAction = (String) request.getParameter("userChoiceAction");
+		String UserChoiceAction = (String) request.getParameter("userChoiceAction");
 		HttpSession session = request.getSession();
 		String pathRedirection = "/index";
-		switch(userChoiceAction) {
+		switch(UserChoiceAction) {
 			case "Add Computer":
 				try {
 					session.setAttribute("listCompany", this.serviceCompany.getListCompany());
@@ -79,23 +79,18 @@ public class ServletComputer extends HttpServlet {
 					e.connectionLost();
 				}
 				break;
-			case "Valider le form" :
-				if(request.getParameter("computerName").compareTo("") != 0) {
-					List<Company> listCompany = (List) session.getAttribute("listCompany");
-					
-					Computer computer = new Computer(request.getParameter("computerName"),
-							request.getParameter("dateIntroduced").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateIntroduced")) : null,
-							request.getParameter("dateDiscontinued").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateDiscontinued")) : null,
-							request.getParameter("companyName").compareTo("") != 0 ? listCompany.get(Integer.parseInt(request.getParameter("companyName"))-1) : null);
-					try {
-						this.serviceComputer.addComputer(computer);
-					} catch (ErrorDAOComputer e) {
-						e.connectionLost();
-					}
-					pathRedirection = "/JSP/Computer";
-				}else {
-					pathRedirection = "/JSP/AddComputer.jsp";
+			case "Valider le form" : 
+				List<Company> listCompany = (List) session.getAttribute("listCompany");
+				Computer computer = new Computer(request.getParameter("computerName"),
+						request.getParameter("dateIntroduced").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateIntroduced")) : null,
+						request.getParameter("dateDiscontinued").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateDiscontinued")) : null,
+						request.getParameter("companyName").compareTo("") != 0 ? listCompany.get(Integer.parseInt(request.getParameter("companyName"))-1) : null);
+				try {
+					this.serviceComputer.addComputer(computer);
+				} catch (ErrorDAOComputer e) {
+					e.connectionLost();
 				}
+				pathRedirection = "/JSP/Computer";
 				break;
 				
 		}

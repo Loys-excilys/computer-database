@@ -10,7 +10,7 @@
 
  function verifNameComputer(value) {
    var input = document.getElementsByName("computerName");
-   if(!value.match(/^([a-zA-Z1-9 _-]+)$/)){
+   if(!value.match(/^([a-zA-Z ]+)$/)){
    		input[0].setAttribute("placeholder", "erreurSaisie");
    		input[0].value = "";
    		input[0].style.borderColor = "red";
