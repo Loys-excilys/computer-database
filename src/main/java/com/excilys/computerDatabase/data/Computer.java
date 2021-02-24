@@ -18,23 +18,6 @@ public class Computer {
 		this.setDiscontinued(discontinued);
 		this.setCompany(company);
 	}
-	
-	public Computer(String name, LocalDate introduced, LocalDate discontinued, Company company) {
-		this.setName(name);
-		this.setIntroduced(introduced);
-		this.setDiscontinued(discontinued);
-		this.setCompany(company);
-	}
-
-	public Computer() {}
-
-	public Computer(int id, String name, Object introduced, Object discontinued, Company company) {
-		this.setId(id);
-		this.setName(name);
-		this.setIntroduced((LocalDate) introduced);
-		this.setDiscontinued((LocalDate) discontinued);
-		this.setCompany(company);
-	}
 
 	public void setId(long id) {
 		this.id = id;

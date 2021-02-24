@@ -12,11 +12,11 @@ import javax.servlet.http.HttpSession;
 
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.data.ComputerFactory;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
+import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
-import com.excilys.computerDatabase.service.ServiceCompany;
-import com.excilys.computerDatabase.service.ServiceComputer;
 import com.excilys.computerDatabase.view.Page;
 
 /**
@@ -33,7 +33,6 @@ public class ServletComputer extends HttpServlet {
      */
     public ServletComputer() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -52,15 +51,17 @@ public class ServletComputer extends HttpServlet {
 			session.setAttribute("currentPage", this.page.getPage()+1);
 			session.setAttribute("maxNumberPrint", this.getNumberPrintComputer());
 			session.setAttribute("numberComputer", this.service.getServiceComputer().getNumberComputer());
-			session.setAttribute("listComputer", this.service.getServiceComputer().getListComputer(this.page.getPage()));
+			try {
+				session.setAttribute("listComputer", this.service.getServiceComputer().getListComputer(this.page.getPage()));
+			} catch (ErrorSaisieUser errorUser) {
+				errorUser.formatEntry();
+			}
 			this.getServletContext().getRequestDispatcher("/JSP/Computer.jsp").forward(request, response);
 		} catch (ErrorDAOComputer errorListComputer) {
 			errorListComputer.connectionLost();
 		} catch (ServletException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -85,17 +86,20 @@ public class ServletComputer extends HttpServlet {
 				break;
 			case "Valider le form" : 
 				List<Company> listCompany = (List) session.getAttribute("listCompany");
-				Computer computer = new Computer(request.getParameter("computerName"),
-						request.getParameter("dateIntroduced").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateIntroduced")) : null,
-						request.getParameter("dateDiscontinued").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateDiscontinued")) : null,
-						request.getParameter("companyName").compareTo("") != 0 ? listCompany.get(Integer.parseInt(request.getParameter("companyName"))-1) : null);
-
 				try {
+					Computer computer = new ComputerFactory().getComputer(request.getParameter("computerName"),
+							request.getParameter("dateIntroduced").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateIntroduced")) : null,
+							request.getParameter("dateDiscontinued").compareTo("") != 0 ? LocalDate.parse(request.getParameter("dateDiscontinued")) : null,
+							request.getParameter("companyName").compareTo("") != 0 ? listCompany.get(Integer.parseInt(request.getParameter("companyName"))-1) : null);
 					this.service.getServiceComputer().addComputer(computer);
-				} catch (ErrorDAOComputer e) {
-					e.connectionLost();
+					pathRedirection = "/JSP/Computer.jsp";
+				} catch (ErrorSaisieUser errorUser) {
+					pathRedirection = "/JSP/AddComputer.jsp";
+					errorUser.formatEntry();
+				} catch (ErrorDAOComputer errorDAO) {
+					errorDAO.connectionLost();
+					
 				}
-				pathRedirection = "/JSP/Computer";
 				break;
 		}
 		try {

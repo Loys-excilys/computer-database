@@ -18,6 +18,7 @@ public class TagCompany extends SimpleTagSupport{
 	public void doTag() throws JspException {
 		try {
 			List<Company> listCompany = this.listCompany;
+			this.getJspContext().getOut().println("<option value=\"\">---</option>");
 			for(Company company : listCompany){
 				this.getJspContext().getOut().println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
 			}

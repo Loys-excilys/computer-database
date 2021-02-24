@@ -6,8 +6,10 @@ import java.util.Optional;
 import com.excilys.computerDatabase.controller.Controller;
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.data.ComputerFactory;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
+import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 
 public class ViewComputer extends View{
@@ -37,6 +39,8 @@ public class ViewComputer extends View{
 					}
 				}catch(ErrorDAOComputer connectionLost) {
 					connectionLost.connectionLost();
+				} catch (ErrorSaisieUser e) {
+					e.printStackTrace();
 				}
 			}
 			this.space();
@@ -46,7 +50,13 @@ public class ViewComputer extends View{
 	public void printAskIdDetailComputer() throws ErrorDAOComputer {
 		int commande = this.printAskEntryInt("Veuillez saisir l'Id de l'ordinateur : ");
 		if(commande != -1) {
-			this.controller.chooseIdDetailcomputer(commande);
+			try {
+				this.controller.chooseIdDetailcomputer(commande);
+			} catch (ErrorDAOComputer e) {
+				e.printStackTrace();
+			} catch (ErrorSaisieUser e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -55,21 +65,22 @@ public class ViewComputer extends View{
 		this.space();
 	}
 	
-	public void printAddComputer() throws ErrorDAOCompany {
-		Computer computer = new Computer();
-		computer.setName(this.printAskEntryString("Can you give me the Name ? : "));
-		computer.setIntroduced(
-				this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "));
-		computer.setDiscontinued(
-				this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "));
-		computer.setCompany(this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : ")));
-		
+	public void printAddComputer() {
+		Computer computer;
 		try {
+			computer = new ComputerFactory().getComputer(this.printAskEntryString("Can you give me the Name ? : "),
+					this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "),
+					this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "),
+					this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : ")));
 			this.service.getServiceComputer().addComputer(computer);
-			System.out.println("Done");
-		} catch (ErrorDAOComputer errorInsert) {
-			errorInsert.insertError();
+		} catch (ErrorDAOCompany e) {
+			e.printStackTrace();
+		} catch (ErrorSaisieUser e) {
+			e.printStackTrace();
+		} catch (ErrorDAOComputer e) {
+			e.printStackTrace();
 		}		
+		System.out.println("Done");		
 		this.space();
 	}
 	
@@ -79,6 +90,8 @@ public class ViewComputer extends View{
 			optionalComputer = this.service.getServiceComputer().getComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
 		} catch (ErrorDAOComputer errorId) {
 			errorId.idInvalid();
+		} catch (ErrorSaisieUser e) {
+			e.printStackTrace();
 		}
 		if(optionalComputer.isPresent()) {
 			Computer computer = optionalComputer.get();

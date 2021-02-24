@@ -5,7 +5,9 @@ public class Service {
 	private ServiceCompany serviceCompany;
 	private ServiceComputer serviceComputer;
 	
-	public Service() {}
+	public Service() {
+		this.createService();
+	}
 	
 	public void createService() {
 		this.serviceCompany = new ServiceCompany();

@@ -15,7 +15,6 @@ public class main {
 	 */
 	public static void main(String[] args) {
 		final Service service = new Service();
-		service.createService();
 		final View view = new View(service);
 		final Controller controller = new Controller(service, view);
 		view.setController(controller);

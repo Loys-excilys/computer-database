@@ -47,6 +47,8 @@ public class View{
 				boucle = this.controller.action(commande, boucle);
 			} catch (ErrorDAOComputer | ErrorDAOCompany errorConnection) {
 				((ErrorDAOCompany) errorConnection).connectionLost();
+			} catch (ErrorSaisieUser e) {
+				e.printStackTrace();
 			}
 		}
 	}

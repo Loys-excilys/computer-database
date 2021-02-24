@@ -11,7 +11,9 @@ import java.util.Optional;
 
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.data.ComputerFactory;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
+import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
 public class DAOComputer{
 		
@@ -73,14 +75,14 @@ public class DAOComputer{
 	
 	
 	
-	public Optional<Computer> getComputer(int id) throws ErrorDAOComputer {
+	public Optional<Computer> getComputer(int id) throws ErrorDAOComputer, ErrorSaisieUser {
 		Computer computer = null;
 		try(Connection connection = this.dbConnection.getConnection()){
         	PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER_ID);
         	query.setLong(1, id);
             ResultSet result = query.executeQuery();
             result.next();
-            computer = new Computer(result.getInt("id"),
+            computer = new ComputerFactory().getComputer(result.getInt("id"),
 	 				   result.getString("name"),
 	 				   result.getDate("introduced") != null ?
 	 						   result.getDate("introduced").toLocalDate() : result.getDate("introduced"),
@@ -93,7 +95,7 @@ public class DAOComputer{
 		return Optional.ofNullable(computer);
 	}
 	
-	public List<Computer> getListComputer(int page) throws ErrorDAOComputer {
+	public List<Computer> getListComputer(int page) throws ErrorDAOComputer, ErrorSaisieUser {
 		List<Computer> resultList = new ArrayList<>();
 		
 		try (Connection connection = this.dbConnection.getConnection()){
@@ -102,7 +104,7 @@ public class DAOComputer{
 			query.setInt(2, page*maxPrint);
 	        ResultSet result = query.executeQuery();
 	        while(result.next()) {
-			   resultList.add(new Computer(result.getInt("id"),
+			   resultList.add(new ComputerFactory().getComputer(result.getInt("id"),
 	 				   result.getString("name"),
 	 				   result.getDate("introduced") != null ?
 	 						   result.getDate("introduced").toLocalDate() : result.getDate("introduced"),

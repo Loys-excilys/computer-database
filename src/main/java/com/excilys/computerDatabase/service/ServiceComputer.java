@@ -6,8 +6,9 @@ import java.util.Optional;
 import com.excilys.computerDatabase.dao.DAOComputer;
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
+import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
-public class ServiceComputer extends Service{
+public class ServiceComputer{
 	
 	private DAOComputer database;
 	
@@ -15,11 +16,11 @@ public class ServiceComputer extends Service{
 		this.database = new DAOComputer();
 	}
 	
-	public Optional<Computer> getComputer(int id) throws ErrorDAOComputer {
+	public Optional<Computer> getComputer(int id) throws ErrorDAOComputer, ErrorSaisieUser {
 		return this.database.getComputer(id);
 	}
 	
-	public List<Computer> getListComputer(int page) throws ErrorDAOComputer {
+	public List<Computer> getListComputer(int page) throws ErrorDAOComputer, ErrorSaisieUser {
 		return this.database.getListComputer(page);	
 	}
 		

@@ -6,7 +6,7 @@ import com.excilys.computerDatabase.dao.DAOCompany;
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 
-public class ServiceCompany extends Service{
+public class ServiceCompany{
 	private DAOCompany database;
 	
 	public ServiceCompany() {

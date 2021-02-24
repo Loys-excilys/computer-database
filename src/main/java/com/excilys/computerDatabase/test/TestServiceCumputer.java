@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.data.ComputerFactory;
+import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 
 
@@ -15,7 +17,7 @@ public class TestServiceCumputer{
 	
 	int idTest = 577;
 	@Test
-	public void testGetListComputer() throws Exception {
+	public void testGetListComputer() throws Exception, ErrorSaisieUser {
 		Service service;
 		service = new Service();
 		service.createService();
@@ -24,16 +26,14 @@ public class TestServiceCumputer{
 	}
 	
 	@Test
-	public void testInsertComputer()throws Exception{
+	public void testInsertComputer()throws Exception, ErrorSaisieUser{
 		Service service;
 		service = new Service();
 		service.createService();
-		Computer computer = new Computer();
-		
-		computer.setName("testUnitaire");
-		computer.setIntroduced(LocalDate.parse("2015-06-22"));
-		computer.setDiscontinued(LocalDate.parse("2021-04-30"));
-		computer.setCompany(service.getServiceCompany().getCompany("ASUS"));
+		Computer computer = new ComputerFactory().getComputer("testUnitaire",
+				LocalDate.parse("2015-06-22"),
+				LocalDate.parse("2021-04-30"),
+				service.getServiceCompany().getCompany("ASUS"));
 		
 		
 		idTest = (int) service.getServiceComputer().addComputer(computer);
@@ -45,7 +45,7 @@ public class TestServiceCumputer{
 	}
 	
 	@Test
-	public void testGetComputer() throws Exception {
+	public void testGetComputer() throws Exception, ErrorSaisieUser {
 		Service service;
 		service = new Service();
 		service.createService();
@@ -53,7 +53,7 @@ public class TestServiceCumputer{
 	}
 
 	@Test
-	public void testUpdateComputer() throws Exception {
+	public void testUpdateComputer() throws Exception, ErrorSaisieUser {
 		Service service;
 		service = new Service();
 		service.createService();
