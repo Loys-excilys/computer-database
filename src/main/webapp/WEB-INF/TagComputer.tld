@@ -32,6 +32,11 @@
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
 				</attribute>
+				<attribute>
+					<name>maxNumberPrint</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
 			</tag>
 			<tag>
 				<name>Computer</name>

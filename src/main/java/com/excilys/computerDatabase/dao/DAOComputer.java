@@ -15,7 +15,7 @@ import com.excilys.computerDatabase.error.ErrorDAOComputer;
 
 public class DAOComputer{
 		
-	private final int MAX_ENTRY_PRINT = 25;
+	private int maxPrint = 25;
 	
 	private final String SELECT_COMPUTER = "SELECT computer.id as id,"
 			+ " computer.name as name,"
@@ -98,8 +98,8 @@ public class DAOComputer{
 		
 		try (Connection connection = this.dbConnection.getConnection()){
 			PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER);
-			query.setInt(1, MAX_ENTRY_PRINT);
-			query.setInt(2, page*MAX_ENTRY_PRINT);
+			query.setInt(1, maxPrint);
+			query.setInt(2, page*maxPrint);
 	        ResultSet result = query.executeQuery();
 	        while(result.next()) {
 			   resultList.add(new Computer(result.getInt("id"),
@@ -161,5 +161,14 @@ public class DAOComputer{
 		}catch(SQLException e){
 			throw new ErrorDAOComputer();
 		}
+	}
+	
+	public void setMaxPrint(int number) {
+		this.maxPrint = number;
+	}
+
+
+	public int getMaxPrint() {
+		return this.maxPrint;
 	}
 }

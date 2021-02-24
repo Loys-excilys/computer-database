@@ -98,26 +98,18 @@
     <footer class="navbar-fixed-bottom">
         <div class="container text-center">
             <ul class="pagination">
-                <li>
-                    <a href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                  </a>
-              </li>
               
-              <computer:NumberPage numberComputer="${ sessionScope.numberComputer }" currentPage="${ sessionScope.currentPage }"/>
-              	<li>
-	                <a href="#" aria-label="Next">
-	                    <span aria-hidden="true">&raquo;</span>
-	                </a>
-	            </li>
-	        </ul>
-		</div>
-        <div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default">10</button>
-            <button type="button" class="btn btn-default">50</button>
-            <button type="button" class="btn btn-default">100</button>
-        </div>
+              	<computer:NumberPage numberComputer="${ sessionScope.numberComputer }" currentPage="${ sessionScope.currentPage }" maxNumberPrint="${ sessionScope.maxNumberPrint }"/>
 
+	        </ul>
+	        <div class="btn-group btn-group-sm pull-right" role="group" >
+	        	<ul class="pagination">
+	        		<li><a href="?numberEntry=10">10</a></li>
+		        	<li><a href="?numberEntry=25">25</a></li>
+		        	<li><a href="?numberEntry=50">50</a></li>
+	        	</ul>
+		    </div>
+		</div>
     </footer>
 </body>
 </html>

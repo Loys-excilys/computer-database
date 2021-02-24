@@ -2,7 +2,7 @@ package com.excilys.computerDatabase.view;
 
 public class Page {
 
-	private int numPage = 0;
+	private int numPage = 1;
 	
 	public Page() {}
 	

@@ -9,6 +9,7 @@ public class TagNumberPage extends SimpleTagSupport{
 	
 	private int numberComputer = 0;
 	private int currentPage = 0;
+	private int maxNumberPrint = 25;
 	
 	public void setNumberComputer(Integer numberComputer){
 		this.numberComputer = numberComputer;
@@ -18,10 +19,23 @@ public class TagNumberPage extends SimpleTagSupport{
 		this.currentPage = currentPage;
 	}
 	
+	public void setMaxNumberPrint(Integer maxNumberPrint) {
+		this.maxNumberPrint = maxNumberPrint;
+	}
+	
 	public void doTag() throws JspException {
 		try {
-            int numberPage = (numberComputer/25);
+            int numberPage = (numberComputer/maxNumberPrint)+1;
             int currentPage = this.currentPage;
+            if(currentPage > 1) {
+	            getJspContext().getOut().println(
+	            			"<li>"
+	            		+	"<a href=\"?page=" + (currentPage-1) + "\" aria-label=\"Previous\">"
+		              	+	"<span aria-hidden=\"true\">&laquo;</span>"
+		              	+	"</a>"
+		          		+	"</li>"
+	            		);
+            }
             if(currentPage < 4){
             	getJspContext().getOut().println(
           			  	"<li><a href=\"?page=1\">1</a></li>"
@@ -50,6 +64,15 @@ public class TagNumberPage extends SimpleTagSupport{
             			+	"<li><a>...</a></li>"
             			+	"<li><a href=\"?page=" + numberPage + "\">" + numberPage + "</a></li>"
             			  );
+          }
+          if(currentPage < numberPage) {
+	          getJspContext().getOut().println(
+	        		  			"<li>"
+	        		  		+	"<a href=\"?page=" + (currentPage + 1) + "\" aria-label=\"Next\">"
+	        		  		+	"<span aria-hidden=\"true\">&raquo;</span>"
+	        		  		+ 	"</a>"
+	        		  		+	"</li>"
+	        		  		);
           }
 		} catch (IOException e) {
 			throw new JspException ("I/O Error", e);

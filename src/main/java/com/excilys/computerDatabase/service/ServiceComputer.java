@@ -40,4 +40,12 @@ public class ServiceComputer extends Service{
 	public int getNumberComputer() throws ErrorDAOComputer{
 		return this.database.getNumberComputer();
 	}
+	
+	public void setNumberPrint(int number) {
+		this.database.setMaxPrint(number);
+	}
+
+	public int getNumberPrint() {
+		return this.database.getMaxPrint();
+	}
 }

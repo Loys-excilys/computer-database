@@ -14,6 +14,7 @@ import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
+import com.excilys.computerDatabase.service.Service;
 import com.excilys.computerDatabase.service.ServiceCompany;
 import com.excilys.computerDatabase.service.ServiceComputer;
 import com.excilys.computerDatabase.view.Page;
@@ -24,8 +25,7 @@ import com.excilys.computerDatabase.view.Page;
 public class ServletComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private ServiceComputer serviceComputer = new ServiceComputer();
-	private ServiceCompany serviceCompany = new ServiceCompany();
+	private Service service = new Service();
 	private Page page = new Page();
        
     /**
@@ -42,13 +42,17 @@ public class ServletComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response){
 		HttpSession session = request.getSession();
 		if(request.getParameter("page") != null) {
-			this.page.setPage(Integer.parseInt(request.getParameter("page")));
+			this.page.setPage(Integer.parseInt(request.getParameter("page"))-1);
 		}
-		
+		if(request.getParameter("numberEntry") != null) {
+			this.setNumberPrintComputer(Integer.parseInt(request.getParameter("numberEntry")));
+			this.page.setPage(0);
+		}
 		try {
-			session.setAttribute("currentPage", this.page.getPage());
-			session.setAttribute("numberComputer", this.serviceComputer.getNumberComputer());
-			session.setAttribute("listComputer", this.serviceComputer.getListComputer(this.page.getPage()));
+			session.setAttribute("currentPage", this.page.getPage()+1);
+			session.setAttribute("maxNumberPrint", this.getNumberPrintComputer());
+			session.setAttribute("numberComputer", this.service.getServiceComputer().getNumberComputer());
+			session.setAttribute("listComputer", this.service.getServiceComputer().getListComputer(this.page.getPage()));
 			this.getServletContext().getRequestDispatcher("/JSP/Computer.jsp").forward(request, response);
 		} catch (ErrorDAOComputer errorListComputer) {
 			errorListComputer.connectionLost();
@@ -72,7 +76,7 @@ public class ServletComputer extends HttpServlet {
 		switch(UserChoiceAction) {
 			case "Add Computer":
 				try {
-					session.setAttribute("listCompany", this.serviceCompany.getListCompany());
+					session.setAttribute("listCompany", this.service.getServiceCompany().getListCompany());
 					pathRedirection = "/JSP/AddComputer.jsp";
 					
 				} catch (ErrorDAOCompany e) {
@@ -87,13 +91,12 @@ public class ServletComputer extends HttpServlet {
 						request.getParameter("companyName").compareTo("") != 0 ? listCompany.get(Integer.parseInt(request.getParameter("companyName"))-1) : null);
 
 				try {
-					this.serviceComputer.addComputer(computer);
+					this.service.getServiceComputer().addComputer(computer);
 				} catch (ErrorDAOComputer e) {
 					e.connectionLost();
 				}
 				pathRedirection = "/JSP/Computer";
 				break;
-				
 		}
 		try {
 			this.getServletContext().getRequestDispatcher(pathRedirection).forward(request, response);
@@ -103,5 +106,12 @@ public class ServletComputer extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
+	
+	private void setNumberPrintComputer(int number) {
+		this.service.getServiceComputer().setNumberPrint(number);
+	}
+	
+	private int getNumberPrintComputer() {
+		return this.service.getServiceComputer().getNumberPrint();
+	}
 }
