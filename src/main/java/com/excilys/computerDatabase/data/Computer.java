@@ -11,6 +11,8 @@ public class Computer {
 	private LocalDate discontinued;
 	private Company company;
 	
+	public Computer() {}
+	
 	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
 		this.setId(id);
 		this.setName(name);

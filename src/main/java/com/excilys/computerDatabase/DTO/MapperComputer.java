@@ -1,12 +1,14 @@
 package com.excilys.computerDatabase.DTO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.excilys.computerDatabase.data.Computer;
-import com.excilys.computerDatabase.data.ComputerFactory;
+import com.excilys.computerDatabase.data.ComputerBuilder;
+import com.excilys.computerDatabase.data.ValidateurComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
 public abstract class MapperComputer {
@@ -35,10 +37,13 @@ public abstract class MapperComputer {
 	}
 	
 	public static Computer ComputerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
-		Computer computer = new ComputerFactory().getComputer(computerFormAddDTO.getName(),
-				computerFormAddDTO.getIntroduced(),
-				computerFormAddDTO.getDiscontinued(),
-				computerFormAddDTO.getCompanyId().compareTo("") != 0 ? MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId()))) : null);
+		
+		Computer computer = ValidateurComputer.getValidate(new ComputerBuilder()
+				.addName(computerFormAddDTO.getName())
+				.addIntroduced(computerFormAddDTO.getIntroduced().compareTo("") != 0 ? LocalDate.parse(computerFormAddDTO.getIntroduced()) : null)
+				.addDiscontinued(computerFormAddDTO.getDiscontinued().compareTo("") != 0 ? LocalDate.parse(computerFormAddDTO.getDiscontinued()) : null)
+				.addCompany(computerFormAddDTO.getCompanyId().compareTo("") != 0 ? MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId()))) : null)
+				.getComputer());
 		return computer;
 	}
 }

@@ -14,7 +14,7 @@ public class ServiceCompany{
 	}
 	
 	public Company getCompany(String nameCompany) throws ErrorDAOCompany {
-		return this.database.getCompany(nameCompany);
+		return this.database.getCompany(nameCompany).get();
 	}
 
 	public List<Company> getListCompany() throws ErrorDAOCompany {

@@ -47,9 +47,8 @@ public class ServletAddComputer extends HttpServlet {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (ErrorDAOCompany e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ErrorDAOCompany errorDAO) {
+			errorDAO.connectionLost();
 		}
 	}
 

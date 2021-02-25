@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import com.excilys.computerDatabase.data.Computer;
-import com.excilys.computerDatabase.data.ComputerFactory;
+import com.excilys.computerDatabase.data.ComputerBuilder;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 import com.excilys.computerDatabase.view.Page;
@@ -33,10 +33,12 @@ public class TestServiceCumputer{
 		Service service;
 		service = new Service();
 		service.createService();
-		Computer computer = new ComputerFactory().getComputer("testUnitaire",
-				LocalDate.parse("2015-06-22"),
-				LocalDate.parse("2021-04-30"),
-				service.getServiceCompany().getCompany("ASUS"));
+		Computer computer = new ComputerBuilder()
+				.addName("testUnitaire")
+				.addIntroduced(LocalDate.parse("2015-06-22"))
+				.addDiscontinued(LocalDate.parse("2021-04-30"))
+				.addCompany(service.getServiceCompany().getCompany("ASUS"))
+				.getComputer();
 		
 		
 		idTest = (int) service.getServiceComputer().addComputer(computer);

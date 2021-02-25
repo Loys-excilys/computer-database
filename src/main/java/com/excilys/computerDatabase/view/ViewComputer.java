@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.excilys.computerDatabase.controller.Controller;
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
-import com.excilys.computerDatabase.data.ComputerFactory;
+import com.excilys.computerDatabase.data.ComputerBuilder;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
@@ -68,14 +68,14 @@ public class ViewComputer extends View{
 	public void printAddComputer() {
 		Computer computer;
 		try {
-			computer = new ComputerFactory().getComputer(this.printAskEntryString("Can you give me the Name ? : "),
-					this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "),
-					this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "),
-					this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : ")));
+			computer = new ComputerBuilder()
+					.addName(this.printAskEntryString("Can you give me the Name ? : "))
+					.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
+					.addDiscontinued(this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
+					.addCompany(this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : ")))
+					.getComputer();
 			this.service.getServiceComputer().addComputer(computer);
 		} catch (ErrorDAOCompany e) {
-			e.printStackTrace();
-		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
 		} catch (ErrorDAOComputer e) {
 			e.printStackTrace();
