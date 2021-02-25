@@ -26,19 +26,19 @@ public abstract class MapperComputer {
 		return listComputerDTO;
 	}
 	
-	public static ComputerDTO requestToComputerDTO(HttpServletRequest request) {
-		ComputerDTO computerDTO = new ComputerDTO(request.getParameter("computerName"),
+	public static ComputerFormAddDTO requestToComputerFormAddDTO(HttpServletRequest request) {
+		ComputerFormAddDTO computerFormAddDTO = new ComputerFormAddDTO(request.getParameter("computerName"),
 				request.getParameter("dateIntroduced"),
 				request.getParameter("dateDiscontinued"),
 				request.getParameter("companyName"));
-		return computerDTO;
+		return computerFormAddDTO;
 	}
 	
-	public static Computer ComputerDTOToComputer(ComputerDTO computerDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
-		Computer computer = new ComputerFactory().getComputer(computerDTO.getName(),
-				computerDTO.getIntroduced(),
-				computerDTO.getDiscontinued(),
-				computerDTO.getCompany().compareTo("") != 0 ? MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerDTO.getCompany()))) : null);
+	public static Computer ComputerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
+		Computer computer = new ComputerFactory().getComputer(computerFormAddDTO.getName(),
+				computerFormAddDTO.getIntroduced(),
+				computerFormAddDTO.getDiscontinued(),
+				computerFormAddDTO.getCompanyId().compareTo("") != 0 ? MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId()))) : null);
 		return computer;
 	}
 }

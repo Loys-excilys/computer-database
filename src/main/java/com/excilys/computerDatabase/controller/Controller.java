@@ -4,6 +4,7 @@ import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
+import com.excilys.computerDatabase.view.Page;
 import com.excilys.computerDatabase.view.View;
 
 public class Controller{
@@ -25,10 +26,10 @@ public class Controller{
 	}
 
 	public boolean action(int commande, boolean boucle) throws ErrorDAOComputer, ErrorDAOCompany, ErrorSaisieUser{
-		
+		Page page = new Page();
 		
 		switch(commande) {
-		case LIST_COMPUTER : this.view.getViewComputer().printListComputer(this.service.getServiceComputer().getListComputer(0));break;
+		case LIST_COMPUTER : this.view.getViewComputer().printListComputer(this.service.getServiceComputer().getListComputer(page));break;
 		case LIST_COMPANY : this.view.getViewCompany().printListCompany(this.service.getServiceCompany().getListCompany(0)); break;
 		case DETAIL_COMPUTER : this.view.getViewComputer().printAskIdDetailComputer();break;
 		case ADD_COMPUTER : this.view.getViewComputer().printAddComputer();break;
@@ -45,7 +46,7 @@ public class Controller{
 		this.view.getViewComputer().printDetailComputer(this.service.getServiceComputer().getComputer(commande));
 	}
 	
-	public void changePageComputer(int page) throws ErrorDAOComputer, ErrorSaisieUser {
+	public void changePageComputer(Page page) throws ErrorDAOComputer, ErrorSaisieUser {
 		this.view.getViewComputer().printListComputer(this.service.getServiceComputer().getListComputer(page));
 	}
 	

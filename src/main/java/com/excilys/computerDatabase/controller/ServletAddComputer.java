@@ -61,7 +61,7 @@ public class ServletAddComputer extends HttpServlet {
 		String pathRedirection = "/index";
 		List<CompanyDTO> listCompany = (List) session.getAttribute("listCompany");
 		try {
-			Computer computer = MapperComputer.ComputerDTOToComputer(MapperComputer.requestToComputerDTO(request), listCompany);
+			Computer computer = MapperComputer.ComputerFormAddDTOToComputer(MapperComputer.requestToComputerFormAddDTO(request), listCompany);
 			this.service.getServiceComputer().addComputer(computer);
 			pathRedirection = "/computer-database/ServletComputer";
 		} catch (ErrorSaisieUser errorUser) {

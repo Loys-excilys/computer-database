@@ -33,7 +33,7 @@ public class ViewComputer extends View{
 					page.previous();
 				}
 				try {
-					listComputer = this.service.getServiceComputer().getListComputer(page.getPage());
+					listComputer = this.service.getServiceComputer().getListComputer(page);
 					if(listComputer.size() == 0) {
 						page.previous();
 					}

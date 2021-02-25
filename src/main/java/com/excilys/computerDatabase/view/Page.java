@@ -3,6 +3,8 @@ package com.excilys.computerDatabase.view;
 public class Page {
 
 	private int numPage = 1;
+	private int MaxPrint = 25;
+	
 	
 	public Page() {}
 	
@@ -21,5 +23,13 @@ public class Page {
 	
 	public int getPage() {
 		return this.numPage;
+	}
+
+	public void setMaxPrint(int maxPrint) {
+		MaxPrint = maxPrint;
+	}
+	
+	public int getMaxPrint() {
+		return this.MaxPrint;
 	}
 }

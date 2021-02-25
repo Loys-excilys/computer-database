@@ -11,6 +11,7 @@ import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.data.ComputerFactory;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
+import com.excilys.computerDatabase.view.Page;
 
 
 public class TestServiceCumputer{
@@ -21,8 +22,10 @@ public class TestServiceCumputer{
 		Service service;
 		service = new Service();
 		service.createService();
+		Page page = new Page();
 		
-		assertEquals(ArrayList.class, service.getServiceComputer().getListComputer(0).getClass());
+		
+		assertEquals(ArrayList.class, service.getServiceComputer().getListComputer(page).getClass());
 	}
 	
 	@Test

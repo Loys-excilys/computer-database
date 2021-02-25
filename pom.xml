@@ -11,10 +11,21 @@
 	    <maven.compiler.source>1.8</maven.compiler.source>
 	  	<maven.compiler.target>1.8</maven.compiler.target>
 	    
-	  	<junit.version>4.12</junit.version>
-    	<junit.jupiter.version>5.0.0</junit.jupiter.version>
-    	<junit.vintage.version>${junit.version}.0</junit.vintage.version>
-    	<junit.platform.version>1.0.0</junit.platform.version>
+	  	
+    	<mysql.connector.version>8.0.23</mysql.connector.version>
+    	
+    	
+    	<logback.version>1.2.3</logback.version>
+    	<slf4j.version>1.7.30</slf4j.version>
+    	
+    	
+    	<servlet.version>2.5</servlet.version>
+    	
+    	<junit.jupiter.version>5.1.0</junit.jupiter.version>
+    	<httpUnit.version>1.7</httpUnit.version>
+    	<tomcat.version>9.0.1</tomcat.version>
+    	<dbUnit.version>2.7.0</dbUnit.version>
+    	<h2database.version>1.4.200</h2database.version>
 	  </properties>
 
 
@@ -23,26 +34,26 @@
     <dependency>
 	    <groupId>mysql</groupId>
 	    <artifactId>mysql-connector-java</artifactId>
-	    <version>8.0.23</version>
+	    <version>${mysql.connector.version}</version>
 	</dependency>
 
 	<!--  Logger -->
 	<dependency>
 	    <groupId>ch.qos.logback</groupId>
 	    <artifactId>logback-core</artifactId>
-	    <version>1.2.3</version>
+	    <version>${logback.version}</version>
 	</dependency>
 
 	<dependency>
 	    <groupId>org.slf4j</groupId>
 	    <artifactId>slf4j-api</artifactId>
-	    <version>1.7.30</version>
+	    <version>${slf4j.version}</version>
 	</dependency>
 
 	<dependency>
 	    <groupId>ch.qos.logback</groupId>
 	    <artifactId>logback-classic</artifactId>
-	    <version>1.2.3</version>
+	    <version>${logback.version}</version>
 	</dependency>
 	
 	<!-- Servlet -->
@@ -50,31 +61,45 @@
 	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>servlet-api</artifactId>
-	    <version>2.5</version>
+	    <version>${servlet.version}</version>
 	</dependency>
 	
 	<!--  Test Unitaire -->
     <dependency>
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-engine</artifactId>
-	    <version>5.1.0</version>
+	    <version>${junit.jupiter.version}</version>
 	    <scope>test</scope>
 	</dependency>
-	
 	
 	<dependency>
 	    <groupId>httpunit</groupId>
 	    <artifactId>httpunit</artifactId>
-	    <version>1.7</version>
+	    <version>${httpUnit.version}</version>
 	    <scope>test</scope>
 	</dependency>
 
 	<dependency>     
 		<groupId>org.apache.tomcat</groupId>     
 		<artifactId>tomcat-juli</artifactId>    
-		<version>9.0.1</version> 
+		<version>${tomcat.version}</version> 
 		<scope>test</scope>
 	</dependency>
+	
+	<dependency>
+		<groupId>org.dbunit</groupId>
+		<artifactId>dbunit</artifactId>
+		<version>${dbUnit.version}</version>
+		<scope>test</scope>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.h2database</groupId>
+	    <artifactId>h2</artifactId>
+	    <version>${h2database.version}</version>
+	    <scope>test</scope>
+	</dependency>
+	
 
 	
   </dependencies>

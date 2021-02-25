@@ -43,16 +43,16 @@ public class ServletComputer extends HttpServlet {
 			this.page.setPage(Integer.parseInt(request.getParameter("page"))-1);
 		}
 		if(request.getParameter("numberEntry") != null) {
-			this.setNumberPrintComputer(Integer.parseInt(request.getParameter("numberEntry")));
+			this.page.setMaxPrint(Integer.parseInt(request.getParameter("numberEntry")));;
 			this.page.setPage(0);
 		}
 		try {
 			session.setAttribute("currentPage", this.page.getPage()+1);
-			session.setAttribute("maxNumberPrint", this.getNumberPrintComputer());
+			session.setAttribute("maxNumberPrint", this.page.getMaxPrint());
 			session.setAttribute("numberComputer", this.service.getServiceComputer().getNumberComputer());
 			try {
 				session.setAttribute("listComputer", MapperComputer.ListComputerToListComputerDTO(
-						this.service.getServiceComputer().getListComputer(this.page.getPage())));
+						this.service.getServiceComputer().getListComputer(this.page)));
 			} catch (ErrorSaisieUser errorUser) {
 				errorUser.formatEntry();
 			}
@@ -72,13 +72,5 @@ public class ServletComputer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		
-	}
-	
-	private void setNumberPrintComputer(int number) {
-		this.service.getServiceComputer().setNumberPrint(number);
-	}
-	
-	private int getNumberPrintComputer() {
-		return this.service.getServiceComputer().getNumberPrint();
 	}
 }

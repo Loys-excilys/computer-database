@@ -5,13 +5,13 @@ public class ComputerDTO {
 	private String name;
 	private String introduced;
 	private String discontinued;
-	private String company;
+	private String companyName;
 
-	public ComputerDTO(String name, String introduced, String discontinued, String company) {
+	public ComputerDTO(String name, String introduced, String discontinued, String companyName) {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company = company;
+		this.companyName = companyName;
 	}
 
 	public String getName() {
@@ -38,11 +38,11 @@ public class ComputerDTO {
 		this.discontinued = discontinued;
 	}
 
-	public String getCompany() {
-		return company;
+	public String getCompanyName() {
+		return companyName;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 }

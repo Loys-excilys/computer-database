@@ -14,10 +14,9 @@ import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.data.ComputerFactory;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
+import com.excilys.computerDatabase.view.Page;
 
 public class DAOComputer{
-		
-	private int maxPrint = 25;
 	
 	private final String SELECT_COMPUTER = "SELECT computer.id as id,"
 			+ " computer.name as name,"
@@ -95,13 +94,13 @@ public class DAOComputer{
 		return Optional.ofNullable(computer);
 	}
 	
-	public List<Computer> getListComputer(int page) throws ErrorDAOComputer, ErrorSaisieUser {
+	public List<Computer> getListComputer(Page page) throws ErrorDAOComputer, ErrorSaisieUser {
 		List<Computer> resultList = new ArrayList<>();
 		
 		try (Connection connection = this.dbConnection.getConnection()){
 			PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER);
-			query.setInt(1, maxPrint);
-			query.setInt(2, page*maxPrint);
+			query.setInt(1, page.getMaxPrint());
+			query.setInt(2, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
 	        while(result.next()) {
 			   resultList.add(new ComputerFactory().getComputer(result.getInt("id"),
@@ -163,14 +162,5 @@ public class DAOComputer{
 		}catch(SQLException e){
 			throw new ErrorDAOComputer();
 		}
-	}
-	
-	public void setMaxPrint(int number) {
-		this.maxPrint = number;
-	}
-
-
-	public int getMaxPrint() {
-		return this.maxPrint;
 	}
 }

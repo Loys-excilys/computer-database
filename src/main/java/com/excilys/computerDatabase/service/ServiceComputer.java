@@ -7,6 +7,7 @@ import com.excilys.computerDatabase.dao.DAOComputer;
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
+import com.excilys.computerDatabase.view.Page;
 
 public class ServiceComputer{
 	
@@ -20,7 +21,7 @@ public class ServiceComputer{
 		return this.database.getComputer(id);
 	}
 	
-	public List<Computer> getListComputer(int page) throws ErrorDAOComputer, ErrorSaisieUser {
+	public List<Computer> getListComputer(Page page) throws ErrorDAOComputer, ErrorSaisieUser {
 		return this.database.getListComputer(page);	
 	}
 		
@@ -40,13 +41,5 @@ public class ServiceComputer{
 	
 	public int getNumberComputer() throws ErrorDAOComputer{
 		return this.database.getNumberComputer();
-	}
-	
-	public void setNumberPrint(int number) {
-		this.database.setMaxPrint(number);
-	}
-
-	public int getNumberPrint() {
-		return this.database.getMaxPrint();
 	}
 }

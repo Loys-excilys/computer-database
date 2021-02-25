@@ -1,16 +1,17 @@
 package com.excilys.computerDatabase.DTO;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class ComputerFormAddDTO {
 
 	private String name;
 	private String introduced;
 	private String discontinued;
-	private String company;
+	private String companyId;
 	
-	public ComputerFormAddDTO(HttpServletRequest request) {
-		
+	public ComputerFormAddDTO(String name, String introduced, String discontinued, String companyId) {
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.companyId = companyId;
 	}
 
 	public String getName() {
@@ -37,11 +38,11 @@ public class ComputerFormAddDTO {
 		this.discontinued = discontinued;
 	}
 
-	public String getCompany() {
-		return company;
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
 }
