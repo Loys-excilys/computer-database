@@ -6,19 +6,20 @@ import java.util.List;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import com.excilys.computerDatabase.DTO.ComputerDTO;
 import com.excilys.computerDatabase.data.Computer;
 
 public class TagComputer extends SimpleTagSupport{
 	
-	private List<Computer> listComputer;
+	private List<ComputerDTO> listComputer;
 	
-	public void setListComputer(List<Computer> listComputer){
+	public void setListComputer(List<ComputerDTO> listComputer){
 		this.listComputer = listComputer;
 	}
 	public void doTag() throws JspException {
 		try {
-			List<Computer> listComputer = this.listComputer;
-			for(Computer computer : listComputer){
+			List<ComputerDTO> listComputer = this.listComputer;
+			for(ComputerDTO computer : listComputer){
 				getJspContext().getOut().println(
 						"<tr>"
 			    	+		"<td class=\"editMode\">"
@@ -29,7 +30,7 @@ public class TagComputer extends SimpleTagSupport{
 			        +   	"</td>"
 			        +   	"<td>" + (computer.getIntroduced() != null ? computer.getIntroduced() : "") + "</td>"
 			        +   	"<td>" + (computer.getDiscontinued() != null ? computer.getDiscontinued() : "") + "</td>"
-			        +   	"<td>" + (computer.getCompany().getName() != null ? computer.getCompany().getName() : "") + "</td>"
+			        +   	"<td>" + (computer.getCompany()!= null ? computer.getCompany() : "") + "</td>"
 			        +	"</tr>"
 						
 						);

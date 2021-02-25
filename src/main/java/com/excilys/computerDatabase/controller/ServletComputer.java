@@ -1,12 +1,18 @@
 package com.excilys.computerDatabase.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.excilys.computerDatabase.DTO.ComputerDTO;
+import com.excilys.computerDatabase.DTO.MapperComputer;
+import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
@@ -45,7 +51,8 @@ public class ServletComputer extends HttpServlet {
 			session.setAttribute("maxNumberPrint", this.getNumberPrintComputer());
 			session.setAttribute("numberComputer", this.service.getServiceComputer().getNumberComputer());
 			try {
-				session.setAttribute("listComputer", this.service.getServiceComputer().getListComputer(this.page.getPage()));
+				session.setAttribute("listComputer", MapperComputer.ListComputerToListComputerDTO(
+						this.service.getServiceComputer().getListComputer(this.page.getPage())));
 			} catch (ErrorSaisieUser errorUser) {
 				errorUser.formatEntry();
 			}

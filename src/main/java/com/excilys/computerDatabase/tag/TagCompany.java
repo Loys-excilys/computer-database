@@ -6,20 +6,19 @@ import java.util.List;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import com.excilys.computerDatabase.data.Company;
+import com.excilys.computerDatabase.DTO.CompanyDTO;
 
 public class TagCompany extends SimpleTagSupport{
 	
-	private List<Company> listCompany;
+	private List<CompanyDTO> listCompany;
 	
-	public void setListCompany(List<Company> listCompany){
+	public void setListCompany(List<CompanyDTO> listCompany){
 		this.listCompany = listCompany;
 	}
 	public void doTag() throws JspException {
 		try {
-			List<Company> listCompany = this.listCompany;
 			this.getJspContext().getOut().println("<option value=\"\">---</option>");
-			for(Company company : listCompany){
+			for(CompanyDTO company : this.listCompany){
 				this.getJspContext().getOut().println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
 			}
 		} catch (IOException e) {
