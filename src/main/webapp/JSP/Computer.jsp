@@ -41,10 +41,8 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                <form action="/computer-database/ServletComputer" method="post">
-                	<input type="submit" class="btn btn-success" id="addComputer" name="userChoiceAction" value="Add Computer"> 
+                	<a class="btn btn-success" id="addComputer" href="/computer-database/ServletAddComputer">Add Computer</a>
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
-                </form>
                 </div>
             </div>
         </div>

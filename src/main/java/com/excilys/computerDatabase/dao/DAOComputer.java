@@ -127,7 +127,7 @@ public class DAOComputer{
             	query.setString(1, computer.getName());
             	query.setDate(2, computer.getIntroduced() != null ? java.sql.Date.valueOf(computer.getIntroduced()) : null);
             	query.setDate(3, computer.getDiscontinued() != null ? java.sql.Date.valueOf(computer.getDiscontinued()) : null);
-            	query.setLong(4, computer.getCompany().getId());
+            	query.setLong(4, computer.getCompany()!= null ? computer.getCompany().getId() : null);
                 query.executeUpdate();
                 ResultSet key = query.getGeneratedKeys();
                 key.next();
