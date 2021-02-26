@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,9 +36,9 @@ public class TestServiceCumputer{
 		service.createService();
 		Computer computer = new ComputerBuilder()
 				.addName("testUnitaire")
-				.addIntroduced(LocalDate.parse("2015-06-22"))
-				.addDiscontinued(LocalDate.parse("2021-04-30"))
-				.addCompany(service.getServiceCompany().getCompany("ASUS"))
+				.addIntroduced(Optional.of(LocalDate.parse("2015-06-22")))
+				.addDiscontinued(Optional.of(LocalDate.parse("2021-04-30")))
+				.addCompany(Optional.of(service.getServiceCompany().getCompany("ASUS")))
 				.getComputer();
 		
 		

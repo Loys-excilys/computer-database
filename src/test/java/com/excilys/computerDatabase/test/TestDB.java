@@ -32,7 +32,7 @@ public class TestDB extends DataSourceBasedDBTestCase {
     /**
      * @throws Exception
      */
-    @Test
+
     public void givenDataSetEmptySchema_whenDataSetCreated_thenTablesAreEqual() throws Exception {
         IDataSet expectedDataSet = getDataSet();
         ITable expectedTable = expectedDataSet.getTable("computer");

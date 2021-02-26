@@ -17,8 +17,8 @@ abstract public class ValidateurComputer {
 	}
 	
 	public static void valideDate(Computer computer) throws ErrorSaisieUser {
-		if(computer.getIntroduced() != null && computer.getDiscontinued() != null ) {
-			if(!computer.getIntroduced().isBefore(computer.getDiscontinued())) {
+		if(computer.getIntroduced().isPresent() && computer.getDiscontinued().isPresent()) {
+			if(!computer.getIntroduced().get().isBefore(computer.getDiscontinued().get())) {
 				throw new ErrorSaisieUser();
 			}
 		}

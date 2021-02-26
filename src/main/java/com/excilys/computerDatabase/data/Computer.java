@@ -2,24 +2,18 @@ package com.excilys.computerDatabase.data;
 
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class Computer {
 	
 	private long id;
 	private String name;
-	private LocalDate introduced;
-	private LocalDate discontinued;
-	private Company company;
+	private Optional<LocalDate> introduced;
+	private Optional<LocalDate> discontinued;
+	private Optional<Company> company;
 	
 	public Computer() {}
 	
-	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
-		this.setId(id);
-		this.setName(name);
-		this.setIntroduced(introduced);
-		this.setDiscontinued(discontinued);
-		this.setCompany(company);
-	}
 
 	public void setId(long id) {
 		this.id = id;
@@ -35,31 +29,31 @@ public class Computer {
 		return this.name;
 	}
 	
-	public void setIntroduced(LocalDate introduced) {
+	public void setIntroduced(Optional<LocalDate> introduced) {
 		this.introduced = introduced;
 	}
-	public LocalDate getIntroduced() {
+	public Optional<LocalDate> getIntroduced() {
 		return this.introduced;
 	}
 	
-	public void setDiscontinued(LocalDate discontinued) {
+	public void setDiscontinued(Optional<LocalDate> discontinued) {
 		this.discontinued = discontinued;
 	}
-	public LocalDate getDiscontinued() {
+	public Optional<LocalDate> getDiscontinued() {
 		return this.discontinued;
 	}
 	
-	public void setCompany(Company company) {
+	public void setCompany(Optional<Company> company) {
 		this.company = company;
 	}
-	public Company getCompany() {
+	public Optional<Company> getCompany() {
 		return this.company;
 	}
 	
 	public String toString() {
 		return "Name : " + this.getName() 
-		+ ", Date introduce : " + this.getIntroduced() 
-		+ ", Date discontinued : " + this.getDiscontinued()
-		+ ", Company name : " + this.getCompany().getName();
+		+ ", Date introduce : " + this.getIntroduced() .get()
+		+ ", Date discontinued : " + this.getDiscontinued().get()
+		+ ", Company name : " + this.getCompany().get().getName();
 	}
 }

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.data.ComputerBuilder;
+import com.excilys.computerDatabase.data.MappeurDate;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.view.Page;
@@ -117,9 +119,9 @@ public class DAOComputer{
             try (Connection connection = this.dbConnection.getConnection();
                 	PreparedStatement query = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);){
             	query.setString(1, computer.getName());
-            	query.setDate(2, computer.getIntroduced() != null ? java.sql.Date.valueOf(computer.getIntroduced()) : null);
-            	query.setDate(3, computer.getDiscontinued() != null ? java.sql.Date.valueOf(computer.getDiscontinued()) : null);
-            	query.setLong(4, computer.getCompany()!= null ? computer.getCompany().getId() : null);
+            	query.setDate(2, MappeurDate.OptionalLocalDateToDate(computer.getIntroduced()));
+            	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));
+            	query.setLong(4, computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
                 query.executeUpdate();
                 ResultSet key = query.getGeneratedKeys();
                 key.next();
@@ -136,9 +138,9 @@ public class DAOComputer{
 			try (Connection connection = this.dbConnection.getConnection();
 					PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);){
 				query.setString(1, computer.getName());
-            	query.setDate(2, computer.getIntroduced() != null ? java.sql.Date.valueOf(computer.getIntroduced()) : null);
-            	query.setDate(3, computer.getDiscontinued() != null ? java.sql.Date.valueOf(computer.getDiscontinued()) : null);
-            	query.setLong(4, computer.getCompany().getId());
+            	query.setDate(2, MappeurDate.OptionalLocalDateToDate(computer.getIntroduced()));
+            	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));
+            	query.setLong(4, computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
             	query.setLong(5, computer.getId());
                 query.executeUpdate();
 			}catch(SQLException e){
@@ -161,18 +163,17 @@ public class DAOComputer{
 	private Optional<Computer> toComputer(ResultSet result) {
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
+			Optional<LocalDate> introduced = MappeurDate.dateToOptionalLocalDate(result.getDate("introduced"));
+			Optional<LocalDate> discontinued = MappeurDate.dateToOptionalLocalDate(result.getDate("discontinued"));
 			Computer computer = new ComputerBuilder()
 					.addId(result.getInt("id"))
 					.addName(result.getString("name"))
-					.addIntroduced(result.getDate("introduced") != null ?
-							   result.getDate("introduced").toLocalDate() : null)
-					.addDiscontinued(result.getDate("discontinued") != null ?
-							   result.getDate("discontinued").toLocalDate() : null)
-					.addCompany(new Company(result.getLong("companyID"), result.getString("companyName")))
+					.addIntroduced(introduced)
+					.addDiscontinued(discontinued)
+					.addCompany(Optional.of(new Company(result.getLong("companyID"), result.getString("companyName"))))
 					.getComputer();
 			optionalComputer =  Optional.of(computer);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return optionalComputer;

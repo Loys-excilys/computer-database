@@ -1,9 +1,7 @@
 package com.excilys.computerDatabase.data;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-
-import com.excilys.computerDatabase.error.ErrorSaisieUser;
+import java.util.Optional;
 
 public class ComputerBuilder {
 	private Computer computer;
@@ -22,17 +20,17 @@ public class ComputerBuilder {
 		return this;
 	}
 	
-	public ComputerBuilder addIntroduced(LocalDate introduced) {
-		this.computer.setIntroduced(introduced);
+	public ComputerBuilder addIntroduced(Optional<LocalDate> Introduced) {
+		this.computer.setIntroduced(Introduced);
 		return this;
 	}
 	
-	public ComputerBuilder addDiscontinued(LocalDate Discontinued) {
+	public ComputerBuilder addDiscontinued(Optional<LocalDate> Discontinued) {
 		this.computer.setDiscontinued(Discontinued);
 		return this;
 	}
 	
-	public ComputerBuilder addCompany(Company company) {
+	public ComputerBuilder addCompany(Optional<Company> company) {
 		this.computer.setCompany(company);
 		return this;
 	}

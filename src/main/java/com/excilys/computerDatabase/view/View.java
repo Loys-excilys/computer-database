@@ -2,6 +2,7 @@ package com.excilys.computerDatabase.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.excilys.computerDatabase.controller.Controller;
@@ -54,7 +55,7 @@ public class View{
 	}
 	
 	protected String printAskEntryString(String message) {
-		String entry = null;
+		String entry;
 		Boolean boucle = true;
 		do {
 			System.out.print("\n" + message);
@@ -72,7 +73,7 @@ public class View{
 	
 	protected String printAskEntryTriChoice(String message) {
 		System.out.print("\n" + message);
-		String entry = null;
+		String entry;
 		entry = this.saisieUser.nextLine();
 		if(entry.compareTo("n") == 0) {
 			return "next";
@@ -101,15 +102,15 @@ public class View{
 		return num;
 	}
 	
-	protected LocalDate printAskEntryDate(String message) {
-		LocalDate date = null;
+	protected Optional<LocalDate> printAskEntryDate(String message) {
+		Optional<LocalDate> date = Optional.empty();
 		Boolean boucle = false;
 		do {
 			System.out.print("\n" + message);
 			try{			
 				String text = this.saisieUser.nextLine();
 				if(!text.isEmpty()) {
-					date = LocalDate.parse(text);
+					date = Optional.of(LocalDate.parse(text));
 				}
 				boucle = true;
 			}catch(DateTimeParseException  e){

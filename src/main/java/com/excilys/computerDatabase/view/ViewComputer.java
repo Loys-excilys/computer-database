@@ -72,7 +72,7 @@ public class ViewComputer extends View{
 					.addName(this.printAskEntryString("Can you give me the Name ? : "))
 					.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
 					.addDiscontinued(this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
-					.addCompany(this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : ")))
+					.addCompany(Optional.of(this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : "))))
 					.getComputer();
 			this.service.getServiceComputer().addComputer(computer);
 		} catch (ErrorDAOCompany e) {
@@ -85,7 +85,7 @@ public class ViewComputer extends View{
 	}
 	
 	public void printUpdateComputer() throws ErrorDAOCompany {
-		Optional<Computer> optionalComputer = Optional.ofNullable(null);
+		Optional<Computer> optionalComputer = Optional.empty();
 		try {
 			optionalComputer = this.service.getServiceComputer().getComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
 		} catch (ErrorDAOComputer errorId) {
@@ -105,7 +105,7 @@ public class ViewComputer extends View{
 					"What is the new date of discontinued ? (actual = " + computer.getDiscontinued() + ") :"));
 			
 			computer.setCompany(this.verifAskNewValueCompanyComputer(
-					"What is the new company owner ? (actual = " + computer.getCompany().getName() + ") :",
+					"What is the new company owner ? (actual = " + computer.getCompany().get().getName() + ") :",
 					computer.getCompany()));
 			try {
 				this.service.getServiceComputer().updateComputer(computer);
@@ -128,7 +128,7 @@ public class ViewComputer extends View{
 	
 	
 	protected String verifAskNewValueStringComputer(String message, String actualValue) {
-		String value = null;
+		String value;
 		if((value = this.printAskEntryString(message)).compareTo("") != 0) {
 			return value;
 		}else {
@@ -136,12 +136,12 @@ public class ViewComputer extends View{
 		}
 	}
 	
-	protected Company verifAskNewValueCompanyComputer(String message, Company actualCompany) throws ErrorDAOCompany {
-		Company company = null;
-		if((company = this.service.getServiceCompany().getCompany(this.printAskEntryString(message))) != null) {
+	protected Optional<Company> verifAskNewValueCompanyComputer(String message, Optional<Company> Company) throws ErrorDAOCompany {
+		Optional<Company> company;
+		if((company = Optional.of(this.service.getServiceCompany().getCompany(this.printAskEntryString(message)))).isPresent()) {
 			return company;
 		}else {
-			return actualCompany;
+			return Company;
 		}
 	}
 }

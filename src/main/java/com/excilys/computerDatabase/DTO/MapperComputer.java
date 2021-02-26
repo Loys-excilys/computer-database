@@ -3,6 +3,7 @@ package com.excilys.computerDatabase.DTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,9 +16,9 @@ public abstract class MapperComputer {
 
 	public static ComputerDTO computerToComputerDTO(Computer computer) {
 		ComputerDTO computerDTO = new ComputerDTO(computer.getName(),
-				computer.getIntroduced() != null ? computer.getIntroduced().toString() : "",
-				computer.getDiscontinued() != null ? computer.getDiscontinued().toString() : "",
-				computer.getCompany().getName());
+				computer.getIntroduced().isPresent() ? computer.getIntroduced().get().toString() : "",
+				computer.getDiscontinued().isPresent() ? computer.getDiscontinued().get().toString() : "",
+				computer.getCompany().isPresent() ? computer.getCompany().get().getName(): "");
 		return computerDTO;
 	}
 	public static List<ComputerDTO> ListComputerToListComputerDTO(List<Computer> listComputer){
@@ -40,9 +41,15 @@ public abstract class MapperComputer {
 		
 		Computer computer = ValidateurComputer.getValidate(new ComputerBuilder()
 				.addName(computerFormAddDTO.getName())
-				.addIntroduced(computerFormAddDTO.getIntroduced().compareTo("") != 0 ? LocalDate.parse(computerFormAddDTO.getIntroduced()) : null)
-				.addDiscontinued(computerFormAddDTO.getDiscontinued().compareTo("") != 0 ? LocalDate.parse(computerFormAddDTO.getDiscontinued()) : null)
-				.addCompany(computerFormAddDTO.getCompanyId().compareTo("") != 0 ? MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId()))) : null)
+				.addIntroduced(computerFormAddDTO.getIntroduced().compareTo("") != 0 ?
+						Optional.of(LocalDate.parse(computerFormAddDTO.getIntroduced())) :
+						Optional.empty())
+				.addDiscontinued(computerFormAddDTO.getDiscontinued().compareTo("") != 0 ?
+						Optional.of(LocalDate.parse(computerFormAddDTO.getDiscontinued())) :
+						Optional.empty())
+				.addCompany(computerFormAddDTO.getCompanyId().compareTo("") != 0 ?
+						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId())))) :
+						Optional.empty())
 				.getComputer());
 		return computer;
 	}
