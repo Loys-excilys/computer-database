@@ -7,7 +7,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import com.excilys.computerDatabase.DTO.ComputerDTO;
-import com.excilys.computerDatabase.data.Computer;
 
 public class TagComputer extends SimpleTagSupport{
 	

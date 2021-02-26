@@ -69,7 +69,6 @@ public class DAOComputer{
             numberComputer = result.getInt(1);
             
         } catch (SQLException errorSQL) {
-        	errorSQL.printStackTrace();
         	throw new ErrorDAOComputer();
         }
 		return numberComputer;
@@ -106,7 +105,7 @@ public class DAOComputer{
 	        		resultList.add(optionalComputer.get());
 	        	}
 		   }
-		} catch (SQLException e) {
+		} catch (SQLException errorSQL) {
 			throw new ErrorDAOComputer();
 		}
 		
@@ -121,12 +120,18 @@ public class DAOComputer{
             	query.setString(1, computer.getName());
             	query.setDate(2, MappeurDate.OptionalLocalDateToDate(computer.getIntroduced()));
             	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));
-            	query.setLong(4, computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
+
+    			if(computer.getCompany().isPresent()) {
+    				query.setLong(4, computer.getCompany().get().getId());
+    			}else {
+    				query.setString(4, null);
+    			}
+            	
                 query.executeUpdate();
                 ResultSet key = query.getGeneratedKeys();
                 key.next();
                 newKey = key.getLong(1);
-            } catch (SQLException e) {
+            } catch (SQLException errorSQL) {
             	throw new ErrorDAOComputer();
             }
         }
@@ -139,11 +144,14 @@ public class DAOComputer{
 					PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);){
 				query.setString(1, computer.getName());
             	query.setDate(2, MappeurDate.OptionalLocalDateToDate(computer.getIntroduced()));
-            	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));
-            	query.setLong(4, computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
+            	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));    			if(computer.getCompany().isPresent()) {
+    				query.setLong(4, computer.getCompany().get().getId());
+    			}else {
+    				query.setString(4, null);
+    			}
             	query.setLong(5, computer.getId());
                 query.executeUpdate();
-			}catch(SQLException e){
+			}catch(SQLException errorSQL){
 				throw new ErrorDAOComputer();
 			}
 		}
@@ -155,12 +163,12 @@ public class DAOComputer{
 			
            	query.setLong(1, id);
             query.executeUpdate();
-		}catch(SQLException e){
+		}catch(SQLException errorSQL){
 			throw new ErrorDAOComputer();
 		}
 	}
 	
-	private Optional<Computer> toComputer(ResultSet result) {
+	private Optional<Computer> toComputer(ResultSet result) throws ErrorDAOComputer{
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
 			Optional<LocalDate> introduced = MappeurDate.dateToOptionalLocalDate(result.getDate("introduced"));
@@ -173,8 +181,8 @@ public class DAOComputer{
 					.addCompany(Optional.of(new Company(result.getLong("companyID"), result.getString("companyName"))))
 					.getComputer();
 			optionalComputer =  Optional.of(computer);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException errorSQL) {
+			throw new ErrorDAOComputer();
 		}
 		return optionalComputer;
 	}

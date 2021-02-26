@@ -1,18 +1,14 @@
 package com.excilys.computerDatabase.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.excilys.computerDatabase.DTO.ComputerDTO;
-import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.data.Page;
+import com.excilys.computerDatabase.error.ErreurIO;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.mappeur.MapperComputer;
@@ -59,10 +55,10 @@ public class ServletComputer extends HttpServlet {
 			this.getServletContext().getRequestDispatcher("/JSP/Computer.jsp").forward(request, response);
 		} catch (ErrorDAOComputer errorListComputer) {
 			errorListComputer.connectionLost();
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (ServletException errorServlet) {
+			new ErreurIO(this.getClass());
+		} catch (IOException errorIO) {
+			new ErreurIO(this.getClass());
 		}
 		
 	}

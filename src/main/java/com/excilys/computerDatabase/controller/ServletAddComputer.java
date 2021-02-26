@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.excilys.computerDatabase.DTO.CompanyDTO;
+import com.excilys.computerDatabase.DTO.ComputerFormAddDTO;
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.error.ErreurIO;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
@@ -32,21 +34,20 @@ public class ServletAddComputer extends HttpServlet {
      */
     public ServletAddComputer() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		try {
 			session.setAttribute("listCompany", MapperCompany.ListComputerToListComputerDTO(this.service.getServiceCompany().getListCompany()));
 			this.getServletContext().getRequestDispatcher("/JSP/AddComputer.jsp").forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (ServletException errorServlet) {
+			new ErreurIO(this.getClass());
+		} catch (IOException errorIO) {
+			new ErreurIO(this.getClass());
 		} catch (ErrorDAOCompany errorDAO) {
 			errorDAO.connectionLost();
 		}
@@ -55,17 +56,20 @@ public class ServletAddComputer extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+		ComputerFormAddDTO computerFormAddDTO = null;
 		HttpSession session = request.getSession();
 		String pathRedirection = "/index";
 		List<CompanyDTO> listCompany = (List) session.getAttribute("listCompany");
 		try {
-			Computer computer = MapperComputer.ComputerFormAddDTOToComputer(MapperComputer.requestToComputerFormAddDTO(request), listCompany);
+			computerFormAddDTO = MapperComputer.requestToComputerFormAddDTO(request);
+			Computer computer = MapperComputer.ComputerFormAddDTOToComputer(computerFormAddDTO, listCompany);
 			this.service.getServiceComputer().addComputer(computer);
 			pathRedirection = "/computer-database/ServletComputer";
 		} catch (ErrorSaisieUser errorUser) {
 			pathRedirection = "/computer-database/ServletAddComputer";
 			errorUser.formatEntry();
+			session.setAttribute("currentEntry", computerFormAddDTO);
 		} catch (ErrorDAOComputer errorDAO) {
 			errorDAO.connectionLost();	
 		}
@@ -73,8 +77,8 @@ public class ServletAddComputer extends HttpServlet {
 		
 		try {
 			response.sendRedirect(pathRedirection);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException errorIO) {
+			new ErreurIO(this.getClass());
 		}
 	}
 

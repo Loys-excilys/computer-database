@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 
 public class ErrorSaisieUser extends Throwable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(ErrorSaisieUser.class);
 	
 	public void formatEntry() {

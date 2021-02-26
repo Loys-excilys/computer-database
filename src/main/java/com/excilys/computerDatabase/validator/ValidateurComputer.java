@@ -12,7 +12,7 @@ abstract public class ValidateurComputer {
 	}
 	
 	public static void valideName(Computer computer) throws ErrorSaisieUser {
-		if(computer.getName().compareTo("") == 0 || computer.getName() == null) {
+		if(computer.getName().trim().compareTo("") == 0 || computer.getName() == null) {
 			throw new ErrorSaisieUser();
 		}
 	}

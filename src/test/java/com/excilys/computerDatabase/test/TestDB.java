@@ -8,7 +8,6 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 
 import org.h2.jdbcx.JdbcDataSource;
-import org.junit.jupiter.api.Test;
 
 
 public class TestDB extends DataSourceBasedDBTestCase {

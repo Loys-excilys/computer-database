@@ -1,6 +1,9 @@
 package com.excilys.computerDatabase.dao;
 
 import java.util.Properties;
+
+import com.excilys.computerDatabase.error.ErreurIO;
+
 import java.io.InputStream;
 import java.io.IOException;
 
@@ -21,8 +24,9 @@ class DBProperties extends Properties{
 		if(inputStream != null) {
 			try {
 				this.load(inputStream);
-			}catch(IOException e) {
-				e.printStackTrace();
+			}catch(IOException erreurIO) {
+				ErreurIO erreurFile = new ErreurIO(this.getClass());
+				erreurFile.erreurChargementFileProperties();
 			}
 			
 			this.setUrl(this.getProperty("url"));

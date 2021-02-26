@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<%@ taglib uri="/WEB-INF/TagCompany.tld" prefix="company" %>
+<%@ taglib uri="/WEB-INF/TagFormComputer.tld" prefix="FormComputer" %>
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -29,26 +29,7 @@
                     <h1>Add Computer</h1>
                     <form action="/computer-database/ServletAddComputer" method="POST">
                         <fieldset>
-                            <div class="form-group">
-                                <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" maxlength="255" onchange="verifNameComputer(this.value)">
-                            </div>
-                            <div class="form-group">
-                                <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date" name="dateIntroduced" onchange="limitDate(this.value)">
-                            </div>
-                            <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date"name="dateDiscontinued">
-                            </div>
-                            <div class="form-group">
-                                <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" name="companyName">
-
-								<company:Company listCompany="${sessionScope.listCompany}"/>
-
-								</select>
-                            </div>                  
+								<FormComputer:FormComputer listCompany="${sessionScope.listCompany}" computerFormAddDTO="${sessionScope.currentEntry}"/>                 
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="Valider le form" class="btn btn-primary">

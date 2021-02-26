@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.excilys.computerDatabase.error.ErrorDriver;
+
 public final class DBConnection {
 	private static DBConnection INSTANCE = null;
 	
@@ -20,25 +22,23 @@ public final class DBConnection {
 	return DBConnection.INSTANCE;
 	}
 	
-	private Boolean open() {
+	private Boolean open(){
 		final DBProperties dbProperties = new DBProperties();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			this.connection = DriverManager.getConnection(dbProperties.getUrl(), dbProperties.getLogin(), dbProperties.getPassword());
-		}catch(SQLException | ClassNotFoundException e){
-			e.printStackTrace();
+		}catch(ClassNotFoundException errorClass){
+			
+			new ErrorDriver().DriverNotFound();
+		} catch (SQLException errorSQL) {
+			new ErrorDriver().DriverNotFound();
 		}
 		return true;
 	}
 	
-	public Connection getConnection() {
-		try {
-			if(this.connection.isClosed()) {
-				this.open();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public Connection getConnection() throws SQLException{
+		if(this.connection.isClosed()) {
+			this.open();
 		}
 		return this.connection;
 	}

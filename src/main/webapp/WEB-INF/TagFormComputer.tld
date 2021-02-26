@@ -8,12 +8,17 @@
 	      <tlib-version>2.0</tlib-version>
 	  	<short-name>testTag</short-name>
 			<tag>
-				<name>Company</name>
-				<tag-class>com.excilys.computerDatabase.tag.TagCompany</tag-class>
+				<name>FormComputer</name>
+				<tag-class>com.excilys.computerDatabase.tag.TagAddComputer</tag-class>
 				<body-content>scriptless</body-content>
 				<attribute>
 					<name>listCompany</name>
 					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>computerFormAddDTO</name>
+					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 				</attribute>
 			</tag>
