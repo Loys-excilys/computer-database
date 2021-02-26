@@ -144,7 +144,8 @@ public class DAOComputer{
 					PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);){
 				query.setString(1, computer.getName());
             	query.setDate(2, MappeurDate.OptionalLocalDateToDate(computer.getIntroduced()));
-            	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));    			if(computer.getCompany().isPresent()) {
+            	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));    			
+            	if(computer.getCompany().isPresent()) {
     				query.setLong(4, computer.getCompany().get().getId());
     			}else {
     				query.setString(4, null);

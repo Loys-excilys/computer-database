@@ -6,7 +6,7 @@
 	      version="2.0">
 	      
 	      <tlib-version>2.0</tlib-version>
-	  	<short-name>testTag</short-name>
+	  	<short-name>TagComputer</short-name>
 			<tag>
 				<name>NumberComputer</name>
 				<tag-class>com.excilys.computerDatabase.tag.TagNumberComputer</tag-class>

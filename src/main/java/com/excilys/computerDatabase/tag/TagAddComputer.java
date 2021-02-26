@@ -30,7 +30,7 @@ public class TagAddComputer extends SimpleTagSupport{
             if(this.computerFormAddDTO != null) {
             	this.getJspContext().getOut().println(
             			"<input type=\"text\" class=\"form-control\" id=\"computerName\" "
-                 + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" onchange=\"verifNameComputer(this.value)\" "
+                 + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" required onchange=\"verifNameComputer(this.value)\" "
                  + 		"value=\"" + this.computerFormAddDTO.getName() + " \" >"
                  +	"</div>"
                  +  "<div class=\"form-group\">"
@@ -49,7 +49,7 @@ public class TagAddComputer extends SimpleTagSupport{
             }else {
             	this.getJspContext().getOut().println(
             			"<input type=\"text\" class=\"form-control\" id=\"computerName\" "
-                 + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" onchange=\"verifNameComputer(this.value)\">"
+                 + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" onchange=\"verifNameComputer(this.value)\" required>"
                  +	"</div>"
                  +   "<div class=\"form-group\">"
                  +        "<label for=\"introduced\">Introduced date</label>"
