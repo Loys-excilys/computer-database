@@ -3,10 +3,11 @@ package com.excilys.computerDatabase.view;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.computerDatabase.builder.ComputerBuilder;
 import com.excilys.computerDatabase.controller.Controller;
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
-import com.excilys.computerDatabase.data.ComputerBuilder;
+import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;

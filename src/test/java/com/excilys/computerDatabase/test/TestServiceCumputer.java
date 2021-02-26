@@ -8,11 +8,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
+import com.excilys.computerDatabase.builder.ComputerBuilder;
 import com.excilys.computerDatabase.data.Computer;
-import com.excilys.computerDatabase.data.ComputerBuilder;
+import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
-import com.excilys.computerDatabase.view.Page;
 
 
 public class TestServiceCumputer{

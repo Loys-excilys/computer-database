@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.excilys.computerDatabase.DTO.ComputerDTO;
-import com.excilys.computerDatabase.DTO.MapperComputer;
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
+import com.excilys.computerDatabase.mappeur.MapperComputer;
 import com.excilys.computerDatabase.service.Service;
-import com.excilys.computerDatabase.view.Page;
 
 /**
  * Servlet implementation class ServletComputer

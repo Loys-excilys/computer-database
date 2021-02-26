@@ -1,7 +1,10 @@
-package com.excilys.computerDatabase.data;
+package com.excilys.computerDatabase.builder;
 
 import java.time.LocalDate;
 import java.util.Optional;
+
+import com.excilys.computerDatabase.data.Company;
+import com.excilys.computerDatabase.data.Computer;
 
 public class ComputerBuilder {
 	private Computer computer;

@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.view;
+package com.excilys.computerDatabase.data;
 
 public class Page {
 

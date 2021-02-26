@@ -1,5 +1,6 @@
-package com.excilys.computerDatabase.data;
+package com.excilys.computerDatabase.validator;
 
+import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
 abstract public class ValidateurComputer {

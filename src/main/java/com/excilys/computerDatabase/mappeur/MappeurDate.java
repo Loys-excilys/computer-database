@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.data;
+package com.excilys.computerDatabase.mappeur;
 
 import java.time.LocalDate;
 import java.util.Optional;

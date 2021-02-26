@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.DTO;
+package com.excilys.computerDatabase.mappeur;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,10 +7,13 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.excilys.computerDatabase.DTO.CompanyDTO;
+import com.excilys.computerDatabase.DTO.ComputerDTO;
+import com.excilys.computerDatabase.DTO.ComputerFormAddDTO;
+import com.excilys.computerDatabase.builder.ComputerBuilder;
 import com.excilys.computerDatabase.data.Computer;
-import com.excilys.computerDatabase.data.ComputerBuilder;
-import com.excilys.computerDatabase.data.ValidateurComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
+import com.excilys.computerDatabase.validator.ValidateurComputer;
 
 public abstract class MapperComputer {
 

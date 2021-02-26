@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.computerDatabase.controller.Controller;
 import com.excilys.computerDatabase.data.Company;
+import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.service.Service;
 

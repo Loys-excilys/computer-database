@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.computerDatabase.builder.ComputerBuilder;
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
-import com.excilys.computerDatabase.data.ComputerBuilder;
-import com.excilys.computerDatabase.data.MappeurDate;
+import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
-import com.excilys.computerDatabase.view.Page;
+import com.excilys.computerDatabase.mappeur.MappeurDate;
 
 public class DAOComputer{
 	
