@@ -16,9 +16,9 @@ public class TestDB extends DataSourceBasedDBTestCase {
     @Override
     protected DataSource getDataSource() {
         JdbcDataSource dataSource = new JdbcDataSource();
-        dataSource.setURL("jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema.sql'");
-        dataSource.setUser("sa");
-        dataSource.setPassword("sa");
+        dataSource.setURL("jdbc:mysql://localhost:3306/computer-database-db-test");
+        dataSource.setUser("admincdb");
+        dataSource.setPassword("qwerty1234");
         return dataSource;
     }
 
@@ -28,7 +28,7 @@ public class TestDB extends DataSourceBasedDBTestCase {
           .getResourceAsStream("data.xml"));
     }
     
-    //@Test
+    @Test
     public void givenDataSetEmptySchema_whenDataSetCreated_thenTablesAreEqual() throws Exception {
         IDataSet expectedDataSet = getDataSet();
         ITable expectedTable = expectedDataSet.getTable("computer");
