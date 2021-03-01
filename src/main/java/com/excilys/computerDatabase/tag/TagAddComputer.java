@@ -12,8 +12,7 @@ import com.excilys.computerDatabase.DTO.ComputerFormAddDTO;
 public class TagAddComputer extends SimpleTagSupport{
 	
 	private final String COMPUTER_NAME = "<input type=\"text\" class=\"form-control\" id=\"computerName\" "
-            + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" required onchange=\"verifNameComputer(this.value)\" "
-            + 		"value=\"";
+            + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" required = \"required\" onchange=\"verifNameComputer(this.value)\" ";
 	private final String INTRODUCED_DATE = " \" >"
             +	"</div>"
             +  "<div class=\"form-group\">"
@@ -47,7 +46,7 @@ public class TagAddComputer extends SimpleTagSupport{
             +   "<label for=\"computerName\">Computer name</label>");
                 		
             if(this.computerFormAddDTO != null) {
-            	this.getJspContext().getOut().println(COMPUTER_NAME + this.computerFormAddDTO.getName() +
+            	this.getJspContext().getOut().println(COMPUTER_NAME + "value=\"" + this.computerFormAddDTO.getName() +
             			INTRODUCED_DATE + this.computerFormAddDTO.getIntroduced() + DISCONTINUED_DATE + this.computerFormAddDTO.getDiscontinued());
             }else {
             	this.getJspContext().getOut().println(COMPUTER_NAME + INTRODUCED_DATE + DISCONTINUED_DATE );

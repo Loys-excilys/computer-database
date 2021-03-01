@@ -17,6 +17,7 @@ class DBProperties extends Properties{
 	private String url = "";
 	private String login = "";
 	private String password = "";
+	private String driver = "";
 	
 	private DBProperties() {
 		InputStream inputStream;
@@ -34,6 +35,7 @@ class DBProperties extends Properties{
 			this.setUrl(this.getProperty("url"));
 			this.setLogin(this.getProperty("login"));
 			this.setPassword(this.getProperty("password"));
+			this.setDriver(this.getProperty("driver"));
 		}
 	}
 	
@@ -63,6 +65,14 @@ class DBProperties extends Properties{
 	}
 	public String getPassword() {
 		return this.password;
+	}
+
+	public String getDriver() {
+		return driver;
+	}
+
+	public void setDriver(String driver) {
+		this.driver = driver;
 	}
 	
 }

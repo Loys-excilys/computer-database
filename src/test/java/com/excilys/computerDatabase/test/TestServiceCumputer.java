@@ -17,7 +17,7 @@ import com.excilys.computerDatabase.service.Service;
 
 public class TestServiceCumputer{
 	
-	int idTest = 577;
+	int idTest = 1;
 	@Test
 	public void testGetListComputer() throws Exception, ErrorSaisieUser {
 		Service service;
@@ -25,8 +25,8 @@ public class TestServiceCumputer{
 		service.createService();
 		Page page = new Page();
 		
-		
-		assertEquals(ArrayList.class, service.getServiceComputer().getListComputer(page).getClass());
+		page.setPage(0);
+		assertEquals("MacBook Pro 15.4 inch", service.getServiceComputer().getListComputer(page).get(0).getName());
 	}
 	
 	@Test
@@ -38,15 +38,14 @@ public class TestServiceCumputer{
 				.addName("testUnitaire")
 				.addIntroduced(Optional.of(LocalDate.parse("2015-06-22")))
 				.addDiscontinued(Optional.of(LocalDate.parse("2021-04-30")))
-				.addCompany(Optional.of(service.getServiceCompany().getCompany("ASUS")))
+				.addCompany(Optional.of(service.getServiceCompany().getCompany("Apple Inc.")))
 				.getComputer();
 		
 		
 		idTest = (int) service.getServiceComputer().addComputer(computer);
 
-		assertEquals(computer.getName(), service.getServiceComputer().getComputer(idTest).get().getName());
-		
-		service.getServiceComputer().deleteComputer(idTest);
+		assertEquals(service.getServiceComputer().getNumberComputer()+1, idTest);
+
 		
 	}
 	

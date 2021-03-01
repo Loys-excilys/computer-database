@@ -8,6 +8,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 
 import org.h2.jdbcx.JdbcDataSource;
+import org.junit.jupiter.api.Test;
 
 
 public class TestDB extends DataSourceBasedDBTestCase {
@@ -25,5 +26,14 @@ public class TestDB extends DataSourceBasedDBTestCase {
     protected IDataSet getDataSet() throws Exception {
         return new FlatXmlDataSetBuilder().build(getClass().getClassLoader()
           .getResourceAsStream("data.xml"));
+    }
+    
+    //@Test
+    public void givenDataSetEmptySchema_whenDataSetCreated_thenTablesAreEqual() throws Exception {
+        IDataSet expectedDataSet = getDataSet();
+        ITable expectedTable = expectedDataSet.getTable("computer");
+        IDataSet databaseDataSet = getConnection().createDataSet();
+        ITable actualTable = databaseDataSet.getTable("computer");
+        assertEquals(expectedTable, actualTable);
     }
 }

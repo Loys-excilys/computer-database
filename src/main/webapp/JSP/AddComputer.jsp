@@ -28,6 +28,7 @@
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
                     <form action="/computer-database/ServletAddComputer" method="POST">
+                    	${sessionScope.errorSaisie}
                         <fieldset>
 								<FormComputer:FormComputer listCompany="${sessionScope.listCompany}" computerFormAddDTO="${sessionScope.currentEntry}"/>                 
                         </fieldset>

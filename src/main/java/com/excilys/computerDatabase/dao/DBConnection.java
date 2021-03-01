@@ -25,12 +25,13 @@ public final class DBConnection {
 	private Boolean open(){
 		final DBProperties dbProperties = DBProperties.getInstance();
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(dbProperties.getDriver());
 			this.connection = DriverManager.getConnection(dbProperties.getUrl(), dbProperties.getLogin(), dbProperties.getPassword());
 		}catch(ClassNotFoundException errorClass){
 			
 			new ErrorDriver().DriverNotFound();
 		} catch (SQLException errorSQL) {
+			errorSQL.printStackTrace();
 			new ErrorDriver().DriverNotFound();
 		}
 		return true;

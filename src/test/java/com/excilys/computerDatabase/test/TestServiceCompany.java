@@ -12,7 +12,7 @@ import com.excilys.computerDatabase.service.Service;
 public class TestServiceCompany{
 	
 	@Test
-	public void testGetListComputer() throws Exception {
+	public void testGetListCompany() throws Exception {
 		Service service;
 		service = Service.getInstance();
 		service.createService();
@@ -21,7 +21,7 @@ public class TestServiceCompany{
 	}
 	
 	@Test
-	public void testGetAllListComputer() throws Exception {
+	public void testGetAllListCompany() throws Exception {
 		Service service;
 		service = Service.getInstance();
 		service.createService();
