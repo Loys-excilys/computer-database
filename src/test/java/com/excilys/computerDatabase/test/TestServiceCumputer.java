@@ -21,7 +21,7 @@ public class TestServiceCumputer{
 	@Test
 	public void testGetListComputer() throws Exception, ErrorSaisieUser {
 		Service service;
-		service = new Service();
+		service = Service.getInstance();
 		service.createService();
 		Page page = new Page();
 		
@@ -32,7 +32,7 @@ public class TestServiceCumputer{
 	@Test
 	public void testInsertComputer()throws Exception, ErrorSaisieUser{
 		Service service;
-		service = new Service();
+		service = Service.getInstance();
 		service.createService();
 		Computer computer = new ComputerBuilder()
 				.addName("testUnitaire")
@@ -53,7 +53,7 @@ public class TestServiceCumputer{
 	@Test
 	public void testGetComputer() throws Exception, ErrorSaisieUser {
 		Service service;
-		service = new Service();
+		service = Service.getInstance();
 		service.createService();
 		assertEquals(Computer.class, service.getServiceComputer().getComputer(idTest).get().getClass());
 	}
@@ -61,7 +61,7 @@ public class TestServiceCumputer{
 	@Test
 	public void testUpdateComputer() throws Exception, ErrorSaisieUser {
 		Service service;
-		service = new Service();
+		service = Service.getInstance();
 		service.createService();
 		Computer computer = service.getServiceComputer().getComputer(idTest).get();
 		

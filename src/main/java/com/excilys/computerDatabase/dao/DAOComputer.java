@@ -20,6 +20,8 @@ import com.excilys.computerDatabase.mappeur.MappeurDate;
 
 public class DAOComputer{
 	
+	private static DAOComputer INSTANCE;
+
 	private final String SELECT_COMPUTER = "SELECT computer.id as id,"
 			+ " computer.name as name,"
 			+ " computer.introduced as introduced,"
@@ -56,8 +58,14 @@ public class DAOComputer{
 	
 	private DBConnection dbConnection= DBConnection.getInstance();
 	
-	public DAOComputer(){}
+	private DAOComputer(){}
 	
+	public static synchronized DAOComputer getInstance() {
+		if(DAOComputer.INSTANCE == null) {
+			DAOComputer.INSTANCE = new DAOComputer();
+		}
+	return DAOComputer.INSTANCE;
+	}
 	
 	public int getNumberComputer() throws ErrorDAOComputer {
 		int numberComputer = 0;

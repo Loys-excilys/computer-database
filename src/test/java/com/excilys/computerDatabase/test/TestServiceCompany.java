@@ -14,7 +14,7 @@ public class TestServiceCompany{
 	@Test
 	public void testGetListComputer() throws Exception {
 		Service service;
-		service = new Service();
+		service = Service.getInstance();
 		service.createService();
 		
 		assertEquals(ArrayList.class, service.getServiceCompany().getListCompany(0).getClass());
@@ -23,7 +23,7 @@ public class TestServiceCompany{
 	@Test
 	public void testGetAllListComputer() throws Exception {
 		Service service;
-		service = new Service();
+		service = Service.getInstance();
 		service.createService();
 		
 		assertEquals(ArrayList.class, service.getServiceCompany().getListCompany().getClass());

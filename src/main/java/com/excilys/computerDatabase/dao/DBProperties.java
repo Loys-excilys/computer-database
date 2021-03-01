@@ -11,12 +11,14 @@ import java.io.IOException;
 class DBProperties extends Properties{
 
 	private final static String PROPERTIES_FILE_NAME = "db.properties";
+
+	private static DBProperties INSTANCE;
 	
 	private String url = "";
 	private String login = "";
 	private String password = "";
 	
-	public DBProperties() {
+	private DBProperties() {
 		InputStream inputStream;
 		
 		inputStream = this.getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE_NAME);
@@ -33,6 +35,13 @@ class DBProperties extends Properties{
 			this.setLogin(this.getProperty("login"));
 			this.setPassword(this.getProperty("password"));
 		}
+	}
+	
+	public static synchronized DBProperties getInstance() {
+		if(DBProperties.INSTANCE == null) {
+			DBProperties.INSTANCE = new DBProperties();
+		}
+	return DBProperties.INSTANCE;
 	}
 	
 	private void setUrl(String url) {

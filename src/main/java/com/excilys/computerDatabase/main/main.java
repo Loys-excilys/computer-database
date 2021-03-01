@@ -14,7 +14,7 @@ public class main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		final Service service = new Service();
+		final Service service = Service.getInstance();
 		final View view = new View(service);
 		final Controller controller = new Controller(service, view);
 		view.setController(controller);

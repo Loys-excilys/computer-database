@@ -11,10 +11,18 @@ import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
 public class ServiceComputer{
 	
+	private static ServiceComputer INSTANCE;
 	private DAOComputer database;
 	
-	public ServiceComputer() {
-		this.database = new DAOComputer();
+	private ServiceComputer() {
+		this.database = DAOComputer.getInstance();
+	}
+	
+	public static synchronized ServiceComputer getInstance() {
+		if(ServiceComputer.INSTANCE == null) {
+			ServiceComputer.INSTANCE = new ServiceComputer();
+		}
+	return ServiceComputer.INSTANCE;
 	}
 	
 	public Optional<Computer> getComputer(int id) throws ErrorDAOComputer, ErrorSaisieUser {

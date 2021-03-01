@@ -7,10 +7,18 @@ import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 
 public class ServiceCompany{
+	private static ServiceCompany INSTANCE;
 	private DAOCompany database;
 	
-	public ServiceCompany() {
-		this.database = new DAOCompany();
+	private ServiceCompany() {
+		this.database = DAOCompany.getInstance();
+	}
+	
+	public static synchronized ServiceCompany getInstance() {
+		if(ServiceCompany.INSTANCE == null) {
+			ServiceCompany.INSTANCE = new ServiceCompany();
+		}
+	return ServiceCompany.INSTANCE;
 	}
 	
 	public Company getCompany(String nameCompany) throws ErrorDAOCompany {

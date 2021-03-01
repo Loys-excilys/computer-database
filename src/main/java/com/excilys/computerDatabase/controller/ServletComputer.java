@@ -20,7 +20,7 @@ import com.excilys.computerDatabase.service.Service;
 public class ServletComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private Service service = new Service();
+	private Service service = Service.getInstance();
 	private Page page = new Page();
        
     /**

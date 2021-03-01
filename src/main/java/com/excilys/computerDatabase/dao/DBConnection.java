@@ -23,7 +23,7 @@ public final class DBConnection {
 	}
 	
 	private Boolean open(){
-		final DBProperties dbProperties = new DBProperties();
+		final DBProperties dbProperties = DBProperties.getInstance();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			this.connection = DriverManager.getConnection(dbProperties.getUrl(), dbProperties.getLogin(), dbProperties.getPassword());

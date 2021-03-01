@@ -11,6 +11,25 @@ import com.excilys.computerDatabase.DTO.ComputerFormAddDTO;
 
 public class TagAddComputer extends SimpleTagSupport{
 	
+	private final String COMPUTER_NAME = "<input type=\"text\" class=\"form-control\" id=\"computerName\" "
+            + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" required onchange=\"verifNameComputer(this.value)\" "
+            + 		"value=\"";
+	private final String INTRODUCED_DATE = " \" >"
+            +	"</div>"
+            +  "<div class=\"form-group\">"
+            +        "<label for=\"introduced\">Introduced date</label>"
+            +        "<input type=\"date\" class=\"form-control\" id=\"introduced\" "
+            + 			"placeholder=\"Introduced date\" name=\"dateIntroduced\" onchange=\"limitMinDate(this.value)\" "
+            + 			"value=\"";
+	
+	private final String DISCONTINUED_DATE = "\">"
+            +    "</div>"
+            +    "<div class=\"form-group\">"
+            +       "<label for=\"discontinued\">Discontinued date</label>"
+            +       "<input type=\"date\" class=\"form-control\" id=\"discontinued\" placeholder=\"Discontinued date\"name=\"dateDiscontinued\" "
+            + 			"onchange=\"limitMaxDate(this.value)\" value=\"";
+	
+	
 	private List<CompanyDTO> listCompany;
 	private ComputerFormAddDTO computerFormAddDTO;
 	
@@ -28,44 +47,16 @@ public class TagAddComputer extends SimpleTagSupport{
             +   "<label for=\"computerName\">Computer name</label>");
                 		
             if(this.computerFormAddDTO != null) {
-            	this.getJspContext().getOut().println(
-            			"<input type=\"text\" class=\"form-control\" id=\"computerName\" "
-                 + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" required onchange=\"verifNameComputer(this.value)\" "
-                 + 		"value=\"" + this.computerFormAddDTO.getName() + " \" >"
-                 +	"</div>"
-                 +  "<div class=\"form-group\">"
-                 +        "<label for=\"introduced\">Introduced date</label>"
-                 +        "<input type=\"date\" class=\"form-control\" id=\"introduced\" "
-                 + 			"placeholder=\"Introduced date\" name=\"dateIntroduced\" onchange=\"limitDate(this.value)\" "
-                 + 			"value=\"" + this.computerFormAddDTO.getIntroduced() + "\">"
-                 +    "</div>"
-                 +    "<div class=\"form-group\">"
-                 +       "<label for=\"discontinued\">Discontinued date</label>"
-                 +       "<input type=\"date\" class=\"form-control\" id=\"discontinued\" placeholder=\"Discontinued date\"name=\"dateDiscontinued\" "
-                 + 			"value=\"" + this.computerFormAddDTO.getDiscontinued() + "\">"
-                 +    "</div>"
-            			
-            			);
+            	this.getJspContext().getOut().println(COMPUTER_NAME + this.computerFormAddDTO.getName() +
+            			INTRODUCED_DATE + this.computerFormAddDTO.getIntroduced() + DISCONTINUED_DATE + this.computerFormAddDTO.getDiscontinued());
             }else {
-            	this.getJspContext().getOut().println(
-            			"<input type=\"text\" class=\"form-control\" id=\"computerName\" "
-                 + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" onchange=\"verifNameComputer(this.value)\" required>"
-                 +	"</div>"
-                 +   "<div class=\"form-group\">"
-                 +        "<label for=\"introduced\">Introduced date</label>"
-                 +        "<input type=\"date\" class=\"form-control\" id=\"introduced\" "
-                 + 			"placeholder=\"Introduced date\" name=\"dateIntroduced\" onchange=\"limitDate(this.value)\" "
-                 + 			">"
-                 +    "</div>"
-                 +    "<div class=\"form-group\">"
-                 +       "<label for=\"discontinued\">Discontinued date</label>"
-                 +       "<input type=\"date\" class=\"form-control\" id=\"discontinued\" placeholder=\"Discontinued date\"name=\"dateDiscontinued\">"
-                 +    "</div>"		
-            			
-            			);
+            	this.getJspContext().getOut().println(COMPUTER_NAME + INTRODUCED_DATE + DISCONTINUED_DATE );
             }
             this.getJspContext().getOut().println(
-               "<div class=\"form-group\">"
+            		
+            		"\">"
+            +    "</div>"
+            +  "<div class=\"form-group\">"
             +        "<label for=\"companyId\">Company</label>"
             +        "<select class=\"form-control\" id=\"companyId\" name=\"companyName\">"		
 			+			"<option value=\"\">---</option>");

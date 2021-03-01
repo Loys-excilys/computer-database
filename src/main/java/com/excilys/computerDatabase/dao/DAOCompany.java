@@ -18,10 +18,19 @@ public class DAOCompany{
 	private static final String SELECT_COMPANY_NAME = "Select * FROM company WHERE name = ?";
 	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
 	private static final String SELECT_COMPANY_NO_LIMIT = "Select * FROM company";
+
+	private static DAOCompany INSTANCE;
 	
 	private DBConnection dbConnection = DBConnection.getInstance();
 	
-	public DAOCompany(){}
+	private DAOCompany(){}
+	
+	public static synchronized DAOCompany getInstance() {
+		if(DAOCompany.INSTANCE == null) {
+			DAOCompany.INSTANCE = new DAOCompany();
+		}
+	return DAOCompany.INSTANCE;
+	}
 		
 	public Optional<Company> getCompany(String name) throws ErrorDAOCompany {
 		try(Connection connection = this.dbConnection.getConnection();

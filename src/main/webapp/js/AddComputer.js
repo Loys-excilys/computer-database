@@ -2,9 +2,14 @@
  * 
  */
  
- function limitDate(value) {
+ function limitMinDate(value) {
    var input = document.getElementsByName("dateDiscontinued");
    input[0].setAttribute("min", value);
+}
+
+ function limitMaxDate(value) {
+   var input = document.getElementsByName("dateIntroduced");
+   input[0].setAttribute("max", value);
 }
 
 
