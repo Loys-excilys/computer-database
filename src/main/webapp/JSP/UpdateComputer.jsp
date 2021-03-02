@@ -26,11 +26,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
-                    <form action="/computer-database/ServletAddComputer" method="POST">
+                    <h1>Update Computer</h1>
+                    <form action="/computer-database/ServletUpdateComputer" method="POST">
                     	${sessionScope.errorSaisie}
                         <fieldset>
-								<FormComputer:FormAddComputer listCompany="${sessionScope.listCompany}" computerFormAddDTO="${sessionScope.currentEntry}"/>                 
+								<FormComputer:FormUpdateComputer listCompany="${sessionScope.listCompany}" computerFormUpdateDTO="${sessionScope.updateComputer}"/>                 
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="Valider le form" class="btn btn-primary">

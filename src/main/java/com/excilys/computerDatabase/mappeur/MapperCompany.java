@@ -12,7 +12,7 @@ public class MapperCompany {
 		CompanyDTO companyDTO = new CompanyDTO(company.getId(), company.getName());
 		return companyDTO;
 	}
-	public static List<CompanyDTO> ListComputerToListComputerDTO(List<Company> listCompany){
+	public static List<CompanyDTO> ListCompanyToListCompanyDTO(List<Company> listCompany){
 		List<CompanyDTO> listCompanyDTO= new ArrayList<CompanyDTO>();
 		for(Company company : listCompany) {
 			listCompanyDTO.add(companyToCompanyDTO(company));
