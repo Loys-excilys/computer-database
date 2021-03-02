@@ -2,7 +2,7 @@ package com.excilys.computerDatabase.data;
 
 public class Page {
 
-	private int numPage = 1;
+	private int numPage = 0;
 	private int MaxPrint = 25;
 	
 	

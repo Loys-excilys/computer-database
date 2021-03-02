@@ -51,8 +51,17 @@ public class DAOComputer{
 			+ " discontinued = ?,"
 			+ " company_id = ?"
 			+ " WHERE id = ?";
+	private final String SEARCH_COMPUTER = "SELECT computer.id as id,"
+			+ " computer.name as name,"
+			+ " computer.introduced as introduced,"
+			+ " computer.discontinued as discontinued,"
+			+ " company.id as companyId,"
+			+ " company.name as companyName"
+			+ " FROM computer "
+			+ " LEFT JOIN company ON computer.company_id = company.id"
+			+ " WHERE computer.name LIKE ?";
 	
-	private final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
+	private final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
 	
 	private final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
 	
@@ -119,6 +128,30 @@ public class DAOComputer{
 		
 		return resultList;
 	}
+	
+	public List<Computer> getSearchComputer(String research, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
+		List<Computer> resultList = new ArrayList<>();
+		research = "%" + research +"%";
+		try (Connection connection = this.dbConnection.getConnection();
+				PreparedStatement query = connection.prepareStatement(SEARCH_COMPUTER);){
+			query.setString(1,research);
+//			query.setInt(2, page.getMaxPrint());
+//			query.setInt(3, page.getPage()*page.getMaxPrint());
+	        ResultSet result = query.executeQuery();
+	        Optional<Computer> optionalComputer;
+	        while(result.next()) {
+	        	if((optionalComputer = this.toComputer(result)).isPresent()) {
+	        		resultList.add(optionalComputer.get());
+	        	}
+		   }
+		} catch (SQLException errorSQL) {
+			errorSQL.printStackTrace();
+			throw new ErrorDAOComputer();
+		}
+		
+		return resultList;
+	}
+	
 	
 	public long insertComputer(Computer computer) throws ErrorDAOComputer {
 		long newKey = 0;
@@ -191,6 +224,7 @@ public class DAOComputer{
 					.getComputer();
 			optionalComputer =  Optional.of(computer);
 		} catch (SQLException errorSQL) {
+			errorSQL.printStackTrace();
 			throw new ErrorDAOComputer();
 		}
 		return optionalComputer;

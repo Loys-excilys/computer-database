@@ -50,4 +50,8 @@ public class ServiceComputer{
 	public int getNumberComputer() throws ErrorDAOComputer{
 		return this.database.getNumberComputer();
 	}
+
+	public List<Computer> getResearchComputer(String search, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
+		return this.database.getSearchComputer(search, page);
+	}
 }

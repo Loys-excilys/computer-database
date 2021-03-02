@@ -27,16 +27,16 @@ public class TagNumberPage extends SimpleTagSupport{
 		try {
             int numberPage = (numberComputer/maxNumberPrint)+1;
             int currentPage = this.currentPage;
-            if(currentPage > 1) {
+            if(currentPage >= 1) {
 	            getJspContext().getOut().println(
 	            			"<li>"
-	            		+	"<a href=\"?page=" + (currentPage-1) + "\" aria-label=\"Previous\">"
+	            		+	"<a href=\"?page=" + currentPage + "\" aria-label=\"Previous\">"
 		              	+	"<span aria-hidden=\"true\">&laquo;</span>"
 		              	+	"</a>"
 		          		+	"</li>"
 	            		);
             }
-            if(currentPage < 4){
+            if(currentPage < 3){
             	getJspContext().getOut().println(
           			  	"<li><a href=\"?page=1\">1</a></li>"
           			+  	"<li><a href=\"?page=2\">2</a></li>"
@@ -58,9 +58,9 @@ public class TagNumberPage extends SimpleTagSupport{
         	  getJspContext().getOut().println(
             			  	"<li><a href=\"?page=1\">1</a></li>"
             			+	"<li><a>...</a></li>"
-            			+  	"<li><a href=\"?page=" + (currentPage-1) + "\">" + (currentPage-1) + "</a></li>"
             			+  	"<li><a href=\"?page=" + currentPage + "\">" + currentPage + "</a></li>"
-            			+  	"<li><a href=\"?page=" + (currentPage+1) + "\">" + (currentPage+1) + "</a></li>"
+            			+  	"<li><a href=\"?page=" + (currentPage + 1) + "\">" + (currentPage + 1) + "</a></li>"
+            			+  	"<li><a href=\"?page=" + (currentPage + 2) + "\">" + (currentPage + 2) + "</a></li>"
             			+	"<li><a>...</a></li>"
             			+	"<li><a href=\"?page=" + numberPage + "\">" + numberPage + "</a></li>"
             			  );
@@ -68,7 +68,7 @@ public class TagNumberPage extends SimpleTagSupport{
           if(currentPage < numberPage) {
 	          getJspContext().getOut().println(
 	        		  			"<li>"
-	        		  		+	"<a href=\"?page=" + (currentPage + 1) + "\" aria-label=\"Next\">"
+	        		  		+	"<a href=\"?page=" + (currentPage + 2) + "\" aria-label=\"Next\">"
 	        		  		+	"<span aria-hidden=\"true\">&raquo;</span>"
 	        		  		+ 	"</a>"
 	        		  		+	"</li>"

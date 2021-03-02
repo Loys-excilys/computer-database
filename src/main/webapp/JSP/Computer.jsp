@@ -33,7 +33,7 @@
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
+                    <form id="searchForm" action="ServletComputer" method="GET" class="form-inline">
 
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <form id="deleteForm" action="#" method="POST">
+        <form id="deleteForm" action="ServletComputer" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 

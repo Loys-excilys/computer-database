@@ -22,7 +22,7 @@ public class TagComputer extends SimpleTagSupport{
 				getJspContext().getOut().println(
 						"<tr>"
 			    	+		"<td class=\"editMode\">"
-			        +       	"<input type=\"checkbox\" name=\"cb\" class=\"cb\" value=\"0\">"
+			        +       	"<input type=\"checkbox\" name=\"cb\" class=\"cb\" value=\""+ computer.getId() + "\">"
 			        +   	"</td>"
 			        +   	"<td>"
 			        +       	"<a href=\"ServletUpdateComputer?id=" + computer.getId() + "\">" + computer.getName() + "</a>"
