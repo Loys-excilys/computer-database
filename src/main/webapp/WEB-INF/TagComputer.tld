@@ -48,4 +48,20 @@
 					<rtexprvalue>true</rtexprvalue>
 				</attribute>
 			</tag>
+			
+			<tag>
+				<name>OrderComputer</name>
+				<tag-class>com.excilys.computerDatabase.tag.TagOrderComputer</tag-class>
+				<body-content>scriptless</body-content>
+				<attribute>
+					<name>orderField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>sort</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+			</tag>
 </taglib>

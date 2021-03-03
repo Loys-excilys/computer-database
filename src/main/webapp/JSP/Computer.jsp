@@ -68,23 +68,7 @@
                                     </a>
                             </span>
                         </th>
-                        <th>
-                            Computer name
-                             <a href="?orderField=name&sort=ASC" class="fa fa-fw fa-sort"></a>
-                        </th>
-                        <th>
-                            Introduced date
-                            <i class="fa fa-fw fa-sort-asc"></i>
-                        </th>
-                        <!-- Table header for Discontinued Date -->
-                        <th>
-                            Discontinued date
-                            <i class="fa fa-fw fa-sort-desc"></i>
-                        </th>
-                        <!-- Table header for Company -->
-                        <th>
-                            Company
-                        </th>
+                        <computer:OrderComputer sort="${sessionScope.sort}" orderField="${sessionScope.orderField}"/>
 
                     </tr>
                 </thead>

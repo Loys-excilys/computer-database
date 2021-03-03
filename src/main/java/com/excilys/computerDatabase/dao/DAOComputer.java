@@ -29,8 +29,7 @@ public class DAOComputer{
 			+ " company.id as companyId,"
 			+ " company.name as companyName"
 			+ " FROM computer "
-			+ " LEFT JOIN company ON computer.company_id = company.id"
-			+ " LIMIT ? OFFSET ?";
+			+ " LEFT JOIN company ON computer.company_id = company.id";
 	
 	private final String SELECT_COMPUTER_ID = "SELECT computer.id as id,"
 			+ " computer.name as name,"
@@ -51,25 +50,13 @@ public class DAOComputer{
 			+ " discontinued = ?,"
 			+ " company_id = ?"
 			+ " WHERE id = ?";
-	private final String SEARCH_COMPUTER = "SELECT computer.id as id,"
-			+ " computer.name as name,"
-			+ " computer.introduced as introduced,"
-			+ " computer.discontinued as discontinued,"
-			+ " company.id as companyId,"
-			+ " company.name as companyName"
-			+ " FROM computer "
-			+ " LEFT JOIN company ON computer.company_id = company.id"
-			+ " WHERE computer.name LIKE ?"
-			+ " LIMIT ? OFFSET ?";
+	private final String SEARCH_COMPUTER_JOIN = " WHERE computer.name LIKE ?";
 	
-	private final String ORDER_COMPUTER = "SELECT computer.id as id,"
-			+ " computer.name as name,"
-			+ " computer.introduced as introduced,"
-			+ " computer.discontinued as discontinued,"
-			+ " company.id as companyId,"
-			+ " company.name as companyName"
-			+ " FROM computer "
-			+ " LEFT JOIN company ON computer.company_id = company.id";
+	private final String SEARCH_COMPUTER = " WHERE name LIKE ?";
+	
+	private final String ORDER_BY = " ORDER BY ";
+	
+	private final String LIMIT_OFFSET = " LIMIT ? OFFSET ?";
 	
 	private final String DELETE_COMPUTER_BY_ID = "DELETE FROM computer WHERE id = ?";
 	
@@ -86,7 +73,7 @@ public class DAOComputer{
 	return DAOComputer.INSTANCE;
 	}
 	
-	public int getNumberComputer() throws ErrorDAOComputer {
+	public int getNumberComputer() {
 		int numberComputer = 0;
 		try(Connection connection = this.dbConnection.getConnection();
 				PreparedStatement query = connection.prepareStatement(COUNT_COMPUTER);){
@@ -96,14 +83,59 @@ public class DAOComputer{
             numberComputer = result.getInt(1);
             
         } catch (SQLException errorSQL) {
-        	throw new ErrorDAOComputer();
+        	new ErrorDAOComputer();
         }
 		return numberComputer;
 	}
 	
+	public int getSearchNumberComputer(String search) {
+		int numberComputer = 0;
+		search = "%" + search + "%";
+		try(Connection connection = this.dbConnection.getConnection();
+				PreparedStatement query = connection.prepareStatement(COUNT_COMPUTER + SEARCH_COMPUTER);){
+        	query.setString(1, search);
+            ResultSet result = query.executeQuery();
+            result.next();
+            numberComputer = result.getInt(1);
+            
+        } catch (SQLException errorSQL) {
+        	new ErrorDAOComputer();
+        }
+		return numberComputer;
+	}
 	
+	public int getNumberComputerOrder(String orderField, String sort) {
+		int numberComputer = 0;
+		try(Connection connection = this.dbConnection.getConnection();
+				PreparedStatement query = connection.prepareStatement(COUNT_COMPUTER + ORDER_BY + orderField + " " + sort);){
+        	
+            ResultSet result = query.executeQuery();
+            result.next();
+            numberComputer = result.getInt(1);
+            
+        } catch (SQLException errorSQL) {
+        	new ErrorDAOComputer();
+        }
+		return numberComputer;
+	}
 	
-	public Optional<Computer> getComputer(int id) throws ErrorDAOComputer, ErrorSaisieUser {
+	public int getSearchNumberComputerOrder(String search, String orderField, String sort) {
+		int numberComputer = 0;
+		search = "%" + search + "%";
+		try(Connection connection = this.dbConnection.getConnection();
+				PreparedStatement query = connection.prepareStatement(COUNT_COMPUTER + SEARCH_COMPUTER + ORDER_BY + orderField + " " + sort);){
+			query.setString(1, search);
+            ResultSet result = query.executeQuery();
+            result.next();
+            numberComputer = result.getInt(1);
+            
+        } catch (SQLException errorSQL) {
+        	new ErrorDAOComputer();
+        }
+		return numberComputer;
+	}
+	
+	public Optional<Computer> getComputer(int id) throws ErrorSaisieUser {
 		Optional<Computer> computer = Optional.empty();
 		try(Connection connection = this.dbConnection.getConnection();
 				PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER_ID);){
@@ -113,16 +145,16 @@ public class DAOComputer{
             result.next();
             computer = this.toComputer(result);
         } catch (SQLException errorSQL) {
-        	throw new ErrorDAOComputer();
+        	new ErrorDAOComputer();
         }
 		return computer;
 	}
 	
-	public List<Computer> getListComputer(Page page) throws ErrorDAOComputer, ErrorSaisieUser {
+	public List<Computer> getListComputer(Page page) throws ErrorSaisieUser {
 		List<Computer> resultList = new ArrayList<>();
 		
 		try (Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER);){
+				PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER + LIMIT_OFFSET);){
 			query.setInt(1, page.getMaxPrint());
 			query.setInt(2, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
@@ -133,18 +165,18 @@ public class DAOComputer{
 	        	}
 		   }
 		} catch (SQLException errorSQL) {
-			throw new ErrorDAOComputer();
+			new ErrorDAOComputer();
 		}
 		
 		return resultList;
 	}
 	
-	public List<Computer> getSearchComputer(String research, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
+	public List<Computer> getSearchComputer(String search, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
 		List<Computer> resultList = new ArrayList<>();
-		research = "%" + research +"%";
+		search = "%" + search + "%";
 		try (Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(SEARCH_COMPUTER);){
-			query.setString(1,research);
+				PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER + SEARCH_COMPUTER_JOIN + LIMIT_OFFSET);){
+			query.setString(1,search);
 			query.setInt(2, page.getMaxPrint());
 			query.setInt(3, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
@@ -166,7 +198,7 @@ public class DAOComputer{
 		List<Computer> resultList = new ArrayList<>();
 		orderField = "computer." + orderField;
 		try (Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(ORDER_COMPUTER + " ORDER BY " + orderField + " " + sort + " LIMIT ? OFFSET ?");){
+				PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER + ORDER_BY + orderField + " " + sort + LIMIT_OFFSET);){
 			query.setInt(1, page.getMaxPrint());
 			query.setInt(2, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
@@ -180,7 +212,29 @@ public class DAOComputer{
 			errorSQL.printStackTrace();
 			throw new ErrorDAOComputer();
 		}
-		
+		return resultList;
+	}
+	
+	public List<Computer> getSearchComputerOrder(String search, String orderField, String sort, Page page) throws ErrorDAOComputer {
+		List<Computer> resultList = new ArrayList<>();
+		orderField = "computer." + orderField;
+		search = "%" + search + "%";
+		try (Connection connection = this.dbConnection.getConnection();
+				PreparedStatement query = connection.prepareStatement(SELECT_COMPUTER + SEARCH_COMPUTER_JOIN + ORDER_BY + orderField + " " + sort + LIMIT_OFFSET);){
+			query.setString(1, search);
+			query.setInt(2, page.getMaxPrint());
+			query.setInt(3, page.getPage()*page.getMaxPrint());
+	        ResultSet result = query.executeQuery();
+	        Optional<Computer> optionalComputer;
+	        while(result.next()) {
+	        	if((optionalComputer = this.toComputer(result)).isPresent()) {
+	        		resultList.add(optionalComputer.get());
+	        	}
+		   }
+		} catch (SQLException errorSQL) {
+			errorSQL.printStackTrace();
+			throw new ErrorDAOComputer();
+		}
 		return resultList;
 	}
 	

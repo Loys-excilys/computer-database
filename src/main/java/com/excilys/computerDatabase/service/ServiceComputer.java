@@ -51,11 +51,27 @@ public class ServiceComputer{
 		return this.database.getNumberComputer();
 	}
 
-	public List<Computer> getResearchComputer(String search, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
+	public List<Computer> getSearchComputer(String search, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
 		return this.database.getSearchComputer(search, page);
+	}
+	
+	public int getSearchNumberComputer(String search) throws ErrorDAOComputer{
+		return this.database.getSearchNumberComputer(search);
 	}
 
 	public List<Computer> getListComputerOrder(String orderField, String sort, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
 		return this.database.getListComputerOrder(orderField, sort, page);
+	}
+	
+	public int getNumberComputerOrder(String orderField, String sort ) throws ErrorDAOComputer{
+		return this.database.getNumberComputerOrder(orderField, sort);
+	}
+	
+	public List<Computer> getResearchComputerOrder(String search, String orderField, String sort, Page page) throws ErrorDAOComputer{
+		return this.database.getSearchComputerOrder(search, orderField, sort, page);
+	}
+	
+	public int getSearchNumberComputerOrder(String search, String orderField, String sort) throws ErrorDAOComputer{
+		return this.database.getSearchNumberComputerOrder(search, orderField, sort);
 	}
 }
