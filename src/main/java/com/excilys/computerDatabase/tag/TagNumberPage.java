@@ -25,7 +25,15 @@ public class TagNumberPage extends SimpleTagSupport{
 	
 	public void doTag() throws JspException {
 		try {
-            int numberPage = (numberComputer/maxNumberPrint)+1;
+			int numberPage;
+			if(numberComputer < maxNumberPrint) {
+				numberPage = 1;
+			}else if((numberComputer%maxNumberPrint) != 0) {
+            	numberPage = (numberComputer/maxNumberPrint) + 1;
+            }else {
+            	numberPage = (numberComputer/maxNumberPrint);
+            }
+            		
             int currentPage = this.currentPage;
             if(currentPage >= 1) {
 	            getJspContext().getOut().println(
@@ -36,7 +44,11 @@ public class TagNumberPage extends SimpleTagSupport{
 		          		+	"</li>"
 	            		);
             }
-            if(currentPage < 3){
+            if(numberPage <= 5) {
+            	for(int i = 1 ; i <= numberPage ; i++) {
+            		getJspContext().getOut().println("<li><a href=\"?page=" + i + "\">" + i + "</a></li>");
+            	}
+            }else if(currentPage < 3){
             	getJspContext().getOut().println(
           			  	"<li><a href=\"?page=1\">1</a></li>"
           			+  	"<li><a href=\"?page=2\">2</a></li>"
@@ -65,7 +77,7 @@ public class TagNumberPage extends SimpleTagSupport{
             			+	"<li><a href=\"?page=" + numberPage + "\">" + numberPage + "</a></li>"
             			  );
           }
-          if(currentPage < numberPage) {
+          if((currentPage+1) < numberPage) {
 	          getJspContext().getOut().println(
 	        		  			"<li>"
 	        		  		+	"<a href=\"?page=" + (currentPage + 2) + "\" aria-label=\"Next\">"

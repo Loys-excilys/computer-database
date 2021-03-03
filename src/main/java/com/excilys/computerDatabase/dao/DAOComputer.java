@@ -59,7 +59,17 @@ public class DAOComputer{
 			+ " company.name as companyName"
 			+ " FROM computer "
 			+ " LEFT JOIN company ON computer.company_id = company.id"
-			+ " WHERE computer.name LIKE ?";
+			+ " WHERE computer.name LIKE ?"
+			+ " LIMIT ? OFFSET ?";
+	
+	private final String ORDER_COMPUTER = "SELECT computer.id as id,"
+			+ " computer.name as name,"
+			+ " computer.introduced as introduced,"
+			+ " computer.discontinued as discontinued,"
+			+ " company.id as companyId,"
+			+ " company.name as companyName"
+			+ " FROM computer "
+			+ " LEFT JOIN company ON computer.company_id = company.id";
 	
 	private final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
 	
@@ -135,8 +145,30 @@ public class DAOComputer{
 		try (Connection connection = this.dbConnection.getConnection();
 				PreparedStatement query = connection.prepareStatement(SEARCH_COMPUTER);){
 			query.setString(1,research);
-//			query.setInt(2, page.getMaxPrint());
-//			query.setInt(3, page.getPage()*page.getMaxPrint());
+			query.setInt(2, page.getMaxPrint());
+			query.setInt(3, page.getPage()*page.getMaxPrint());
+	        ResultSet result = query.executeQuery();
+	        Optional<Computer> optionalComputer;
+	        while(result.next()) {
+	        	if((optionalComputer = this.toComputer(result)).isPresent()) {
+	        		resultList.add(optionalComputer.get());
+	        	}
+		   }
+		} catch (SQLException errorSQL) {
+			errorSQL.printStackTrace();
+			throw new ErrorDAOComputer();
+		}
+		
+		return resultList;
+	}
+	
+	public List<Computer> getListComputerOrder(String orderField, String sort, Page page) throws ErrorDAOComputer {
+		List<Computer> resultList = new ArrayList<>();
+		orderField = "computer." + orderField;
+		try (Connection connection = this.dbConnection.getConnection();
+				PreparedStatement query = connection.prepareStatement(ORDER_COMPUTER + " ORDER BY " + orderField + " " + sort + " LIMIT ? OFFSET ?");){
+			query.setInt(1, page.getMaxPrint());
+			query.setInt(2, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
 	        Optional<Computer> optionalComputer;
 	        while(result.next()) {

@@ -13,6 +13,7 @@
 	    
 	  	
     	<mysql.connector.version>8.0.23</mysql.connector.version>
+    	<hikariCP.version>4.0.2</hikariCP.version>
     	
     	
     	<logback.version>1.2.3</logback.version>
@@ -36,6 +37,14 @@
 	    <artifactId>mysql-connector-java</artifactId>
 	    <version>${mysql.connector.version}</version>
 	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+	<dependency>
+	    <groupId>com.zaxxer</groupId>
+	    <artifactId>HikariCP</artifactId>
+	    <version>${hikariCP.version}</version>
+	</dependency>
+	
 
 	<!--  Logger -->
 	<dependency>

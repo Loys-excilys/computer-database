@@ -14,6 +14,8 @@
 	<link href="css/font-awesome.css" rel="stylesheet" media="screen">
 	<link href="css/main.css" rel="stylesheet" media="screen">
 	
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>
@@ -68,13 +70,16 @@
                         </th>
                         <th>
                             Computer name
+                             <a href="?orderField=name&sort=ASC" class="fa fa-fw fa-sort"></a>
                         </th>
                         <th>
                             Introduced date
+                            <i class="fa fa-fw fa-sort-asc"></i>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
                             Discontinued date
+                            <i class="fa fa-fw fa-sort-desc"></i>
                         </th>
                         <!-- Table header for Company -->
                         <th>

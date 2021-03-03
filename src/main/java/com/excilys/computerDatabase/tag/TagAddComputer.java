@@ -62,8 +62,9 @@ public class TagAddComputer extends SimpleTagSupport{
 			for(CompanyDTO company : this.listCompany){
 				if(this.computerFormAddDTO != null && this.computerFormAddDTO.getCompanyId().compareTo(String.valueOf(company.getId())) == 0) {
 					this.getJspContext().getOut().println("<option selected=\"selected\" value=\"" + company.getId() + "\">" + company.getName() + "</option>");
+				}else {
+					this.getJspContext().getOut().println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
 				}
-				this.getJspContext().getOut().println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
 			}
 			this.getJspContext().getOut().println("</select></div>");
 		} catch (IOException e) {

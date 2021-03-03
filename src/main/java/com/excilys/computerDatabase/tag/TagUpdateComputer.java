@@ -58,8 +58,9 @@ public class TagUpdateComputer extends SimpleTagSupport{
 			for(CompanyDTO company : this.listCompany){
 				if(this.computerDTO != null && this.computerDTO.getCompanyName().compareTo(String.valueOf(company.getName())) == 0) {
 					this.getJspContext().getOut().println("<option selected=\"selected\" value=\"" + company.getId() + "\">" + company.getName() + "</option>");
+				}else {
+					this.getJspContext().getOut().println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
 				}
-				this.getJspContext().getOut().println("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>");
 			}
 			this.getJspContext().getOut().println("</select></div>");
 		} catch (IOException e) {

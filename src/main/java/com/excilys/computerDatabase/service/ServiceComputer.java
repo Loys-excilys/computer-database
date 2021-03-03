@@ -54,4 +54,8 @@ public class ServiceComputer{
 	public List<Computer> getResearchComputer(String search, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
 		return this.database.getSearchComputer(search, page);
 	}
+
+	public List<Computer> getListComputerOrder(String orderField, String sort, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
+		return this.database.getListComputerOrder(orderField, sort, page);
+	}
 }

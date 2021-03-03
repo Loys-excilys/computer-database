@@ -43,7 +43,8 @@ public abstract class MapperComputer {
 	}
 	
 	public static ComputerFormUpdateDTO requestToComputerFormUpdateDTO(HttpServletRequest request) {
-		ComputerFormUpdateDTO computerFormUpdateDTO = new ComputerFormUpdateDTO(Long.parseLong(request.getParameter("id")),request.getParameter("computerName"),
+		ComputerFormUpdateDTO computerFormUpdateDTO = new ComputerFormUpdateDTO(Long.parseLong(request.getParameter("id")),
+				request.getParameter("computerName"),
 				request.getParameter("dateIntroduced"),
 				request.getParameter("dateDiscontinued"),
 				request.getParameter("companyName"));
@@ -61,7 +62,7 @@ public abstract class MapperComputer {
 						Optional.of(LocalDate.parse(computerFormAddDTO.getDiscontinued())) :
 						Optional.empty())
 				.addCompany(computerFormAddDTO.getCompanyId().compareTo("") != 0 ?
-						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId())))) :
+						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId())-1))) :
 						Optional.empty())
 				.getComputer());
 		return computer;
@@ -79,7 +80,7 @@ public abstract class MapperComputer {
 						Optional.of(LocalDate.parse(computerFormUpdateDTO.getDiscontinued())) :
 						Optional.empty())
 				.addCompany(computerFormUpdateDTO.getCompanyId().compareTo("") != 0 ?
-						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId())))) :
+						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId())-1))) :
 						Optional.empty())
 				.getComputer());
 		return computer;
