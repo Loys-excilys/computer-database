@@ -41,6 +41,7 @@ public class View{
 					+ "\n 4 : Création d'un ordinateur"
 					+ "\n 5 : Update d'un ordinateur"
 					+ "\n 6 : Delete d'un ordianteur"
+					+ "\n 7 : Delete d'un company"
 					+ "\n 0 : éteindre l'application"
 					+ "\n Veuillez saisir un code d'action : ");
 			

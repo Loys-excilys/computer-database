@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
+import com.excilys.computerDatabase.error.ErrorDAOComputer;
 
 public class DAOCompany{
 	
@@ -18,6 +19,9 @@ public class DAOCompany{
 	private static final String SELECT_COMPANY_NAME = "Select * FROM company WHERE name = ?";
 	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
 	private static final String SELECT_COMPANY_NO_LIMIT = "Select * FROM company";
+	
+	private final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
+	private final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = ?";
 
 	private static DAOCompany INSTANCE;
 	
@@ -79,5 +83,30 @@ public class DAOCompany{
 		}
 		
 		return resultList;
+	}
+	
+	public void deleteCompanyById(int id) throws SQLException, ErrorDAOCompany {
+		Connection connection = this.dbConnection.getConnection();
+		try (PreparedStatement queryDeleteComputer = connection.prepareStatement(DELETE_COMPUTER_BY_COMPANY);
+				PreparedStatement queryDeleteCompany = connection.prepareStatement(DELETE_COMPANY_BY_ID);){
+			connection.setAutoCommit(false);
+			
+			queryDeleteComputer.setLong(1, id);
+			queryDeleteComputer.executeUpdate();
+			
+			queryDeleteCompany.setLong(1, id);
+			queryDeleteCompany.executeUpdate();
+			
+			connection.commit();
+		}catch(ErrorDAOCompany errorSQL){
+			try {
+				connection.rollback();
+		        } catch (ErrorDAOCompany excep) {
+		          excep.printStackTrace();
+		        }
+			throw new ErrorDAOComputer();
+		}finally {
+			connection.close();
+		}
 	}
 }

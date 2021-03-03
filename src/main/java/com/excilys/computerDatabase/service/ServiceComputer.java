@@ -41,9 +41,9 @@ public class ServiceComputer{
 		this.database.updateComputer(computer);
 	}
 	
-	public void deleteComputer(int id) throws ErrorDAOComputer {
+	public void deleteComputerById(int id) throws ErrorDAOComputer {
 		if(id != -1) {
-			this.database.deleteComputer(id);
+			this.database.deleteComputerById(id);
 		}
 	}
 	

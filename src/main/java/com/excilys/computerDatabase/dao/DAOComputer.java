@@ -71,7 +71,7 @@ public class DAOComputer{
 			+ " FROM computer "
 			+ " LEFT JOIN company ON computer.company_id = company.id";
 	
-	private final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
+	private final String DELETE_COMPUTER_BY_ID = "DELETE FROM computer WHERE id = ?";
 	
 	private final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
 	
@@ -231,9 +231,9 @@ public class DAOComputer{
 		}
 	}
 	
-	public void deleteComputer(int id) throws ErrorDAOComputer {
+	public void deleteComputerById(int id) throws ErrorDAOComputer {
 		try (Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(DELETE_COMPUTER);){
+				PreparedStatement query = connection.prepareStatement(DELETE_COMPUTER_BY_ID);){
 			
            	query.setLong(1, id);
             query.executeUpdate();

@@ -1,5 +1,6 @@
 package com.excilys.computerDatabase.view;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.computerDatabase.controller.Controller;
@@ -41,6 +42,19 @@ public class ViewCompany extends View{
 			
 			this.space();
 		}
+	}
+
+	public void printDeleteCompany() {
+		int idCompanySelected = this.printAskEntryInt("Enter the id of the company : ");
+		try {
+			this.service.getServiceCompany().deleteCompanyById(idCompanySelected);
+			System.out.println("done");
+		} catch (ErrorDAOCompany e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.space();
 	}
 	
 }

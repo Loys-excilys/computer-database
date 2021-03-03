@@ -1,5 +1,6 @@
 package com.excilys.computerDatabase.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.computerDatabase.dao.DAOCompany;
@@ -32,6 +33,8 @@ public class ServiceCompany{
 	public List<Company> getListCompany(int page) throws ErrorDAOCompany{
 		return this.database.getListCompany(page);
 	}
-
-
+	
+	public void deleteCompanyById(int id) throws ErrorDAOCompany, SQLException {
+		this.database.deleteCompanyById(id);
+	}
 }

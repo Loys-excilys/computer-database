@@ -18,6 +18,7 @@ public class Controller{
 	private final int ADD_COMPUTER = 4;
 	private final int UPDATE_COMPUTER = 5;
 	private final int DELETE_COMPUTER = 6;
+	private final int DELETE_COMPANY = 7;
 	private final int STOP = 0;
 
 	public Controller(Service service, View view) {
@@ -35,6 +36,7 @@ public class Controller{
 		case ADD_COMPUTER : this.view.getViewComputer().printAddComputer();break;
 		case UPDATE_COMPUTER: this.view.getViewComputer().printUpdateComputer();break;
 		case DELETE_COMPUTER : this.view.getViewComputer().printDeleteComputer(); break;
+		case DELETE_COMPANY : this.view.getViewCompany().printDeleteCompany(); break;
 		case STOP : ;
 		default : boucle = false;
 		}

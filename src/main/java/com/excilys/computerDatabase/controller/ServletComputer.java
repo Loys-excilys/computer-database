@@ -98,7 +98,7 @@ public class ServletComputer extends HttpServlet {
 		String[] ids = request.getParameter("selection").split(SEPARATEUR);
 		for(String id : ids) {
 			try {
-				this.service.getServiceComputer().deleteComputer(Integer.parseInt(id));
+				this.service.getServiceComputer().deleteComputerById(Integer.parseInt(id));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (ErrorDAOComputer e) {

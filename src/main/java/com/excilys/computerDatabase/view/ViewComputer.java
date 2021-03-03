@@ -118,7 +118,7 @@ public class ViewComputer extends View{
 	
 	public void printDeleteComputer() {
 		try {
-			this.service.getServiceComputer().deleteComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
+			this.service.getServiceComputer().deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
 			System.out.println("done");
 		} catch (ErrorDAOComputer errorDelete) {
 			errorDelete.deleteError();

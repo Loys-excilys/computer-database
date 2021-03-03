@@ -1,15 +1,16 @@
 package com.excilys.computerDatabase.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.excilys.computerDatabase.error.ErrorDriver;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 public final class DBConnection {
 	private static DBConnection INSTANCE = null;
 	
-	private Connection connection;
+	private HikariDataSource connection;
+	private HikariConfig config = new HikariConfig();
 	
 	private DBConnection() {
 		this.open();
@@ -24,16 +25,14 @@ public final class DBConnection {
 	
 	private Boolean open(){
 		final DBProperties dbProperties = DBProperties.getInstance();
-		try {
-			Class.forName(dbProperties.getDriver());
-			this.connection = DriverManager.getConnection(dbProperties.getUrl(), dbProperties.getLogin(), dbProperties.getPassword());
-		}catch(ClassNotFoundException errorClass){
-			
-			new ErrorDriver().DriverNotFound();
-		} catch (SQLException errorSQL) {
-			errorSQL.printStackTrace();
-			new ErrorDriver().DriverNotFound();
-		}
+		config.setDriverClassName(dbProperties.getDriver());
+		config.setJdbcUrl(dbProperties.getUrl());
+		config.setUsername(dbProperties.getLogin());
+		config.setPassword(dbProperties.getPassword());
+		config.addDataSourceProperty( "cachePrepStmts" , "true" );
+		config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
+		config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
+		connection = new HikariDataSource( config );
 		return true;
 	}
 	
@@ -41,6 +40,6 @@ public final class DBConnection {
 		if(this.connection.isClosed()) {
 			this.open();
 		}
-		return this.connection;
+		return this.connection.getConnection();
 	}
 }
