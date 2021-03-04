@@ -10,7 +10,7 @@ public class ErrorSaisieUser extends Throwable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Logger logger;
+	private final transient Logger logger;
 	
 	public ErrorSaisieUser(Class<?> classe) {
 		this.logger = LoggerFactory.getLogger(classe.getName());

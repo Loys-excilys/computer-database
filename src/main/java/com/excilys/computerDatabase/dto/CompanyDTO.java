@@ -1,7 +1,13 @@
-package com.excilys.computerDatabase.DTO;
+package com.excilys.computerDatabase.dto;
 
-public class CompanyDTO {
+import java.io.Serializable;
 
+public class CompanyDTO implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String name;
 	

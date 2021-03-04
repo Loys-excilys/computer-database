@@ -22,7 +22,7 @@ public class DAOComputer{
 	
 	private static DAOComputer INSTANCE;
 
-	private final String SELECT_COMPUTER = "SELECT computer.id as id,"
+	private static final String SELECT_COMPUTER = "SELECT computer.id as id,"
 			+ " computer.name as name,"
 			+ " computer.introduced as introduced,"
 			+ " computer.discontinued as discontinued,"
@@ -31,7 +31,7 @@ public class DAOComputer{
 			+ " FROM computer "
 			+ " LEFT JOIN company ON computer.company_id = company.id";
 	
-	private final String SELECT_COMPUTER_ID = "SELECT computer.id as id,"
+	private static final String SELECT_COMPUTER_ID = "SELECT computer.id as id,"
 			+ " computer.name as name,"
 			+ " computer.introduced as introduced,"
 			+ " computer.discontinued as discontinued,"
@@ -41,28 +41,28 @@ public class DAOComputer{
 			+ " LEFT JOIN company ON computer.company_id = company.id"
 			+ " WHERE computer.id = ?";
 	
-	private final String INSERT_COMPUTER = 
+	private static final String INSERT_COMPUTER = 
 			"INSERT INTO computer(name, introduced, discontinued, company_id)"
 			+ " values(?,?,?,?) ";
-	private final String UPDATE_COMPUTER = "UPDATE computer"
+	private static final String UPDATE_COMPUTER = "UPDATE computer"
 			+ " SET name = ?,"
 			+ " introduced = ?,"
 			+ " discontinued = ?,"
 			+ " company_id = ?"
 			+ " WHERE id = ?";
-	private final String SEARCH_COMPUTER_JOIN = " WHERE computer.name LIKE ?";
+	private static final String SEARCH_COMPUTER_JOIN = " WHERE computer.name LIKE ?";
 	
-	private final String SEARCH_COMPUTER = " WHERE name LIKE ?";
+	private static final String SEARCH_COMPUTER = " WHERE name LIKE ?";
 	
-	private final String ORDER_BY = " ORDER BY ";
+	private static final String ORDER_BY = " ORDER BY ";
 	
-	private final String LIMIT_OFFSET = " LIMIT ? OFFSET ?";
+	private static final String LIMIT_OFFSET = " LIMIT ? OFFSET ?";
 	
-	private final String DELETE_COMPUTER_BY_ID = "DELETE FROM computer WHERE id = ?";
+	private static final String DELETE_COMPUTER_BY_ID = "DELETE FROM computer WHERE id = ?";
 	
-	private final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
+	private static final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
 	
-	private DBConnection dbConnection= DBConnection.getInstance();
+	private final DBConnection dbConnection = DBConnection.getInstance();
 	
 	private DAOComputer(){}
 	
@@ -159,14 +159,11 @@ public class DAOComputer{
 			query.setInt(1, page.getMaxPrint());
 			query.setInt(2, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
-	        Optional<Computer> optionalComputer;
 	        while(result.next()) {
-	        	if((optionalComputer = this.toComputer(result)).isPresent()) {
-	        		resultList.add(optionalComputer.get());
-	        	}
+	        	resultList.add(this.toComputer(result).get());
 		   }
 		} catch (SQLException errorSQL) {
-			new ErrorDAOComputer().connectionLost(errorSQL);;
+			new ErrorDAOComputer().connectionLost(errorSQL);
 		}
 		
 		return resultList;
@@ -181,11 +178,8 @@ public class DAOComputer{
 			query.setInt(2, page.getMaxPrint());
 			query.setInt(3, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
-	        Optional<Computer> optionalComputer;
 	        while(result.next()) {
-	        	if((optionalComputer = this.toComputer(result)).isPresent()) {
-	        		resultList.add(optionalComputer.get());
-	        	}
+	        	resultList.add(this.toComputer(result).get());
 		   }
 		} catch (SQLException errorSQL) {
 			errorSQL.printStackTrace();
@@ -204,11 +198,8 @@ public class DAOComputer{
 			query.setInt(1, page.getMaxPrint());
 			query.setInt(2, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
-	        Optional<Computer> optionalComputer;
 	        while(result.next()) {
-	        	if((optionalComputer = this.toComputer(result)).isPresent()) {
-	        		resultList.add(optionalComputer.get());
-	        	}
+	        	resultList.add(this.toComputer(result).get());
 		   }
 		} catch (SQLException errorSQL) {
 			new ErrorDAOComputer().connectionLost(errorSQL);
@@ -227,11 +218,8 @@ public class DAOComputer{
 			query.setInt(2, page.getMaxPrint());
 			query.setInt(3, page.getPage()*page.getMaxPrint());
 	        ResultSet result = query.executeQuery();
-	        Optional<Computer> optionalComputer;
 	        while(result.next()) {
-	        	if((optionalComputer = this.toComputer(result)).isPresent()) {
-	        		resultList.add(optionalComputer.get());
-	        	}
+	        	resultList.add(this.toComputer(result).get());
 		   }
 		} catch (SQLException errorSQL) {
 			new ErrorDAOComputer().connectionLost(errorSQL);
@@ -247,8 +235,8 @@ public class DAOComputer{
             try (Connection connection = this.dbConnection.getConnection();
                 	PreparedStatement query = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);){
             	query.setString(1, computer.getName());
-            	query.setDate(2, MappeurDate.OptionalLocalDateToDate(computer.getIntroduced()));
-            	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));
+            	query.setDate(2, MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
+            	query.setDate(3, MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));
 
     			if(computer.getCompany().isPresent()) {
     				query.setLong(4, computer.getCompany().get().getId());
@@ -272,8 +260,8 @@ public class DAOComputer{
 			try (Connection connection = this.dbConnection.getConnection();
 					PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);){
 				query.setString(1, computer.getName());
-            	query.setDate(2, MappeurDate.OptionalLocalDateToDate(computer.getIntroduced()));
-            	query.setDate(3, MappeurDate.OptionalLocalDateToDate(computer.getDiscontinued()));    			
+            	query.setDate(2, MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
+            	query.setDate(3, MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));    			
             	if(computer.getCompany().isPresent()) {
     				query.setLong(4, computer.getCompany().get().getId());
     			}else {
@@ -282,7 +270,7 @@ public class DAOComputer{
             	query.setLong(5, computer.getId());
                 query.executeUpdate();
 			}catch(SQLException errorSQL){
-				new ErrorDAOComputer().updateError(errorSQL);;
+				new ErrorDAOComputer().updateError(errorSQL);
 			}
 		}
 	}
@@ -294,7 +282,7 @@ public class DAOComputer{
            	query.setLong(1, id);
             query.executeUpdate();
 		}catch(SQLException errorSQL){
-			new ErrorDAOComputer().deleteError(errorSQL);;
+			new ErrorDAOComputer().deleteError(errorSQL);
 		}
 	}
 	

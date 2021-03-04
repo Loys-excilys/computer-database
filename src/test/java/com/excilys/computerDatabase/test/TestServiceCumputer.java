@@ -44,7 +44,7 @@ public class TestServiceCumputer{
 		
 		idTest = (int) service.getServiceComputer().addComputer(computer);
 
-		assertEquals(service.getServiceComputer().getNumberComputer()+1, idTest);
+		assertEquals(service.getServiceComputer().getNumberComputer(), idTest);
 
 		
 	}

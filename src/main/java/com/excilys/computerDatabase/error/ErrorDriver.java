@@ -12,11 +12,9 @@ public class ErrorDriver extends ClassNotFoundException{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Logger logger = LoggerFactory.getLogger(DBConnection.class);;
-
-	public ErrorDriver() {}
+	private final transient Logger logger = LoggerFactory.getLogger(DBConnection.class);
 	
-	public void DriverNotFound() {
+	public void driverNotFound() {
 		logger.error("Driver Not Found");
 	}
 }

@@ -7,10 +7,14 @@ import javax.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("serial")
+
 public class ErreurIO extends IOException{
 	
-	private Logger logger;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final transient Logger logger;
 
 	public ErreurIO(Class<?> classe) {
 		this.logger = LoggerFactory.getLogger(classe.getName());

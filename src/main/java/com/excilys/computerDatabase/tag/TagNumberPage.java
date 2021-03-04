@@ -34,11 +34,10 @@ public class TagNumberPage extends SimpleTagSupport{
             	numberPage = (numberComputer/maxNumberPrint);
             }
             		
-            int currentPage = this.currentPage;
-            if(currentPage > 1) {
+            if(this.currentPage > 1) {
 	            getJspContext().getOut().println(
 	            			"<li>"
-	            		+	"<a href=\"?page=" + currentPage + "\" aria-label=\"Previous\">"
+	            		+	"<a href=\"?page=" + this.currentPage + "\" aria-label=\"Previous\">"
 		              	+	"<span aria-hidden=\"true\">&laquo;</span>"
 		              	+	"</a>"
 		          		+	"</li>"
@@ -48,7 +47,7 @@ public class TagNumberPage extends SimpleTagSupport{
             	for(int i = 1 ; i <= numberPage ; i++) {
             		getJspContext().getOut().println("<li><a href=\"?page=" + i + "\">" + i + "</a></li>");
             	}
-            }else if(currentPage < 4){
+            }else if(this.currentPage < 4){
             	getJspContext().getOut().println(
           			  	"<li><a href=\"?page=1\">1</a></li>"
           			+  	"<li><a href=\"?page=2\">2</a></li>"
@@ -57,7 +56,7 @@ public class TagNumberPage extends SimpleTagSupport{
           			+	"<li><a>...</a></li>"
           			+	"<li><a href=\"?page=" + numberPage + "\">" + numberPage + "</a></li>"
           			  );
-            }else if(currentPage > numberPage-3){
+            }else if(this.currentPage > numberPage-3){
             	getJspContext().getOut().println(
         			  	"<li><a href=\"?page=1\">1</a></li>"
         			+	"<li><a>...</a></li>"
@@ -70,17 +69,17 @@ public class TagNumberPage extends SimpleTagSupport{
         	  getJspContext().getOut().println(
             			  	"<li><a href=\"?page=1\">1</a></li>"
             			+	"<li><a>...</a></li>"
-            			+  	"<li><a href=\"?page=" + (currentPage - 1) + "\">" + (currentPage -1) + "</a></li>"
-            			+  	"<li><a href=\"?page=" + currentPage + "\">" + currentPage + "</a></li>"
-            			+  	"<li><a href=\"?page=" + (currentPage + 1) + "\">" + (currentPage + 1) + "</a></li>"
+            			+  	"<li><a href=\"?page=" + (this.currentPage - 1) + "\">" + (this.currentPage -1) + "</a></li>"
+            			+  	"<li><a href=\"?page=" + this.currentPage + "\">" + this.currentPage + "</a></li>"
+            			+  	"<li><a href=\"?page=" + (this.currentPage + 1) + "\">" + (this.currentPage + 1) + "</a></li>"
             			+	"<li><a>...</a></li>"
             			+	"<li><a href=\"?page=" + numberPage + "\">" + numberPage + "</a></li>"
             			  );
           }
-          if(currentPage < numberPage) {
+          if(this.currentPage < numberPage) {
 	          getJspContext().getOut().println(
 	        		  			"<li>"
-	        		  		+	"<a href=\"?page=" + (currentPage + 1) + "\" aria-label=\"Next\">"
+	        		  		+	"<a href=\"?page=" + (this.currentPage + 1) + "\" aria-label=\"Next\">"
 	        		  		+	"<span aria-hidden=\"true\">&raquo;</span>"
 	        		  		+ 	"</a>"
 	        		  		+	"</li>"

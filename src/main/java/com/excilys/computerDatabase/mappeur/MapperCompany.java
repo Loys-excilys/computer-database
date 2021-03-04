@@ -3,17 +3,18 @@ package com.excilys.computerDatabase.mappeur;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.computerDatabase.DTO.CompanyDTO;
 import com.excilys.computerDatabase.data.Company;
+import com.excilys.computerDatabase.dto.CompanyDTO;
 
 public class MapperCompany {
 	
+	private MapperCompany() {}
+	
 	public static CompanyDTO companyToCompanyDTO(Company company) {
-		CompanyDTO companyDTO = new CompanyDTO(company.getId(), company.getName());
-		return companyDTO;
+		return new CompanyDTO(company.getId(), company.getName());
 	}
-	public static List<CompanyDTO> ListCompanyToListCompanyDTO(List<Company> listCompany){
-		List<CompanyDTO> listCompanyDTO= new ArrayList<CompanyDTO>();
+	public static List<CompanyDTO> listCompanyToListCompanyDTO(List<Company> listCompany){
+		List<CompanyDTO> listCompanyDTO= new ArrayList<>();
 		for(Company company : listCompany) {
 			listCompanyDTO.add(companyToCompanyDTO(company));
 		}
@@ -21,7 +22,6 @@ public class MapperCompany {
 	}
 	
 	public static Company companyDTOToCompany(CompanyDTO companyDTO) {
-		Company company = new Company(companyDTO.getId(), companyDTO.getName());
-		return company;
+		return new Company(companyDTO.getId(), companyDTO.getName());
 	}
 }

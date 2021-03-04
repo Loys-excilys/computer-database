@@ -10,12 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.excilys.computerDatabase.DTO.CompanyDTO;
-import com.excilys.computerDatabase.DTO.ComputerFormAddDTO;
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.dto.CompanyDTO;
+import com.excilys.computerDatabase.dto.ComputerFormAddDTO;
 import com.excilys.computerDatabase.error.ErreurIO;
-import com.excilys.computerDatabase.error.ErrorDAOCompany;
-import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.mappeur.MapperCompany;
 import com.excilys.computerDatabase.mappeur.MapperComputer;
@@ -28,21 +26,16 @@ import com.excilys.computerDatabase.service.Service;
 public class ServletAddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private Service service = Service.getInstance();
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletAddComputer() {
-        super();
-    }
+	private final Service service = Service.getInstance();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		try {
-			session.setAttribute("listCompany", MapperCompany.ListCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
+			session.setAttribute("listCompany", MapperCompany.listCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
 			this.getServletContext().getRequestDispatcher("/WEB-INF/JSP/AddComputer.jsp").forward(request, response);
 		} catch (ServletException errorServlet) {
 			new ErreurIO(this.getClass()).redirectionFail(errorServlet);
@@ -54,6 +47,7 @@ public class ServletAddComputer extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		ComputerFormAddDTO computerFormAddDTO = null;
 		HttpSession session = request.getSession();
@@ -61,7 +55,7 @@ public class ServletAddComputer extends HttpServlet {
 		List<CompanyDTO> listCompany = (List) session.getAttribute("listCompany");
 		try {
 			computerFormAddDTO = MapperComputer.requestToComputerFormAddDTO(request);
-			Computer computer = MapperComputer.ComputerFormAddDTOToComputer(computerFormAddDTO, listCompany);
+			Computer computer = MapperComputer.computerFormAddDTOToComputer(computerFormAddDTO, listCompany);
 			this.service.getServiceComputer().addComputer(computer);
 			pathRedirection = "/computer-database/ServletComputer";
 		} catch (ErrorSaisieUser errorUser) {
@@ -73,7 +67,7 @@ public class ServletAddComputer extends HttpServlet {
 		try {
 			response.sendRedirect(pathRedirection);
 		} catch (IOException errorIO) {
-			new ErreurIO(this.getClass()).redirectionFail(errorIO);;
+			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}
 	}
 

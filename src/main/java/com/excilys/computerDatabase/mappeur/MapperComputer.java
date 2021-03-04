@@ -7,27 +7,28 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.excilys.computerDatabase.DTO.CompanyDTO;
-import com.excilys.computerDatabase.DTO.ComputerDTO;
-import com.excilys.computerDatabase.DTO.ComputerFormAddDTO;
-import com.excilys.computerDatabase.DTO.ComputerFormUpdateDTO;
 import com.excilys.computerDatabase.builder.ComputerBuilder;
 import com.excilys.computerDatabase.data.Computer;
+import com.excilys.computerDatabase.dto.CompanyDTO;
+import com.excilys.computerDatabase.dto.ComputerDTO;
+import com.excilys.computerDatabase.dto.ComputerFormAddDTO;
+import com.excilys.computerDatabase.dto.ComputerFormUpdateDTO;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.validator.ValidateurComputer;
 
-public abstract class MapperComputer {
+public class MapperComputer {
+	
+	private MapperComputer() {}
 
 	public static ComputerDTO computerToComputerDTO(Computer computer) {
-		ComputerDTO computerDTO = new ComputerDTO(computer.getId(),
+		return new ComputerDTO(computer.getId(),
 				computer.getName(),
 				computer.getIntroduced().isPresent() ? computer.getIntroduced().get().toString() : "",
 				computer.getDiscontinued().isPresent() ? computer.getDiscontinued().get().toString() : "",
 				computer.getCompany().isPresent() ? computer.getCompany().get().getName(): "");
-		return computerDTO;
 	}
-	public static List<ComputerDTO> ListComputerToListComputerDTO(List<Computer> listComputer){
-		List<ComputerDTO> listComputerDTO= new ArrayList<ComputerDTO>();
+	public static List<ComputerDTO> listComputerToListComputerDTO(List<Computer> listComputer){
+		List<ComputerDTO> listComputerDTO= new ArrayList<>();
 		for(Computer computer : listComputer) {
 			listComputerDTO.add(computerToComputerDTO(computer));
 		}
@@ -35,25 +36,23 @@ public abstract class MapperComputer {
 	}
 	
 	public static ComputerFormAddDTO requestToComputerFormAddDTO(HttpServletRequest request) {
-		ComputerFormAddDTO computerFormAddDTO = new ComputerFormAddDTO(request.getParameter("computerName"),
+		return new ComputerFormAddDTO(request.getParameter("computerName"),
 				request.getParameter("dateIntroduced"),
 				request.getParameter("dateDiscontinued"),
 				request.getParameter("companyName"));
-		return computerFormAddDTO;
 	}
 	
 	public static ComputerFormUpdateDTO requestToComputerFormUpdateDTO(HttpServletRequest request) {
-		ComputerFormUpdateDTO computerFormUpdateDTO = new ComputerFormUpdateDTO(Long.parseLong(request.getSession().getAttribute("idComputer").toString()),
+		return new ComputerFormUpdateDTO(Long.parseLong(request.getSession().getAttribute("idComputer").toString()),
 				request.getParameter("computerName"),
 				request.getParameter("dateIntroduced"),
 				request.getParameter("dateDiscontinued"),
 				request.getParameter("companyName"));
-		return computerFormUpdateDTO;
 	}
 	
-	public static Computer ComputerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
+	public static Computer computerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
 		
-		Computer computer = ValidateurComputer.getInstance().getValidate(new ComputerBuilder()
+		return ValidateurComputer.getInstance().getValidate(new ComputerBuilder()
 				.addName(computerFormAddDTO.getName())
 				.addIntroduced(computerFormAddDTO.getIntroduced().compareTo("") != 0 ?
 						Optional.of(LocalDate.parse(computerFormAddDTO.getIntroduced())) :
@@ -65,12 +64,11 @@ public abstract class MapperComputer {
 						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId())-1))) :
 						Optional.empty())
 				.getComputer());
-		return computer;
 	}
 	
-	public static Computer ComputerFormUpdateDTOToComputer(ComputerFormUpdateDTO computerFormUpdateDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
+	public static Computer computerFormUpdateDTOToComputer(ComputerFormUpdateDTO computerFormUpdateDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
 		
-		Computer computer = ValidateurComputer.getInstance().getValidate(new ComputerBuilder()
+		return ValidateurComputer.getInstance().getValidate(new ComputerBuilder()
 				.addId(computerFormUpdateDTO.getId())
 				.addName(computerFormUpdateDTO.getName())
 				.addIntroduced(computerFormUpdateDTO.getIntroduced().compareTo("") != 0 ?
@@ -83,6 +81,5 @@ public abstract class MapperComputer {
 						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId())-1))) :
 						Optional.empty())
 				.getComputer());
-		return computer;
 	}
 }

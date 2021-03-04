@@ -1,8 +1,6 @@
 package com.excilys.computerDatabase.controller;
 
 import com.excilys.computerDatabase.data.Page;
-import com.excilys.computerDatabase.error.ErrorDAOCompany;
-import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 import com.excilys.computerDatabase.view.View;
@@ -12,14 +10,13 @@ public class Controller{
 	private Service service;
 	private View view;
 	
-	private final int LIST_COMPUTER = 1;
-	private final int LIST_COMPANY = 2;
-	private final int DETAIL_COMPUTER = 3;
-	private final int ADD_COMPUTER = 4;
-	private final int UPDATE_COMPUTER = 5;
-	private final int DELETE_COMPUTER = 6;
-	private final int DELETE_COMPANY = 7;
-	private final int STOP = 0;
+	private static final int LIST_COMPUTER = 1;
+	private static final int LIST_COMPANY = 2;
+	private static final int DETAIL_COMPUTER = 3;
+	private static final int ADD_COMPUTER = 4;
+	private static final int UPDATE_COMPUTER = 5;
+	private static final int DELETE_COMPUTER = 6;
+	private static final int DELETE_COMPANY = 7;
 
 	public Controller(Service service, View view) {
 		this.service = service;
@@ -37,7 +34,6 @@ public class Controller{
 		case UPDATE_COMPUTER: this.view.getViewComputer().printUpdateComputer();break;
 		case DELETE_COMPUTER : this.view.getViewComputer().printDeleteComputer(); break;
 		case DELETE_COMPANY : this.view.getViewCompany().printDeleteCompany(); break;
-		case STOP : ;
 		default : boucle = false;
 		}
 		

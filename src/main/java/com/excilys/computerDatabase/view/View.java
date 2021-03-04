@@ -59,7 +59,7 @@ public class View{
 		do {
 			System.out.print("\n" + message);
 			entry = this.saisieUser.nextLine();
-			if(entry != null | entry.compareTo("") != 0) {
+			if(entry != null || entry.compareTo("") != 0) {
 				boucle = false;
 			}else {
 				ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());

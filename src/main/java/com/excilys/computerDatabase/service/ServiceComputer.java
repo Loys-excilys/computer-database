@@ -6,7 +6,6 @@ import java.util.Optional;
 import com.excilys.computerDatabase.dao.DAOComputer;
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.data.Page;
-import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
 public class ServiceComputer{

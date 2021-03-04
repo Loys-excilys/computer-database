@@ -23,13 +23,13 @@ public class ComputerBuilder {
 		return this;
 	}
 	
-	public ComputerBuilder addIntroduced(Optional<LocalDate> Introduced) {
-		this.computer.setIntroduced(Introduced);
+	public ComputerBuilder addIntroduced(Optional<LocalDate> introduced) {
+		this.computer.setIntroduced(introduced);
 		return this;
 	}
 	
-	public ComputerBuilder addDiscontinued(Optional<LocalDate> Discontinued) {
-		this.computer.setDiscontinued(Discontinued);
+	public ComputerBuilder addDiscontinued(Optional<LocalDate> discontinued) {
+		this.computer.setDiscontinued(discontinued);
 		return this;
 	}
 	

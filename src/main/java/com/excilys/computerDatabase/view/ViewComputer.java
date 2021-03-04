@@ -119,7 +119,7 @@ public class ViewComputer extends View{
 	
 	protected Optional<Company> verifAskNewValueCompanyComputer(String message, Optional<Company> Company){
 		Optional<Company> company;
-		if((company = Optional.of(this.service.getServiceCompany().getCompany(this.printAskEntryString(message)))).isPresent()) {
+		if((company = Optional.ofNullable(this.service.getServiceCompany().getCompany(this.printAskEntryString(message)))).isPresent()) {
 			return company;
 		}else {
 			return Company;

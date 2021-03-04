@@ -5,6 +5,8 @@ import java.util.Optional;
 
 public class MappeurDate {
 	
+	private MappeurDate() {}
+	
 	public static Optional<LocalDate> dateToOptionalLocalDate(java.sql.Date date){
 		Optional<LocalDate> optionalDate;
 		if(date == null) {
@@ -16,11 +18,11 @@ public class MappeurDate {
 	}
 	
 	
-	public static java.sql.Date OptionalLocalDateToDate(Optional<LocalDate> date){
-		java.sql.Date Date = null;
+	public static java.sql.Date optionalLocalDateToDate(Optional<LocalDate> date){
+		java.sql.Date dateSql = null;
 		if(date.isPresent()){
-			Date = java.sql.Date.valueOf(date.get());
+			dateSql = java.sql.Date.valueOf(date.get());
 		}
-		return Date;
+		return dateSql;
 	}
 }

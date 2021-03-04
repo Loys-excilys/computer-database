@@ -33,7 +33,6 @@ public class TestServletAddComputer {
 			assertNotNull(response, "No response received");
 		    assertEquals("text/plain", response.getContentType() );
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -58,7 +57,6 @@ public class TestServletAddComputer {
 		    assertEquals("text/plain", response.getContentType() );
 		    assertEquals(ArrayList.class, session.getAttribute("listCompany").getClass());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}

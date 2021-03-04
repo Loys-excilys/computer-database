@@ -12,8 +12,6 @@ public class Computer {
 	private Optional<LocalDate> discontinued;
 	private Optional<Company> company;
 	
-	public Computer() {}
-	
 
 	public void setId(long id) {
 		this.id = id;

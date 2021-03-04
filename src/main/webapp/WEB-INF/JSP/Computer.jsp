@@ -4,7 +4,7 @@
 <%@ taglib uri="/WEB-INF/TagComputer.tld" prefix="computer" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 	<title>Computer Database</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">

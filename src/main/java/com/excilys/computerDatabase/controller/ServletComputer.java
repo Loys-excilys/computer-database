@@ -9,10 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.excilys.computerDatabase.DTO.ComputerDTO;
 import com.excilys.computerDatabase.data.Page;
+import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.error.ErreurIO;
-import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.mappeur.MapperComputer;
 import com.excilys.computerDatabase.service.Service;
@@ -22,23 +21,24 @@ import com.excilys.computerDatabase.service.Service;
  */
 public class ServletComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String MAX_NUMBER_ENTRY = "maxNumberPrint";
+	private static final String SEARCH = "search";
+	private static final String ORDER_FIELD = "orderField";
+	private static final String SORT = "sort";
 	
-	private Service service = Service.getInstance();       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletComputer() {}
+	private final Service service = Service.getInstance();       
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response){
 		Page page = new Page();
 		List<ComputerDTO> listComputer = null;
 		HttpSession session = request.getSession();
 		this.pagination(request, page, session);
 		try {
-			listComputer = this.getListComputer(request, session, listComputer, page);
+			listComputer = this.getListComputer(request, session, page);
 		} catch (ErrorSaisieUser exception) {
 			exception.formatEntry();
 		}
@@ -61,55 +61,56 @@ public class ServletComputer extends HttpServlet {
 			page.setPage(Integer.parseInt(request.getParameter("page"))-1);
 		}
 		if(request.getParameter("numberEntry") != null) {
-			session.setAttribute("maxNumberPrint", request.getParameter("numberEntry"));
+			session.setAttribute(MAX_NUMBER_ENTRY, request.getParameter("numberEntry"));
 		}
-		if(session.getAttribute("maxNumberPrint") != null) {
-			page.setMaxPrint(Integer.parseInt(session.getAttribute("maxNumberPrint").toString()));
+		if(session.getAttribute(MAX_NUMBER_ENTRY) != null) {
+			page.setMaxPrint(Integer.parseInt(session.getAttribute(MAX_NUMBER_ENTRY).toString()));
 		}else {
-			session.setAttribute("maxNumberPrint", page.getMaxPrint());
+			session.setAttribute(MAX_NUMBER_ENTRY, page.getMaxPrint());
 		}	
 	}
 	
-	private List<ComputerDTO> getListComputer(HttpServletRequest request, HttpSession session, List<ComputerDTO> listComputer, Page page) throws ErrorSaisieUser {
-		if(request.getParameter("search") != null){
-			session.setAttribute("search", request.getParameter("search"));
+	private List<ComputerDTO> getListComputer(HttpServletRequest request, HttpSession session, Page page) throws ErrorSaisieUser {
+		if(request.getParameter(SEARCH) != null){
+			session.setAttribute(SEARCH, request.getParameter(SEARCH));
 		}
-		if(request.getParameter("orderField") != null && request.getParameter("sort") != null) {
-			session.setAttribute("orderField", request.getParameter("orderField"));
-			session.setAttribute("sort", request.getParameter("sort"));
+		if(request.getParameter(ORDER_FIELD) != null && request.getParameter(SORT) != null) {
+			session.setAttribute(ORDER_FIELD, request.getParameter(ORDER_FIELD));
+			session.setAttribute(SORT, request.getParameter(SORT));
 		}
-		if(session.getAttribute("search") != null && session.getAttribute("orderField") != null && session.getAttribute("sort") != null){
-			listComputer = MapperComputer.ListComputerToListComputerDTO(
-				this.service.getServiceComputer().getResearchComputerOrder(session.getAttribute("search").toString(),
-				session.getAttribute("orderField").toString(),
-				session.getAttribute("sort").toString(),
-				page));
+		if(session.getAttribute(SEARCH) != null && session.getAttribute(ORDER_FIELD) != null && session.getAttribute(SORT) != null){
+			page.setMaxComputer(this.service.getServiceComputer().getSearchNumberComputerOrder(session.getAttribute(SEARCH).toString(),
+					session.getAttribute(ORDER_FIELD).toString(),
+					session.getAttribute(SORT).toString()));
 			
-			page.setMaxComputer(this.service.getServiceComputer().getSearchNumberComputerOrder(session.getAttribute("search").toString(),
-				session.getAttribute("orderField").toString(),
-				session.getAttribute("sort").toString()));
-		}else if(session.getAttribute("search") != null) {
-			listComputer = MapperComputer.ListComputerToListComputerDTO(
-				this.service.getServiceComputer().getSearchComputer(session.getAttribute("search").toString(), page));
-			page.setMaxComputer(this.service.getServiceComputer().getSearchNumberComputer(session.getAttribute("search").toString()));
-		}else if(session.getAttribute("orderField") != null && session.getAttribute("sort") != null) {
-			listComputer = MapperComputer.ListComputerToListComputerDTO(
-				this.service.getServiceComputer().getListComputerOrder(session.getAttribute("orderField").toString(),
-					session.getAttribute("sort").toString(),
+			return MapperComputer.listComputerToListComputerDTO(
+				this.service.getServiceComputer().getResearchComputerOrder(session.getAttribute(SEARCH).toString(),
+				session.getAttribute(ORDER_FIELD).toString(),
+				session.getAttribute(SORT).toString(),
+				page));
+		}else if(session.getAttribute(SEARCH) != null) {
+			page.setMaxComputer(this.service.getServiceComputer().getSearchNumberComputer(session.getAttribute(SEARCH).toString()));
+			return MapperComputer.listComputerToListComputerDTO(
+				this.service.getServiceComputer().getSearchComputer(session.getAttribute(SEARCH).toString(), page));
+		}else if(session.getAttribute(ORDER_FIELD) != null && session.getAttribute(SORT) != null) {
+			page.setMaxComputer(this.service.getServiceComputer().getNumberComputerOrder(session.getAttribute(ORDER_FIELD).toString(),
+					(String) session.getAttribute(SORT)));
+			return MapperComputer.listComputerToListComputerDTO(
+				this.service.getServiceComputer().getListComputerOrder(session.getAttribute(ORDER_FIELD).toString(),
+					session.getAttribute(SORT).toString(),
 					page));
-			page.setMaxComputer(this.service.getServiceComputer().getNumberComputerOrder(session.getAttribute("orderField").toString(),
-				(String) session.getAttribute("sort")));
 		}else {
-			listComputer = MapperComputer.ListComputerToListComputerDTO(
-					this.service.getServiceComputer().getListComputer(page));
 			page.setMaxComputer(this.service.getServiceComputer().getNumberComputer());
+			return MapperComputer.listComputerToListComputerDTO(
+					this.service.getServiceComputer().getListComputer(page));
+			
 		}
-		return listComputer;
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		final String SEPARATEUR = ",";
 		

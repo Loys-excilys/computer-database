@@ -10,7 +10,6 @@ import java.util.Optional;
 
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
-import com.excilys.computerDatabase.error.ErrorDAOComputer;
 
 public class DAOCompany{
 	
@@ -20,8 +19,8 @@ public class DAOCompany{
 	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
 	private static final String SELECT_COMPANY_NO_LIMIT = "Select * FROM company";
 	
-	private final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
-	private final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = ?";
+	private static final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
+	private static final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = ?";
 
 	private static DAOCompany INSTANCE;
 	
@@ -81,7 +80,7 @@ public class DAOCompany{
 			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
 		} catch (SQLException exceptionSQL) {
-			new ErrorDAOCompany().connectionLost(exceptionSQL);;
+			new ErrorDAOCompany().connectionLost(exceptionSQL);
 		}
 		
 		return resultList;
