@@ -38,9 +38,7 @@ public class ViewComputer extends View{
 					if(listComputer.size() == 0) {
 						page.previous();
 					}
-				}catch(ErrorDAOComputer connectionLost) {
-					connectionLost.connectionLost();
-				} catch (ErrorSaisieUser e) {
+				}catch (ErrorSaisieUser e) {
 					e.printStackTrace();
 				}
 			}
@@ -78,8 +76,6 @@ public class ViewComputer extends View{
 			this.service.getServiceComputer().addComputer(computer);
 		} catch (ErrorDAOCompany e) {
 			e.printStackTrace();
-		} catch (ErrorDAOComputer e) {
-			e.printStackTrace();
 		}		
 		System.out.println("Done");		
 		this.space();
@@ -89,8 +85,6 @@ public class ViewComputer extends View{
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
 			optionalComputer = this.service.getServiceComputer().getComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
-		} catch (ErrorDAOComputer errorId) {
-			errorId.idInvalid();
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
 		}
@@ -108,21 +102,13 @@ public class ViewComputer extends View{
 			computer.setCompany(this.verifAskNewValueCompanyComputer(
 					"What is the new company owner ? (actual = " + computer.getCompany().get().getName() + ") :",
 					computer.getCompany()));
-			try {
-				this.service.getServiceComputer().updateComputer(computer);
-			} catch (ErrorDAOComputer errorUpdate) {
-				errorUpdate.updateError();
-			}
+			this.service.getServiceComputer().updateComputer(computer);
 		}
 	}
 	
 	public void printDeleteComputer() {
-		try {
-			this.service.getServiceComputer().deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
-			System.out.println("done");
-		} catch (ErrorDAOComputer errorDelete) {
-			errorDelete.deleteError();
-		}
+		this.service.getServiceComputer().deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
+		System.out.println("done");
 		
 		this.space();
 	}

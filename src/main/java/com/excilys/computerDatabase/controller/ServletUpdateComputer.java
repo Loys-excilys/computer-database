@@ -50,8 +50,6 @@ private static final long serialVersionUID = 1L;
 			new ErreurIO(this.getClass());
 		} catch (ErrorDAOCompany errorDAO) {
 			errorDAO.connectionLost();
-		} catch (ErrorDAOComputer e) {
-			e.printStackTrace();
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
 		}
@@ -75,8 +73,6 @@ private static final long serialVersionUID = 1L;
 			errorUser.formatEntry();
 			session.setAttribute("updateComputer", computerFormUpdateDTO);
 			session.setAttribute("errorSaisie", "Name ou date non valide, vérifiez vos informations");
-		} catch (ErrorDAOComputer errorDAO) {
-			errorDAO.connectionLost();	
 		}
 		
 		

@@ -71,8 +71,6 @@ public class ServletAddComputer extends HttpServlet {
 			errorUser.formatEntry();
 			session.setAttribute("currentEntry", computerFormAddDTO);
 			session.setAttribute("errorSaisie", "Name ou date non valide, vérifiez vos informations");
-		} catch (ErrorDAOComputer errorDAO) {
-			errorDAO.connectionLost();	
 		}
 		
 		

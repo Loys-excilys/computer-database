@@ -37,12 +37,37 @@ public class ServletComputer extends HttpServlet {
 		List<ComputerDTO> listComputer = null;
 		int numberComputer = 0;
 		HttpSession session = request.getSession();
+		this.pagination(request, page, session);
+		this.getListComputer(request, session, listComputer, page, numberComputer);
+		
+		try {
+			session.setAttribute("currentPage", (page.getPage()+1));
+			session.setAttribute("numberComputer", numberComputer);
+			session.setAttribute("listComputer", listComputer);
+			
+			this.getServletContext().getRequestDispatcher("/JSP/Computer.jsp").forward(request, response);
+		} catch (ServletException errorServlet) {
+			new ErreurIO(this.getClass());
+		} catch (IOException errorIO) {
+			new ErreurIO(this.getClass());
+		}
+	}
+
+	private void pagination(HttpServletRequest request, Page page, HttpSession session) {
 		if(request.getParameter("page") != null) {
 			page.setPage(Integer.parseInt(request.getParameter("page"))-1);
 		}
 		if(request.getParameter("numberEntry") != null) {
-			page.setMaxPrint(Integer.parseInt(request.getParameter("numberEntry")));;
+			session.setAttribute("maxNumberPrint", request.getParameter("numberEntry"));
 		}
+		if(session.getAttribute("maxNumberPrint") != null) {
+			page.setMaxPrint(Integer.parseInt(session.getAttribute("maxNumberPrint").toString()));
+		}else {
+			session.setAttribute("maxNumberPrint", page.getMaxPrint());
+		}	
+	}
+	
+	private void getListComputer(HttpServletRequest request, HttpSession session, List<ComputerDTO> listComputer, Page page, int numberComputer) {
 		if(request.getParameter("search") != null){
 			session.setAttribute("search", request.getParameter("search"));
 		}
@@ -51,26 +76,20 @@ public class ServletComputer extends HttpServlet {
 			session.setAttribute("sort", request.getParameter("sort"));
 		}
 		if(session.getAttribute("search") != null && session.getAttribute("orderField") != null && session.getAttribute("sort") != null){
-			try {
-				listComputer = MapperComputer.ListComputerToListComputerDTO(
-						this.service.getServiceComputer().getResearchComputerOrder(session.getAttribute("search").toString(),
-								session.getAttribute("orderField").toString(),
-								session.getAttribute("sort").toString(),
-								page));
-				
-				numberComputer = this.service.getServiceComputer().getSearchNumberComputerOrder(session.getAttribute("search").toString(),
-						session.getAttribute("orderField").toString(),
-						session.getAttribute("sort").toString());
-			} catch (ErrorDAOComputer e) {
-				e.printStackTrace();
-			}
+			listComputer = MapperComputer.ListComputerToListComputerDTO(
+					this.service.getServiceComputer().getResearchComputerOrder(session.getAttribute("search").toString(),
+							session.getAttribute("orderField").toString(),
+							session.getAttribute("sort").toString(),
+							page));
+			
+			numberComputer = this.service.getServiceComputer().getSearchNumberComputerOrder(session.getAttribute("search").toString(),
+					session.getAttribute("orderField").toString(),
+					session.getAttribute("sort").toString());
 		}else if(session.getAttribute("search") != null) {
 			try {
 				listComputer = MapperComputer.ListComputerToListComputerDTO(
 						this.service.getServiceComputer().getSearchComputer(session.getAttribute("search").toString(), page));
 				numberComputer = this.service.getServiceComputer().getSearchNumberComputer(session.getAttribute("search").toString());
-			} catch (ErrorDAOComputer e) {
-				e.printStackTrace();
 			} catch (ErrorSaisieUser e) {
 				e.printStackTrace();
 			}
@@ -82,8 +101,6 @@ public class ServletComputer extends HttpServlet {
 								page));
 				numberComputer = this.service.getServiceComputer().getNumberComputerOrder(session.getAttribute("orderField").toString(),
 						(String) session.getAttribute("sort"));
-			} catch (ErrorDAOComputer e) {
-				e.printStackTrace();
 			} catch (ErrorSaisieUser e) {
 				e.printStackTrace();
 			}
@@ -92,24 +109,10 @@ public class ServletComputer extends HttpServlet {
 				listComputer = MapperComputer.ListComputerToListComputerDTO(
 						this.service.getServiceComputer().getListComputer(page));
 				numberComputer = this.service.getServiceComputer().getNumberComputer();
-			} catch (ErrorDAOComputer | ErrorSaisieUser e) {
+			} catch (ErrorSaisieUser e) {
 				e.printStackTrace();
 			}
 		}
-		
-		try {
-			session.setAttribute("currentPage", page.getPage());
-			session.setAttribute("maxNumberPrint", page.getMaxPrint());
-			session.setAttribute("numberComputer", numberComputer);
-			session.setAttribute("listComputer", listComputer);
-			
-			this.getServletContext().getRequestDispatcher("/JSP/Computer.jsp").forward(request, response);
-		} catch (ServletException errorServlet) {
-			new ErreurIO(this.getClass());
-		} catch (IOException errorIO) {
-			new ErreurIO(this.getClass());
-		}
-		
 	}
 
 	/**
@@ -123,8 +126,6 @@ public class ServletComputer extends HttpServlet {
 			try {
 				this.service.getServiceComputer().deleteComputerById(Integer.parseInt(id));
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (ErrorDAOComputer e) {
 				e.printStackTrace();
 			}
 		}

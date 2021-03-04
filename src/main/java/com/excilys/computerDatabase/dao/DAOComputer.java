@@ -171,7 +171,7 @@ public class DAOComputer{
 		return resultList;
 	}
 	
-	public List<Computer> getSearchComputer(String search, Page page) throws ErrorDAOComputer, ErrorSaisieUser {
+	public List<Computer> getSearchComputer(String search, Page page) throws ErrorSaisieUser {
 		List<Computer> resultList = new ArrayList<>();
 		search = "%" + search + "%";
 		try (Connection connection = this.dbConnection.getConnection();
@@ -188,13 +188,13 @@ public class DAOComputer{
 		   }
 		} catch (SQLException errorSQL) {
 			errorSQL.printStackTrace();
-			throw new ErrorDAOComputer();
+			new ErrorDAOComputer();
 		}
 		
 		return resultList;
 	}
 	
-	public List<Computer> getListComputerOrder(String orderField, String sort, Page page) throws ErrorDAOComputer {
+	public List<Computer> getListComputerOrder(String orderField, String sort, Page page) {
 		List<Computer> resultList = new ArrayList<>();
 		orderField = "computer." + orderField;
 		try (Connection connection = this.dbConnection.getConnection();
@@ -209,13 +209,12 @@ public class DAOComputer{
 	        	}
 		   }
 		} catch (SQLException errorSQL) {
-			errorSQL.printStackTrace();
-			throw new ErrorDAOComputer();
+			new ErrorDAOComputer();
 		}
 		return resultList;
 	}
 	
-	public List<Computer> getSearchComputerOrder(String search, String orderField, String sort, Page page) throws ErrorDAOComputer {
+	public List<Computer> getSearchComputerOrder(String search, String orderField, String sort, Page page) {
 		List<Computer> resultList = new ArrayList<>();
 		orderField = "computer." + orderField;
 		search = "%" + search + "%";
@@ -232,14 +231,13 @@ public class DAOComputer{
 	        	}
 		   }
 		} catch (SQLException errorSQL) {
-			errorSQL.printStackTrace();
-			throw new ErrorDAOComputer();
+			new ErrorDAOComputer();
 		}
 		return resultList;
 	}
 	
 	
-	public long insertComputer(Computer computer) throws ErrorDAOComputer {
+	public long insertComputer(Computer computer) {
 		long newKey = 0;
         if(computer != null) {
             try (Connection connection = this.dbConnection.getConnection();
@@ -259,13 +257,13 @@ public class DAOComputer{
                 key.next();
                 newKey = key.getLong(1);
             } catch (SQLException errorSQL) {
-            	throw new ErrorDAOComputer();
+            	new ErrorDAOComputer();
             }
         }
         return newKey;
     }
 	
-	public void updateComputer(Computer computer) throws ErrorDAOComputer {
+	public void updateComputer(Computer computer){
 		if(computer != null) {
 			try (Connection connection = this.dbConnection.getConnection();
 					PreparedStatement query = connection.prepareStatement(UPDATE_COMPUTER);){
@@ -280,23 +278,23 @@ public class DAOComputer{
             	query.setLong(5, computer.getId());
                 query.executeUpdate();
 			}catch(SQLException errorSQL){
-				throw new ErrorDAOComputer();
+				new ErrorDAOComputer();
 			}
 		}
 	}
 	
-	public void deleteComputerById(int id) throws ErrorDAOComputer {
+	public void deleteComputerById(int id) {
 		try (Connection connection = this.dbConnection.getConnection();
 				PreparedStatement query = connection.prepareStatement(DELETE_COMPUTER_BY_ID);){
 			
            	query.setLong(1, id);
             query.executeUpdate();
 		}catch(SQLException errorSQL){
-			throw new ErrorDAOComputer();
+			new ErrorDAOComputer();
 		}
 	}
 	
-	private Optional<Computer> toComputer(ResultSet result) throws ErrorDAOComputer{
+	private Optional<Computer> toComputer(ResultSet result) {
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
 			Optional<LocalDate> introduced = MappeurDate.dateToOptionalLocalDate(result.getDate("introduced"));
@@ -310,8 +308,7 @@ public class DAOComputer{
 					.getComputer();
 			optionalComputer =  Optional.of(computer);
 		} catch (SQLException errorSQL) {
-			errorSQL.printStackTrace();
-			throw new ErrorDAOComputer();
+			new ErrorDAOComputer();
 		}
 		return optionalComputer;
 	}

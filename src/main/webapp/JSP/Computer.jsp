@@ -91,9 +91,9 @@
 	        </ul>
 	        <div class="btn-group btn-group-sm pull-right" role="group" >
 	        	<ul class="pagination">
-	        		<li><a href="?numberEntry=10">10</a></li>
-		        	<li><a href="?numberEntry=25">25</a></li>
-		        	<li><a href="?numberEntry=50">50</a></li>
+	        		<li><a href="?numberEntry=10&page=${sessionScope.currentPage}">10</a></li>
+		        	<li><a href="?numberEntry=25&page=${sessionScope.currentPage}">25</a></li>
+		        	<li><a href="?numberEntry=50&page=${sessionScope.currentPage}">50</a></li>
 	        	</ul>
 		    </div>
 		</div>
