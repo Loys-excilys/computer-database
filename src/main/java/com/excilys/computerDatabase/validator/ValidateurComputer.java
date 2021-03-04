@@ -21,7 +21,6 @@ public class ValidateurComputer {
 		valideDate(computer);
 		return computer;
 	}
-	
 	public void valideName(Computer computer) throws ErrorSaisieUser {
 		if(computer.getName().trim().compareTo("") == 0 || computer.getName() == null) {
 			throw new ErrorSaisieUser(this.getClass());

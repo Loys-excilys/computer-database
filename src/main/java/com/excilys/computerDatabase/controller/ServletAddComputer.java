@@ -43,7 +43,7 @@ public class ServletAddComputer extends HttpServlet {
 		HttpSession session = request.getSession();
 		try {
 			session.setAttribute("listCompany", MapperCompany.ListCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
-			this.getServletContext().getRequestDispatcher("/JSP/AddComputer.jsp").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/WEB-INF/JSP/AddComputer.jsp").forward(request, response);
 		} catch (ServletException errorServlet) {
 			new ErreurIO(this.getClass()).redirectionFail(errorServlet);
 		} catch (IOException errorIO) {

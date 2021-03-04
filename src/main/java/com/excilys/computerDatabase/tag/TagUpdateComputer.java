@@ -41,10 +41,8 @@ public class TagUpdateComputer extends SimpleTagSupport{
 	
 	public void doTag() throws JspException {
 		try {
-			this.getJspContext().getOut().println(
-					
-                "<input type=\"hidden\" name=\"id\" value=\"" + this.computerDTO.getId() + "\">"
-            +   "<div class=\"form-group\">"
+			this.getJspContext().getOut().println(		
+               "<div class=\"form-group\">"
             +   "<label for=\"computerName\">Computer name</label>"
                 		
             + COMPUTER_NAME + "value=\"" + this.computerDTO.getName() +

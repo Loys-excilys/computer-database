@@ -43,7 +43,8 @@ private static final long serialVersionUID = 1L;
 			session.setAttribute("listCompany", MapperCompany.ListCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
 			session.setAttribute("updateComputer", MapperComputer.computerToComputerDTO(this.service.getServiceComputer()
 					.getComputer(Integer.parseInt(request.getParameter("id"))).get()));
-			this.getServletContext().getRequestDispatcher("/JSP/UpdateComputer.jsp").forward(request, response);
+			session.setAttribute("idComputer", request.getParameter("id"));
+			this.getServletContext().getRequestDispatcher("/WEB-INF/JSP/UpdateComputer.jsp").forward(request, response);
 		} catch (ServletException errorServlet) {
 			new ErreurIO(this.getClass()).redirectionFail(errorServlet);
 		} catch (IOException errorIO) {

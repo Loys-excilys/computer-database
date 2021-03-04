@@ -4,7 +4,7 @@ public class Page {
 
 	private int numPage = 0;
 	private int MaxPrint = 25;
-	
+	private int maxComputer = 0;
 	
 	public Page() {}
 	
@@ -31,5 +31,13 @@ public class Page {
 	
 	public int getMaxPrint() {
 		return this.MaxPrint;
+	}
+
+	public int getMaxComputer() {
+		return maxComputer;
+	}
+
+	public void setMaxComputer(int maxComputer) {
+		this.maxComputer = maxComputer;
 	}
 }

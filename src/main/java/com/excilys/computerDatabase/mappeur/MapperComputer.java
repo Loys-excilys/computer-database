@@ -43,7 +43,7 @@ public abstract class MapperComputer {
 	}
 	
 	public static ComputerFormUpdateDTO requestToComputerFormUpdateDTO(HttpServletRequest request) {
-		ComputerFormUpdateDTO computerFormUpdateDTO = new ComputerFormUpdateDTO(Long.parseLong(request.getParameter("id")),
+		ComputerFormUpdateDTO computerFormUpdateDTO = new ComputerFormUpdateDTO(Long.parseLong(request.getSession().getAttribute("idComputer").toString()),
 				request.getParameter("computerName"),
 				request.getParameter("dateIntroduced"),
 				request.getParameter("dateDiscontinued"),
