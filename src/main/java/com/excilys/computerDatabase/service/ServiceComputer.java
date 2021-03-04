@@ -67,7 +67,7 @@ public class ServiceComputer{
 		return this.database.getNumberComputerOrder(orderField, sort);
 	}
 	
-	public List<Computer> getResearchComputerOrder(String search, String orderField, String sort, Page page) {
+	public List<Computer> getResearchComputerOrder(String search, String orderField, String sort, Page page) throws ErrorSaisieUser {
 		return this.database.getSearchComputerOrder(search, orderField, sort, page);
 	}
 	

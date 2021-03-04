@@ -20,7 +20,7 @@ public final class DBConnection {
 		if(DBConnection.INSTANCE == null) {
 			DBConnection.INSTANCE = new DBConnection();
 		}
-	return DBConnection.INSTANCE;
+		return DBConnection.INSTANCE;
 	}
 	
 	private Boolean open(){

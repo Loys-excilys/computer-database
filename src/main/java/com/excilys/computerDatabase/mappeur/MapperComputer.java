@@ -53,7 +53,7 @@ public abstract class MapperComputer {
 	
 	public static Computer ComputerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
 		
-		Computer computer = ValidateurComputer.getValidate(new ComputerBuilder()
+		Computer computer = ValidateurComputer.getInstance().getValidate(new ComputerBuilder()
 				.addName(computerFormAddDTO.getName())
 				.addIntroduced(computerFormAddDTO.getIntroduced().compareTo("") != 0 ?
 						Optional.of(LocalDate.parse(computerFormAddDTO.getIntroduced())) :
@@ -70,7 +70,7 @@ public abstract class MapperComputer {
 	
 	public static Computer ComputerFormUpdateDTOToComputer(ComputerFormUpdateDTO computerFormUpdateDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
 		
-		Computer computer = ValidateurComputer.getValidate(new ComputerBuilder()
+		Computer computer = ValidateurComputer.getInstance().getValidate(new ComputerBuilder()
 				.addId(computerFormUpdateDTO.getId())
 				.addName(computerFormUpdateDTO.getName())
 				.addIntroduced(computerFormUpdateDTO.getIntroduced().compareTo("") != 0 ?

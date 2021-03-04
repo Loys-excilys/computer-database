@@ -45,11 +45,9 @@ public class ServletAddComputer extends HttpServlet {
 			session.setAttribute("listCompany", MapperCompany.ListCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
 			this.getServletContext().getRequestDispatcher("/JSP/AddComputer.jsp").forward(request, response);
 		} catch (ServletException errorServlet) {
-			new ErreurIO(this.getClass());
+			new ErreurIO(this.getClass()).redirectionFail(errorServlet);
 		} catch (IOException errorIO) {
-			new ErreurIO(this.getClass());
-		} catch (ErrorDAOCompany errorDAO) {
-			errorDAO.connectionLost();
+			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}
 	}
 
@@ -72,12 +70,10 @@ public class ServletAddComputer extends HttpServlet {
 			session.setAttribute("currentEntry", computerFormAddDTO);
 			session.setAttribute("errorSaisie", "Name ou date non valide, vérifiez vos informations");
 		}
-		
-		
 		try {
 			response.sendRedirect(pathRedirection);
 		} catch (IOException errorIO) {
-			new ErreurIO(this.getClass());
+			new ErreurIO(this.getClass()).redirectionFail(errorIO);;
 		}
 	}
 

@@ -36,21 +36,23 @@ public class DAOCompany{
 	return DAOCompany.INSTANCE;
 	}
 		
-	public Optional<Company> getCompany(String name) throws ErrorDAOCompany {
+	public Optional<Company> getCompany(String name){
+		Optional<Company> company = Optional.empty();
 		try(Connection connection = this.dbConnection.getConnection();
 	        	PreparedStatement query = connection.prepareStatement(SELECT_COMPANY_NAME);) {
         	query.setString(1, name);
             ResultSet result = query.executeQuery();
             result.next();
-            Company company = new Company(result.getInt("id"),
- 				   result.getString("name"));
-            return Optional.of(company);
-        } catch (SQLException e) {
-            throw new ErrorDAOCompany();
+            company = Optional.ofNullable(new Company(result.getInt("id"),
+ 				   result.getString("name")));
+            return company;
+        } catch (SQLException exceptionSQL) {
+            new ErrorDAOCompany().connectionLost(exceptionSQL);
         }
+		return company;
 	}
 	
-	public List<Company> getListCompany(int page) throws ErrorDAOCompany {
+	public List<Company> getListCompany(int page){
 		List<Company> resultList = new ArrayList<>();
 		
 		try(Connection connection = this.dbConnection.getConnection();
@@ -61,14 +63,14 @@ public class DAOCompany{
 		   while(result.next()) {
 			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
-		} catch (SQLException e) {
-			throw new ErrorDAOCompany();
+		} catch (SQLException exceptionSQL) {
+			new ErrorDAOCompany().connectionLost(exceptionSQL);
 		}
 		
 		return resultList;
 	}
 
-	public List<Company> getListCompany() throws ErrorDAOCompany {
+	public List<Company> getListCompany(){
 		List<Company> resultList = new ArrayList<>();
 		
 		try(Connection connection = this.dbConnection.getConnection();
@@ -78,15 +80,20 @@ public class DAOCompany{
 		   while(result.next()) {
 			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
-		} catch (SQLException e) {
-			throw new ErrorDAOCompany();
+		} catch (SQLException exceptionSQL) {
+			new ErrorDAOCompany().connectionLost(exceptionSQL);;
 		}
 		
 		return resultList;
 	}
 	
-	public void deleteCompanyById(int id) throws SQLException, ErrorDAOCompany {
-		Connection connection = this.dbConnection.getConnection();
+	public void deleteCompanyById(int id){
+		Connection connection = null;
+		try {
+			connection = this.dbConnection.getConnection();
+		} catch (SQLException errorSQL) {
+			new ErrorDAOCompany().connectionLost(errorSQL);
+		}
 		try (PreparedStatement queryDeleteComputer = connection.prepareStatement(DELETE_COMPUTER_BY_COMPANY);
 				PreparedStatement queryDeleteCompany = connection.prepareStatement(DELETE_COMPANY_BY_ID);){
 			connection.setAutoCommit(false);
@@ -98,15 +105,19 @@ public class DAOCompany{
 			queryDeleteCompany.executeUpdate();
 			
 			connection.commit();
-		}catch(ErrorDAOCompany errorSQL){
+		}catch(SQLException errorSQL){
 			try {
 				connection.rollback();
-		        } catch (ErrorDAOCompany excep) {
-		          excep.printStackTrace();
+		        } catch (SQLException roolbackExcpetion) {
+		        	new ErrorDAOCompany().connectionLost(roolbackExcpetion);
 		        }
-			throw new ErrorDAOComputer();
+			new ErrorDAOCompany().idInvalid(errorSQL);
 		}finally {
-			connection.close();
+			try {
+				connection.close();
+			} catch (SQLException errorSQL) {
+				new ErrorDAOCompany().connectionLost(errorSQL);
+			}
 		}
 	}
 }

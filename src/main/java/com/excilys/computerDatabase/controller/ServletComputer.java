@@ -38,7 +38,11 @@ public class ServletComputer extends HttpServlet {
 		int numberComputer = 0;
 		HttpSession session = request.getSession();
 		this.pagination(request, page, session);
-		this.getListComputer(request, session, listComputer, page, numberComputer);
+		try {
+			this.getListComputer(request, session, listComputer, page, numberComputer);
+		} catch (ErrorSaisieUser exception) {
+			exception.formatEntry();
+		}
 		
 		try {
 			session.setAttribute("currentPage", (page.getPage()+1));
@@ -47,9 +51,9 @@ public class ServletComputer extends HttpServlet {
 			
 			this.getServletContext().getRequestDispatcher("/JSP/Computer.jsp").forward(request, response);
 		} catch (ServletException errorServlet) {
-			new ErreurIO(this.getClass());
+			new ErreurIO(this.getClass()).redirectionFail(errorServlet);
 		} catch (IOException errorIO) {
-			new ErreurIO(this.getClass());
+			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}
 	}
 
@@ -67,7 +71,7 @@ public class ServletComputer extends HttpServlet {
 		}	
 	}
 	
-	private void getListComputer(HttpServletRequest request, HttpSession session, List<ComputerDTO> listComputer, Page page, int numberComputer) {
+	private void getListComputer(HttpServletRequest request, HttpSession session, List<ComputerDTO> listComputer, Page page, int numberComputer) throws ErrorSaisieUser {
 		if(request.getParameter("search") != null){
 			session.setAttribute("search", request.getParameter("search"));
 		}
@@ -77,41 +81,29 @@ public class ServletComputer extends HttpServlet {
 		}
 		if(session.getAttribute("search") != null && session.getAttribute("orderField") != null && session.getAttribute("sort") != null){
 			listComputer = MapperComputer.ListComputerToListComputerDTO(
-					this.service.getServiceComputer().getResearchComputerOrder(session.getAttribute("search").toString(),
-							session.getAttribute("orderField").toString(),
-							session.getAttribute("sort").toString(),
-							page));
+				this.service.getServiceComputer().getResearchComputerOrder(session.getAttribute("search").toString(),
+				session.getAttribute("orderField").toString(),
+				session.getAttribute("sort").toString(),
+				page));
 			
 			numberComputer = this.service.getServiceComputer().getSearchNumberComputerOrder(session.getAttribute("search").toString(),
-					session.getAttribute("orderField").toString(),
-					session.getAttribute("sort").toString());
+				session.getAttribute("orderField").toString(),
+				session.getAttribute("sort").toString());
 		}else if(session.getAttribute("search") != null) {
-			try {
-				listComputer = MapperComputer.ListComputerToListComputerDTO(
-						this.service.getServiceComputer().getSearchComputer(session.getAttribute("search").toString(), page));
-				numberComputer = this.service.getServiceComputer().getSearchNumberComputer(session.getAttribute("search").toString());
-			} catch (ErrorSaisieUser e) {
-				e.printStackTrace();
-			}
+			listComputer = MapperComputer.ListComputerToListComputerDTO(
+				this.service.getServiceComputer().getSearchComputer(session.getAttribute("search").toString(), page));
+			numberComputer = this.service.getServiceComputer().getSearchNumberComputer(session.getAttribute("search").toString());
 		}else if(session.getAttribute("orderField") != null && session.getAttribute("sort") != null) {
-			try {
-				listComputer = MapperComputer.ListComputerToListComputerDTO(
-						this.service.getServiceComputer().getListComputerOrder(session.getAttribute("orderField").toString(),
-								session.getAttribute("sort").toString(),
-								page));
-				numberComputer = this.service.getServiceComputer().getNumberComputerOrder(session.getAttribute("orderField").toString(),
-						(String) session.getAttribute("sort"));
-			} catch (ErrorSaisieUser e) {
-				e.printStackTrace();
-			}
+			listComputer = MapperComputer.ListComputerToListComputerDTO(
+				this.service.getServiceComputer().getListComputerOrder(session.getAttribute("orderField").toString(),
+					session.getAttribute("sort").toString(),
+					page));
+			numberComputer = this.service.getServiceComputer().getNumberComputerOrder(session.getAttribute("orderField").toString(),
+				(String) session.getAttribute("sort"));
 		}else {
-			try {
-				listComputer = MapperComputer.ListComputerToListComputerDTO(
-						this.service.getServiceComputer().getListComputer(page));
-				numberComputer = this.service.getServiceComputer().getNumberComputer();
-			} catch (ErrorSaisieUser e) {
-				e.printStackTrace();
-			}
+			listComputer = MapperComputer.ListComputerToListComputerDTO(
+					this.service.getServiceComputer().getListComputer(page));
+			numberComputer = this.service.getServiceComputer().getNumberComputer();
 		}
 	}
 
@@ -125,14 +117,14 @@ public class ServletComputer extends HttpServlet {
 		for(String id : ids) {
 			try {
 				this.service.getServiceComputer().deleteComputerById(Integer.parseInt(id));
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
+			} catch (NumberFormatException exceptionUser) {
+				new ErrorSaisieUser(this.getClass()).formatEntry();
 			}
 		}
 		try {
 			response.sendRedirect("/computer-database/ServletComputer");
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException errorIO) {
+			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}
 	}
 }

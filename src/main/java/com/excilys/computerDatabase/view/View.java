@@ -47,10 +47,8 @@ public class View{
 			
 			try {
 				boucle = this.controller.action(commande, boucle);
-			} catch (ErrorDAOComputer | ErrorDAOCompany errorConnection) {
-				((ErrorDAOCompany) errorConnection).connectionLost();
-			} catch (ErrorSaisieUser e) {
-				e.printStackTrace();
+			} catch (ErrorSaisieUser exception) {
+				exception.formatEntry();
 			}
 		}
 	}
@@ -64,7 +62,7 @@ public class View{
 			if(entry != null | entry.compareTo("") != 0) {
 				boucle = false;
 			}else {
-				ErrorSaisieUser error = new ErrorSaisieUser();
+				ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());
 				error.formatEntry();
 			}
 		}while(boucle);
@@ -82,7 +80,7 @@ public class View{
 			return "previous";
 			
 		}else if(entry.compareTo("q") != 0) {
-			ErrorSaisieUser error = new ErrorSaisieUser();
+			ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());
 			error.formatEntry();
 		}
 		return "quit";
@@ -95,7 +93,7 @@ public class View{
 			try{
 				num = Integer.parseInt(this.saisieUser.nextLine());
 			}catch(NumberFormatException e){
-				ErrorSaisieUser error = new ErrorSaisieUser();
+				ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());
 				error.formatEntry();
 			}
 		}while(num == -1);
@@ -115,7 +113,7 @@ public class View{
 				}
 				boucle = true;
 			}catch(DateTimeParseException  e){
-				ErrorSaisieUser error = new ErrorSaisieUser();
+				ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());
 				error.formatEntry();
 			}
 		}while(!boucle);

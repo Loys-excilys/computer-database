@@ -45,13 +45,11 @@ private static final long serialVersionUID = 1L;
 					.getComputer(Integer.parseInt(request.getParameter("id"))).get()));
 			this.getServletContext().getRequestDispatcher("/JSP/UpdateComputer.jsp").forward(request, response);
 		} catch (ServletException errorServlet) {
-			new ErreurIO(this.getClass());
+			new ErreurIO(this.getClass()).redirectionFail(errorServlet);
 		} catch (IOException errorIO) {
-			new ErreurIO(this.getClass());
-		} catch (ErrorDAOCompany errorDAO) {
-			errorDAO.connectionLost();
-		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
+			new ErreurIO(this.getClass()).redirectionFail(errorIO);
+		} catch (ErrorSaisieUser exception) {
+			exception.formatEntry();
 		}
 	}
 
@@ -74,12 +72,10 @@ private static final long serialVersionUID = 1L;
 			session.setAttribute("updateComputer", computerFormUpdateDTO);
 			session.setAttribute("errorSaisie", "Name ou date non valide, vérifiez vos informations");
 		}
-		
-		
 		try {
 			response.sendRedirect(pathRedirection);
 		} catch (IOException errorIO) {
-			new ErreurIO(this.getClass());
+			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}
 	}
 }

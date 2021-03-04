@@ -22,19 +22,19 @@ public class ServiceCompany{
 	return ServiceCompany.INSTANCE;
 	}
 	
-	public Company getCompany(String nameCompany) throws ErrorDAOCompany {
+	public Company getCompany(String nameCompany){
 		return this.database.getCompany(nameCompany).get();
 	}
 
-	public List<Company> getListCompany() throws ErrorDAOCompany {
+	public List<Company> getListCompany(){
 		return this.database.getListCompany();
 	}
 	
-	public List<Company> getListCompany(int page) throws ErrorDAOCompany{
+	public List<Company> getListCompany(int page){
 		return this.database.getListCompany(page);
 	}
 	
-	public void deleteCompanyById(int id) throws ErrorDAOCompany, SQLException {
+	public void deleteCompanyById(int id){
 		this.database.deleteCompanyById(id);
 	}
 }

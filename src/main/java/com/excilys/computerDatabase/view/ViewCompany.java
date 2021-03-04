@@ -1,12 +1,10 @@
 package com.excilys.computerDatabase.view;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.computerDatabase.controller.Controller;
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Page;
-import com.excilys.computerDatabase.error.ErrorDAOCompany;
 import com.excilys.computerDatabase.service.Service;
 
 public class ViewCompany extends View{
@@ -30,13 +28,9 @@ public class ViewCompany extends View{
 				}else if(next.compareTo("previous") == 0) {
 					page.previous();
 				}
-				try {
-					listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
-					if(listCompany.size() == 0) {
-						page.previous();
-					}
-				} catch (ErrorDAOCompany errorConnection) {
-					errorConnection.connectionLost();
+				listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
+				if(listCompany.size() == 0) {
+					page.previous();
 				}
 			}
 			
@@ -44,16 +38,10 @@ public class ViewCompany extends View{
 		}
 	}
 
-	public void printDeleteCompany() {
+	public void printDeleteCompany(){
 		int idCompanySelected = this.printAskEntryInt("Enter the id of the company : ");
-		try {
-			this.service.getServiceCompany().deleteCompanyById(idCompanySelected);
-			System.out.println("done");
-		} catch (ErrorDAOCompany e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		this.service.getServiceCompany().deleteCompanyById(idCompanySelected);
+		System.out.println("done");
 		this.space();
 	}
 	

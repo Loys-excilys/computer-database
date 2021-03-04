@@ -3,24 +3,35 @@ package com.excilys.computerDatabase.validator;
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
-abstract public class ValidateurComputer {
+public class ValidateurComputer {
 	
-	public static Computer getValidate(Computer computer) throws ErrorSaisieUser {
+	private static ValidateurComputer INSTANCE;
+	
+	private ValidateurComputer() {}
+	
+	public synchronized static ValidateurComputer getInstance() {
+		if(ValidateurComputer.INSTANCE == null) {
+			ValidateurComputer.INSTANCE = new ValidateurComputer();
+		}
+		return ValidateurComputer.INSTANCE;
+	}
+	
+	public Computer getValidate(Computer computer) throws ErrorSaisieUser {
 		valideName(computer);
 		valideDate(computer);
 		return computer;
 	}
 	
-	public static void valideName(Computer computer) throws ErrorSaisieUser {
+	public void valideName(Computer computer) throws ErrorSaisieUser {
 		if(computer.getName().trim().compareTo("") == 0 || computer.getName() == null) {
-			throw new ErrorSaisieUser();
+			throw new ErrorSaisieUser(this.getClass());
 		}
 	}
 	
-	public static void valideDate(Computer computer) throws ErrorSaisieUser {
+	public void valideDate(Computer computer) throws ErrorSaisieUser {
 		if(computer.getIntroduced().isPresent() && computer.getDiscontinued().isPresent()) {
 			if(!computer.getIntroduced().get().isBefore(computer.getDiscontinued().get())) {
-				throw new ErrorSaisieUser();
+				throw new ErrorSaisieUser(this.getClass());
 			}
 		}
 	}

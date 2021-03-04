@@ -83,7 +83,7 @@ public class DAOComputer{
             numberComputer = result.getInt(1);
             
         } catch (SQLException errorSQL) {
-        	new ErrorDAOComputer();
+        	new ErrorDAOComputer().connectionLost(errorSQL);
         }
 		return numberComputer;
 	}
@@ -99,7 +99,7 @@ public class DAOComputer{
             numberComputer = result.getInt(1);
             
         } catch (SQLException errorSQL) {
-        	new ErrorDAOComputer();
+        	new ErrorDAOComputer().connectionLost(errorSQL);
         }
 		return numberComputer;
 	}
@@ -114,7 +114,7 @@ public class DAOComputer{
             numberComputer = result.getInt(1);
             
         } catch (SQLException errorSQL) {
-        	new ErrorDAOComputer();
+        	new ErrorDAOComputer().connectionLost(errorSQL);
         }
 		return numberComputer;
 	}
@@ -130,7 +130,7 @@ public class DAOComputer{
             numberComputer = result.getInt(1);
             
         } catch (SQLException errorSQL) {
-        	new ErrorDAOComputer();
+        	new ErrorDAOComputer().connectionLost(errorSQL);
         }
 		return numberComputer;
 	}
@@ -145,7 +145,8 @@ public class DAOComputer{
             result.next();
             computer = this.toComputer(result);
         } catch (SQLException errorSQL) {
-        	new ErrorDAOComputer();
+        	new ErrorDAOComputer().connectionLost(errorSQL);
+        	throw new ErrorSaisieUser(this.getClass());
         }
 		return computer;
 	}
@@ -165,7 +166,7 @@ public class DAOComputer{
 	        	}
 		   }
 		} catch (SQLException errorSQL) {
-			new ErrorDAOComputer();
+			new ErrorDAOComputer().connectionLost(errorSQL);;
 		}
 		
 		return resultList;
@@ -188,13 +189,14 @@ public class DAOComputer{
 		   }
 		} catch (SQLException errorSQL) {
 			errorSQL.printStackTrace();
-			new ErrorDAOComputer();
+			new ErrorDAOComputer().connectionLost(errorSQL);
+			throw new ErrorSaisieUser(this.getClass());
 		}
 		
 		return resultList;
 	}
 	
-	public List<Computer> getListComputerOrder(String orderField, String sort, Page page) {
+	public List<Computer> getListComputerOrder(String orderField, String sort, Page page) throws ErrorSaisieUser {
 		List<Computer> resultList = new ArrayList<>();
 		orderField = "computer." + orderField;
 		try (Connection connection = this.dbConnection.getConnection();
@@ -209,12 +211,13 @@ public class DAOComputer{
 	        	}
 		   }
 		} catch (SQLException errorSQL) {
-			new ErrorDAOComputer();
+			new ErrorDAOComputer().connectionLost(errorSQL);
+			throw new ErrorSaisieUser(this.getClass());
 		}
 		return resultList;
 	}
 	
-	public List<Computer> getSearchComputerOrder(String search, String orderField, String sort, Page page) {
+	public List<Computer> getSearchComputerOrder(String search, String orderField, String sort, Page page) throws ErrorSaisieUser {
 		List<Computer> resultList = new ArrayList<>();
 		orderField = "computer." + orderField;
 		search = "%" + search + "%";
@@ -231,7 +234,8 @@ public class DAOComputer{
 	        	}
 		   }
 		} catch (SQLException errorSQL) {
-			new ErrorDAOComputer();
+			new ErrorDAOComputer().connectionLost(errorSQL);
+			throw new ErrorSaisieUser(this.getClass());
 		}
 		return resultList;
 	}
@@ -257,7 +261,7 @@ public class DAOComputer{
                 key.next();
                 newKey = key.getLong(1);
             } catch (SQLException errorSQL) {
-            	new ErrorDAOComputer();
+            	new ErrorDAOComputer().insertError(errorSQL);
             }
         }
         return newKey;
@@ -278,7 +282,7 @@ public class DAOComputer{
             	query.setLong(5, computer.getId());
                 query.executeUpdate();
 			}catch(SQLException errorSQL){
-				new ErrorDAOComputer();
+				new ErrorDAOComputer().updateError(errorSQL);;
 			}
 		}
 	}
@@ -290,11 +294,11 @@ public class DAOComputer{
            	query.setLong(1, id);
             query.executeUpdate();
 		}catch(SQLException errorSQL){
-			new ErrorDAOComputer();
+			new ErrorDAOComputer().deleteError(errorSQL);;
 		}
 	}
 	
-	private Optional<Computer> toComputer(ResultSet result) {
+	private Optional<Computer> toComputer(ResultSet result) throws ErrorDAOComputer {
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
 			Optional<LocalDate> introduced = MappeurDate.dateToOptionalLocalDate(result.getDate("introduced"));
@@ -308,7 +312,7 @@ public class DAOComputer{
 					.getComputer();
 			optionalComputer =  Optional.of(computer);
 		} catch (SQLException errorSQL) {
-			new ErrorDAOComputer();
+			throw new ErrorDAOComputer();
 		}
 		return optionalComputer;
 	}

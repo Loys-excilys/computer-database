@@ -26,7 +26,7 @@ public class Controller{
 		this.view = view;
 	}
 
-	public boolean action(int commande, boolean boucle) throws ErrorDAOComputer, ErrorDAOCompany, ErrorSaisieUser{
+	public boolean action(int commande, boolean boucle) throws ErrorSaisieUser{
 		Page page = new Page();
 		
 		switch(commande) {
@@ -44,15 +44,15 @@ public class Controller{
 		return boucle;		
 	}
 
-	public void chooseIdDetailcomputer(int commande) throws ErrorDAOComputer, ErrorSaisieUser {
+	public void chooseIdDetailcomputer(int commande) throws ErrorSaisieUser {
 		this.view.getViewComputer().printDetailComputer(this.service.getServiceComputer().getComputer(commande));
 	}
 	
-	public void changePageComputer(Page page) throws ErrorDAOComputer, ErrorSaisieUser {
+	public void changePageComputer(Page page) throws ErrorSaisieUser {
 		this.view.getViewComputer().printListComputer(this.service.getServiceComputer().getListComputer(page));
 	}
 	
-	public void changePageCompany(int page) throws ErrorDAOCompany {
+	public void changePageCompany(int page){
 		this.view.getViewCompany().printListCompany(this.service.getServiceCompany().getListCompany(page));
 	}
 }

@@ -38,23 +38,21 @@ public class ViewComputer extends View{
 					if(listComputer.size() == 0) {
 						page.previous();
 					}
-				}catch (ErrorSaisieUser e) {
-					e.printStackTrace();
+				}catch (ErrorSaisieUser exception) {
+					exception.formatEntry();
 				}
 			}
 			this.space();
 		}
 	}
 	
-	public void printAskIdDetailComputer() throws ErrorDAOComputer {
+	public void printAskIdDetailComputer() {
 		int commande = this.printAskEntryInt("Veuillez saisir l'Id de l'ordinateur : ");
 		if(commande != -1) {
 			try {
 				this.controller.chooseIdDetailcomputer(commande);
-			} catch (ErrorDAOComputer e) {
-				e.printStackTrace();
-			} catch (ErrorSaisieUser e) {
-				e.printStackTrace();
+			} catch (ErrorSaisieUser exception) {
+				exception.formatEntry();
 			}
 		}
 	}
@@ -66,27 +64,23 @@ public class ViewComputer extends View{
 	
 	public void printAddComputer() {
 		Computer computer;
-		try {
-			computer = new ComputerBuilder()
-					.addName(this.printAskEntryString("Can you give me the Name ? : "))
-					.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
-					.addDiscontinued(this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
-					.addCompany(Optional.of(this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : "))))
-					.getComputer();
-			this.service.getServiceComputer().addComputer(computer);
-		} catch (ErrorDAOCompany e) {
-			e.printStackTrace();
-		}		
+		computer = new ComputerBuilder()
+				.addName(this.printAskEntryString("Can you give me the Name ? : "))
+				.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
+				.addDiscontinued(this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
+				.addCompany(Optional.of(this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : "))))
+				.getComputer();
+		this.service.getServiceComputer().addComputer(computer);		
 		System.out.println("Done");		
 		this.space();
 	}
 	
-	public void printUpdateComputer() throws ErrorDAOCompany {
+	public void printUpdateComputer(){
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
 			optionalComputer = this.service.getServiceComputer().getComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
-		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
+		} catch (ErrorSaisieUser exception) {
+			exception.formatEntry();
 		}
 		if(optionalComputer.isPresent()) {
 			Computer computer = optionalComputer.get();
@@ -123,7 +117,7 @@ public class ViewComputer extends View{
 		}
 	}
 	
-	protected Optional<Company> verifAskNewValueCompanyComputer(String message, Optional<Company> Company) throws ErrorDAOCompany {
+	protected Optional<Company> verifAskNewValueCompanyComputer(String message, Optional<Company> Company){
 		Optional<Company> company;
 		if((company = Optional.of(this.service.getServiceCompany().getCompany(this.printAskEntryString(message)))).isPresent()) {
 			return company;

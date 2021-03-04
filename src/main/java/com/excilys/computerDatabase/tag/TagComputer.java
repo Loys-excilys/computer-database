@@ -30,8 +30,7 @@ public class TagComputer extends SimpleTagSupport{
 			        +   	"<td>" + (computer.getIntroduced() != null ? computer.getIntroduced() : "") + "</td>"
 			        +   	"<td>" + (computer.getDiscontinued() != null ? computer.getDiscontinued() : "") + "</td>"
 			        +   	"<td>" + (computer.getCompanyName()!= null ? computer.getCompanyName() : "") + "</td>"
-			        +	"</tr>"
-						
+			        +	"</tr>"	
 						);
 			}
 		} catch (IOException e) {
