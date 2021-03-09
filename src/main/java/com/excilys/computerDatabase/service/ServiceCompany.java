@@ -2,23 +2,19 @@ package com.excilys.computerDatabase.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.dao.DAOCompany;
 import com.excilys.computerDatabase.data.Company;
 
+@Component
+@Scope("singleton")
 public class ServiceCompany{
-	private static ServiceCompany INSTANCE;
+	
+	@Autowired
 	private DAOCompany database;
-	
-	private ServiceCompany() {
-		this.database = DAOCompany.getInstance();
-	}
-	
-	public static synchronized ServiceCompany getInstance() {
-		if(ServiceCompany.INSTANCE == null) {
-			ServiceCompany.INSTANCE = new ServiceCompany();
-		}
-	return ServiceCompany.INSTANCE;
-	}
 	
 	public Company getCompany(String nameCompany){
 		return this.database.getCompany(nameCompany).get();

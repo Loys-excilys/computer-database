@@ -5,30 +5,28 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.controller.Controller;
-import com.excilys.computerDatabase.error.ErrorDAOCompany;
-import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 
+@Component("View")
+@Scope("singleton")
 public class View{
 
+	@Autowired
 	protected Controller controller;
+	@Autowired
 	protected Service service;
+	@Autowired
 	private ViewComputer viewComputer;
+	@Autowired
 	private ViewCompany viewCompany;
 	
 	protected Scanner saisieUser = new Scanner(System.in);
-	
-	public View(Service service) {
-		this.service = service;		
-	}
-	
-	public void setController(Controller controller) {
-		this.controller = controller;
-		this.viewCompany = new ViewCompany(service, controller);
-		this.viewComputer = new ViewComputer(service, controller);
-	}
 	
 	public void cli(){
 		boolean boucle = true;
@@ -55,7 +53,7 @@ public class View{
 	
 	protected String printAskEntryString(String message) {
 		String entry;
-		Boolean boucle = true;
+		boolean boucle = true;
 		do {
 			System.out.print("\n" + message);
 			entry = this.saisieUser.nextLine();
@@ -103,7 +101,7 @@ public class View{
 	
 	protected Optional<LocalDate> printAskEntryDate(String message) {
 		Optional<LocalDate> date = Optional.empty();
-		Boolean boucle = false;
+		boolean boucle = false;
 		do {
 			System.out.print("\n" + message);
 			try{			

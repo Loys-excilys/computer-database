@@ -9,7 +9,7 @@ public class ValidateurComputer {
 	
 	private ValidateurComputer() {}
 	
-	public synchronized static ValidateurComputer getInstance() {
+	public static synchronized ValidateurComputer getInstance() {
 		if(ValidateurComputer.INSTANCE == null) {
 			ValidateurComputer.INSTANCE = new ValidateurComputer();
 		}
@@ -28,10 +28,8 @@ public class ValidateurComputer {
 	}
 	
 	public void valideDate(Computer computer) throws ErrorSaisieUser {
-		if(computer.getIntroduced().isPresent() && computer.getDiscontinued().isPresent()) {
-			if(!computer.getIntroduced().get().isBefore(computer.getDiscontinued().get())) {
-				throw new ErrorSaisieUser(this.getClass());
-			}
+		if(computer.getIntroduced().isPresent() && computer.getDiscontinued().isPresent() && !computer.getIntroduced().get().isBefore(computer.getDiscontinued().get())) {
+			throw new ErrorSaisieUser(this.getClass());
 		}
 	}
 

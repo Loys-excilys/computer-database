@@ -1,7 +1,9 @@
 package com.excilys.computerDatabase.main;
 
-import com.excilys.computerDatabase.controller.Controller;
-import com.excilys.computerDatabase.service.Service;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.excilys.computerDatabase.config.ConfigContext;
 import com.excilys.computerDatabase.view.View;
 
 public class main {
@@ -14,10 +16,8 @@ public class main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		final Service service = Service.getInstance();
-		final View view = new View(service);
-		final Controller controller = new Controller(service, view);
-		view.setController(controller);
+		ApplicationContext context = new AnnotationConfigApplicationContext(ConfigContext.class);
+		final View view = context.getBean("View", View.class);
 		view.cli();
 	}
 

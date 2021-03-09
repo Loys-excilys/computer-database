@@ -11,9 +11,9 @@ import com.excilys.computerDatabase.dto.ComputerFormAddDTO;
 
 public class TagAddComputer extends SimpleTagSupport{
 	
-	private final static String COMPUTER_NAME = "<input type=\"text\" class=\"form-control\" id=\"computerName\" "
+	private static final String COMPUTER_NAME = "<input type=\"text\" class=\"form-control\" id=\"computerName\" "
             + 		"placeholder=\"Computer name\" name=\"computerName\" maxlength=\"255\" required = \"required\" onchange=\"verifNameComputer(this.value)\" ";
-	private final static String INTRODUCED_DATE = " \" >"
+	private static final String INTRODUCED_DATE = " \" >"
             +	"</div>"
             +  "<div class=\"form-group\">"
             +        "<label for=\"introduced\">Introduced date</label>"
@@ -21,7 +21,7 @@ public class TagAddComputer extends SimpleTagSupport{
             + 			"placeholder=\"Introduced date\" name=\"dateIntroduced\" onchange=\"limitMinDate(this.value)\" "
             + 			"value=\"";
 	
-	private final static String DISCONTINUED_DATE = "\">"
+	private static final String DISCONTINUED_DATE = "\">"
             +    "</div>"
             +    "<div class=\"form-group\">"
             +       "<label for=\"discontinued\">Discontinued date</label>"

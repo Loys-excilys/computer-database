@@ -1,13 +1,23 @@
 package com.excilys.computerDatabase.controller;
 
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 import com.excilys.computerDatabase.view.View;
 
+@Component
+@Scope("singleton")
 public class Controller{
 	
+	@Autowired
 	private Service service;
+	@Resource(name="View")
 	private View view;
 	
 	private static final int LIST_COMPUTER = 1;
@@ -17,11 +27,6 @@ public class Controller{
 	private static final int UPDATE_COMPUTER = 5;
 	private static final int DELETE_COMPUTER = 6;
 	private static final int DELETE_COMPANY = 7;
-
-	public Controller(Service service, View view) {
-		this.service = service;
-		this.view = view;
-	}
 
 	public boolean action(int commande, boolean boucle) throws ErrorSaisieUser{
 		Page page = new Page();

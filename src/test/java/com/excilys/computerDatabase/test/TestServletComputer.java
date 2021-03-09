@@ -17,10 +17,10 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
 
-public class TestServletComputer {
+class TestServletComputer {
 
 	@Test
-	public void testDoGetPageUndefined() {
+	void testDoGetPageUndefined() {
 		ServletRunner servletRunner = new ServletRunner();
 		servletRunner.registerServlet( "computer-database/ServletComputer", ServletComputer.class.getName() );
 		ServletUnitClient testServlet = servletRunner.newClient() ;
@@ -39,7 +39,7 @@ public class TestServletComputer {
 	}
 
 	@Test
-	public void testDoGetPagedefined() {
+	void testDoGetPagedefined() {
 		ServletRunner servletRunner = new ServletRunner();
 		servletRunner.registerServlet( "computer-database/ServletComputer", ServletComputer.class.getName() );
 		ServletUnitClient testServlet = servletRunner.newClient() ;

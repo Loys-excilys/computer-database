@@ -4,7 +4,7 @@
      
       <groupId>com.excilys</groupId>
       <artifactId>computerDatabase</artifactId>
-      <version>2.0</version>
+      <version>3.0</version>
       <packaging>war</packaging>
 
 	  <properties>
@@ -27,10 +27,22 @@
     	<tomcat.version>9.0.1</tomcat.version>
     	<dbUnit.version>2.7.0</dbUnit.version>
     	<h2database.version>1.4.200</h2database.version>
+    	<spring.version>5.3.4</spring.version>
 	  </properties>
 
 
   <dependencies>
+  
+  		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
     <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
     <dependency>
 	    <groupId>mysql</groupId>

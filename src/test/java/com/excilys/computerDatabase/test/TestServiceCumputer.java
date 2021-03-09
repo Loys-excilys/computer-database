@@ -3,7 +3,6 @@ package com.excilys.computerDatabase.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -15,14 +14,13 @@ import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 
 
-public class TestServiceCumputer{
+class TestServiceCumputer{
 	
 	int idTest = 1;
 	@Test
-	public void testGetListComputer() throws Exception, ErrorSaisieUser {
+	void testGetListComputer() throws Exception, ErrorSaisieUser {
 		Service service;
-		service = Service.getInstance();
-		service.createService();
+		service = new Service();
 		Page page = new Page();
 		
 		page.setPage(0);
@@ -30,10 +28,9 @@ public class TestServiceCumputer{
 	}
 	
 	@Test
-	public void testInsertComputer()throws Exception, ErrorSaisieUser{
+	void testInsertComputer()throws Exception, ErrorSaisieUser{
 		Service service;
-		service = Service.getInstance();
-		service.createService();
+		service = new Service();
 		Computer computer = new ComputerBuilder()
 				.addName("testUnitaire")
 				.addIntroduced(Optional.of(LocalDate.parse("2015-06-22")))
@@ -50,18 +47,16 @@ public class TestServiceCumputer{
 	}
 	
 	@Test
-	public void testGetComputer() throws Exception, ErrorSaisieUser {
+	void testGetComputer() throws Exception, ErrorSaisieUser {
 		Service service;
-		service = Service.getInstance();
-		service.createService();
+		service = new Service();
 		assertEquals(Computer.class, service.getServiceComputer().getComputer(idTest).get().getClass());
 	}
 
 	@Test
-	public void testUpdateComputer() throws Exception, ErrorSaisieUser {
+	void testUpdateComputer() throws Exception, ErrorSaisieUser {
 		Service service;
-		service = Service.getInstance();
-		service.createService();
+		service = new Service();
 		Computer computer = service.getServiceComputer().getComputer(idTest).get();
 		
 		computer.setName("testUnitaire2");

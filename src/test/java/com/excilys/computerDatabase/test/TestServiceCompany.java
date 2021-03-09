@@ -9,22 +9,20 @@ import org.junit.jupiter.api.Test;
 import com.excilys.computerDatabase.service.Service;
 
 
-public class TestServiceCompany{
+class TestServiceCompany{
 	
 	@Test
-	public void testGetListCompany() throws Exception {
+	void testGetListCompany() throws Exception {
 		Service service;
-		service = Service.getInstance();
-		service.createService();
+		service = new Service();
 		
 		assertEquals(ArrayList.class, service.getServiceCompany().getListCompany(0).getClass());
 	}
 	
 	@Test
-	public void testGetAllListCompany() throws Exception {
+	void testGetAllListCompany() throws Exception {
 		Service service;
-		service = Service.getInstance();
-		service.createService();
+		service = new Service();
 		
 		assertEquals(ArrayList.class, service.getServiceCompany().getListCompany().getClass());
 	}

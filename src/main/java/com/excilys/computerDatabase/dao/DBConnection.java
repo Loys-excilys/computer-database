@@ -3,28 +3,21 @@ package com.excilys.computerDatabase.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+@Component
+@Scope("singleton")
 public final class DBConnection {
-	private static DBConnection INSTANCE = null;
 	
 	private HikariDataSource connection;
 	private HikariConfig config = new HikariConfig();
 	
-	private DBConnection() {
-		this.open();
-	}
-	
-	public static synchronized DBConnection getInstance() {
-		if(DBConnection.INSTANCE == null) {
-			DBConnection.INSTANCE = new DBConnection();
-		}
-		return DBConnection.INSTANCE;
-	}
-	
 	private Boolean open(){
-		final DBProperties dbProperties = DBProperties.getInstance();
+		DBProperties dbProperties = DBProperties.getInstance();
 		config.setDriverClassName(dbProperties.getDriver());
 		config.setJdbcUrl(dbProperties.getUrl());
 		config.setUsername(dbProperties.getLogin());
@@ -37,7 +30,7 @@ public final class DBConnection {
 	}
 	
 	public Connection getConnection() throws SQLException{
-		if(this.connection.isClosed()) {
+		if(this.connection == null || this.connection.isClosed()) {
 			this.open();
 		}
 		return this.connection.getConnection();

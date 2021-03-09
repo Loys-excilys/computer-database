@@ -8,9 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 
+@Component
+@Scope("singleton")
 public class DAOCompany{
 	
 	private static final int MAX_ENTRY_PRINT = 25;
@@ -21,19 +27,9 @@ public class DAOCompany{
 	
 	private static final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
 	private static final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = ?";
-
-	private static DAOCompany INSTANCE;
 	
-	private DBConnection dbConnection = DBConnection.getInstance();
-	
-	private DAOCompany(){}
-	
-	public static synchronized DAOCompany getInstance() {
-		if(DAOCompany.INSTANCE == null) {
-			DAOCompany.INSTANCE = new DAOCompany();
-		}
-	return DAOCompany.INSTANCE;
-	}
+	@Autowired
+	private DBConnection dbConnection;
 		
 	public Optional<Company> getCompany(String name){
 		Optional<Company> company = Optional.empty();

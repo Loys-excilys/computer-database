@@ -3,12 +3,16 @@ package com.excilys.computerDatabase.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.dto.CompanyDTO;
@@ -26,7 +30,8 @@ import com.excilys.computerDatabase.service.Service;
 public class ServletUpdateComputer extends HttpServlet {
 private static final long serialVersionUID = 1L;
 	
-	private final Service service = Service.getInstance();
+	@Autowired
+	private Service service;
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -73,5 +78,11 @@ private static final long serialVersionUID = 1L;
 		} catch (IOException errorIO) {
 			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}
+	}
+    
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+		super.init(config);
 	}
 }

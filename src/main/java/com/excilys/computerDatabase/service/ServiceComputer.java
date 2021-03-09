@@ -3,27 +3,24 @@ package com.excilys.computerDatabase.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.dao.DAOComputer;
 import com.excilys.computerDatabase.data.Computer;
 import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
+
+@Component
+@Scope("singleton")
 public class ServiceComputer{
 	
-	private static ServiceComputer INSTANCE;
+	@Autowired
 	private DAOComputer database;
 	
-	private ServiceComputer() {
-		this.database = DAOComputer.getInstance();
-	}
-	
-	public static synchronized ServiceComputer getInstance() {
-		if(ServiceComputer.INSTANCE == null) {
-			ServiceComputer.INSTANCE = new ServiceComputer();
-		}
-	return ServiceComputer.INSTANCE;
-	}
-	
+
 	public Optional<Computer> getComputer(int id) throws ErrorSaisieUser {
 		return this.database.getComputer(id);
 	}

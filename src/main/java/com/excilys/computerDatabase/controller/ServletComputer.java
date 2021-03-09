@@ -3,11 +3,16 @@ package com.excilys.computerDatabase.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.dto.ComputerDTO;
@@ -19,6 +24,7 @@ import com.excilys.computerDatabase.service.Service;
 /**
  * Servlet implementation class ServletComputer
  */
+@Controller
 public class ServletComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String MAX_NUMBER_ENTRY = "maxNumberPrint";
@@ -26,7 +32,8 @@ public class ServletComputer extends HttpServlet {
 	private static final String ORDER_FIELD = "orderField";
 	private static final String SORT = "sort";
 	
-	private final Service service = Service.getInstance();       
+	@Autowired
+	private Service service;       
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -112,9 +119,7 @@ public class ServletComputer extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-		final String SEPARATEUR = ",";
-		
-		String[] ids = request.getParameter("selection").split(SEPARATEUR);
+		String[] ids = request.getParameter("selection").split(",");
 		for(String id : ids) {
 			try {
 				this.service.getServiceComputer().deleteComputerById(Integer.parseInt(id));
@@ -127,5 +132,11 @@ public class ServletComputer extends HttpServlet {
 		} catch (IOException errorIO) {
 			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}
+	}
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+		super.init(config);
 	}
 }

@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.builder.ComputerBuilder;
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Computer;
@@ -18,10 +22,11 @@ import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.mappeur.MappeurDate;
 
+
+@Component
+@Scope("singleton")
 public class DAOComputer{
 	
-	private static DAOComputer INSTANCE;
-
 	private static final String SELECT_COMPUTER = "SELECT computer.id as id,"
 			+ " computer.name as name,"
 			+ " computer.introduced as introduced,"
@@ -62,16 +67,9 @@ public class DAOComputer{
 	
 	private static final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
 	
-	private final DBConnection dbConnection = DBConnection.getInstance();
-	
-	private DAOComputer(){}
-	
-	public static synchronized DAOComputer getInstance() {
-		if(DAOComputer.INSTANCE == null) {
-			DAOComputer.INSTANCE = new DAOComputer();
-		}
-	return DAOComputer.INSTANCE;
-	}
+	@Autowired
+	private DBConnection dbConnection;
+
 	
 	public int getNumberComputer() {
 		int numberComputer = 0;
@@ -182,7 +180,6 @@ public class DAOComputer{
 	        	resultList.add(this.toComputer(result).get());
 		   }
 		} catch (SQLException errorSQL) {
-			errorSQL.printStackTrace();
 			new ErrorDAOComputer().connectionLost(errorSQL);
 			throw new ErrorSaisieUser(this.getClass());
 		}
