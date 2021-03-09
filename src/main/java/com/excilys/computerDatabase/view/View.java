@@ -5,30 +5,28 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.controller.Controller;
-import com.excilys.computerDatabase.error.ErrorDAOCompany;
-import com.excilys.computerDatabase.error.ErrorDAOComputer;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 
+@Component("View")
+@Scope("singleton")
 public class View{
 
+	@Autowired
 	protected Controller controller;
+	@Autowired
 	protected Service service;
+	@Autowired
 	private ViewComputer viewComputer;
+	@Autowired
 	private ViewCompany viewCompany;
 	
 	protected Scanner saisieUser = new Scanner(System.in);
-	
-	public View(Service service) {
-		this.service = service;		
-	}
-	
-	public void setController(Controller controller) {
-		this.controller = controller;
-		this.viewCompany = new ViewCompany(service, controller);
-		this.viewComputer = new ViewComputer(service, controller);
-	}
 	
 	public void cli(){
 		boolean boucle = true;
@@ -47,24 +45,22 @@ public class View{
 			
 			try {
 				boucle = this.controller.action(commande, boucle);
-			} catch (ErrorDAOComputer | ErrorDAOCompany errorConnection) {
-				((ErrorDAOCompany) errorConnection).connectionLost();
-			} catch (ErrorSaisieUser e) {
-				e.printStackTrace();
+			} catch (ErrorSaisieUser exception) {
+				exception.formatEntry();
 			}
 		}
 	}
 	
 	protected String printAskEntryString(String message) {
 		String entry;
-		Boolean boucle = true;
+		boolean boucle = true;
 		do {
 			System.out.print("\n" + message);
 			entry = this.saisieUser.nextLine();
-			if(entry != null | entry.compareTo("") != 0) {
+			if(entry != null || entry.compareTo("") != 0) {
 				boucle = false;
 			}else {
-				ErrorSaisieUser error = new ErrorSaisieUser();
+				ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());
 				error.formatEntry();
 			}
 		}while(boucle);
@@ -82,7 +78,7 @@ public class View{
 			return "previous";
 			
 		}else if(entry.compareTo("q") != 0) {
-			ErrorSaisieUser error = new ErrorSaisieUser();
+			ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());
 			error.formatEntry();
 		}
 		return "quit";
@@ -95,7 +91,7 @@ public class View{
 			try{
 				num = Integer.parseInt(this.saisieUser.nextLine());
 			}catch(NumberFormatException e){
-				ErrorSaisieUser error = new ErrorSaisieUser();
+				ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());
 				error.formatEntry();
 			}
 		}while(num == -1);
@@ -105,7 +101,7 @@ public class View{
 	
 	protected Optional<LocalDate> printAskEntryDate(String message) {
 		Optional<LocalDate> date = Optional.empty();
-		Boolean boucle = false;
+		boolean boucle = false;
 		do {
 			System.out.print("\n" + message);
 			try{			
@@ -115,7 +111,7 @@ public class View{
 				}
 				boucle = true;
 			}catch(DateTimeParseException  e){
-				ErrorSaisieUser error = new ErrorSaisieUser();
+				ErrorSaisieUser error = new ErrorSaisieUser(this.getClass());
 				error.formatEntry();
 			}
 		}while(!boucle);

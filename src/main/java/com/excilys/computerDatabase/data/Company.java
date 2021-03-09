@@ -2,8 +2,8 @@ package com.excilys.computerDatabase.data;
 
 public class Company {
 
-	public long id;
-	public String name;
+	private long id;
+	private String name;
 	
 	public Company(long l, String name) {
 		this.setId(l);

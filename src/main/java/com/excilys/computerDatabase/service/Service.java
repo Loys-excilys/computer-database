@@ -1,26 +1,17 @@
 package com.excilys.computerDatabase.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("singleton")
 public class Service {
 	
-	private static Service INSTANCE;
+	@Autowired
 	private ServiceCompany serviceCompany;
+	@Autowired
 	private ServiceComputer serviceComputer;
-	
-	private Service() {
-		this.createService();
-	}
-	
-	public static synchronized Service getInstance() {
-		if(Service.INSTANCE == null) {
-			Service.INSTANCE = new Service();
-		}
-	return Service.INSTANCE;
-	}
-	
-	public void createService() {
-		this.serviceCompany = ServiceCompany.getInstance();
-		this.serviceComputer = ServiceComputer.getInstance();
-	}
 	
 	public ServiceCompany getServiceCompany() {
 		return this.serviceCompany;

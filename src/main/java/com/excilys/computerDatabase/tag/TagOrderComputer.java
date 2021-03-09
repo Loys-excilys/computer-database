@@ -65,7 +65,7 @@ public class TagOrderComputer extends SimpleTagSupport{
 			}
 	        getJspContext().getOut().println("</th>");
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new JspException ("I/O Error", e);
 		}
 	}
 }

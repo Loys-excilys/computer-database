@@ -12,8 +12,6 @@ public class Computer {
 	private Optional<LocalDate> discontinued;
 	private Optional<Company> company;
 	
-	public Computer() {}
-	
 
 	public void setId(long id) {
 		this.id = id;
@@ -52,8 +50,8 @@ public class Computer {
 	
 	public String toString() {
 		return "Name : " + this.getName() 
-		+ ", Date introduce : " + this.getIntroduced() .get()
-		+ ", Date discontinued : " + this.getDiscontinued().get()
-		+ ", Company name : " + this.getCompany().get().getName();
+		+ ", Date introduce : " + (this.introduced.isPresent() ? this.introduced.get() : null)
+		+ ", Date discontinued : " + (this.discontinued.isPresent() ? this.discontinued.get() : null)
+		+ ", Company name : " + (this.company.isPresent() ? this.company.get().getName() : null );
 	}
 }

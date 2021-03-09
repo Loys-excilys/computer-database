@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
-import com.excilys.computerDatabase.error.ErrorDAOComputer;
 
+@Component
+@Scope("singleton")
 public class DAOCompany{
 	
 	private static final int MAX_ENTRY_PRINT = 25;
@@ -20,37 +25,29 @@ public class DAOCompany{
 	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
 	private static final String SELECT_COMPANY_NO_LIMIT = "Select * FROM company";
 	
-	private final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
-	private final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = ?";
-
-	private static DAOCompany INSTANCE;
+	private static final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
+	private static final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = ?";
 	
-	private DBConnection dbConnection = DBConnection.getInstance();
-	
-	private DAOCompany(){}
-	
-	public static synchronized DAOCompany getInstance() {
-		if(DAOCompany.INSTANCE == null) {
-			DAOCompany.INSTANCE = new DAOCompany();
-		}
-	return DAOCompany.INSTANCE;
-	}
+	@Autowired
+	private DBConnection dbConnection;
 		
-	public Optional<Company> getCompany(String name) throws ErrorDAOCompany {
+	public Optional<Company> getCompany(String name){
+		Optional<Company> company = Optional.empty();
 		try(Connection connection = this.dbConnection.getConnection();
 	        	PreparedStatement query = connection.prepareStatement(SELECT_COMPANY_NAME);) {
         	query.setString(1, name);
             ResultSet result = query.executeQuery();
             result.next();
-            Company company = new Company(result.getInt("id"),
- 				   result.getString("name"));
-            return Optional.of(company);
-        } catch (SQLException e) {
-            throw new ErrorDAOCompany();
+            company = Optional.ofNullable(new Company(result.getInt("id"),
+ 				   result.getString("name")));
+            return company;
+        } catch (SQLException exceptionSQL) {
+            new ErrorDAOCompany().connectionLost(exceptionSQL);
         }
+		return company;
 	}
 	
-	public List<Company> getListCompany(int page) throws ErrorDAOCompany {
+	public List<Company> getListCompany(int page){
 		List<Company> resultList = new ArrayList<>();
 		
 		try(Connection connection = this.dbConnection.getConnection();
@@ -61,14 +58,14 @@ public class DAOCompany{
 		   while(result.next()) {
 			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
-		} catch (SQLException e) {
-			throw new ErrorDAOCompany();
+		} catch (SQLException exceptionSQL) {
+			new ErrorDAOCompany().connectionLost(exceptionSQL);
 		}
 		
 		return resultList;
 	}
 
-	public List<Company> getListCompany() throws ErrorDAOCompany {
+	public List<Company> getListCompany(){
 		List<Company> resultList = new ArrayList<>();
 		
 		try(Connection connection = this.dbConnection.getConnection();
@@ -78,15 +75,20 @@ public class DAOCompany{
 		   while(result.next()) {
 			   resultList.add(new Company(result.getInt("id"), result.getString("name")));
 		   }
-		} catch (SQLException e) {
-			throw new ErrorDAOCompany();
+		} catch (SQLException exceptionSQL) {
+			new ErrorDAOCompany().connectionLost(exceptionSQL);
 		}
 		
 		return resultList;
 	}
 	
-	public void deleteCompanyById(int id) throws SQLException, ErrorDAOCompany {
-		Connection connection = this.dbConnection.getConnection();
+	public void deleteCompanyById(int id){
+		Connection connection = null;
+		try {
+			connection = this.dbConnection.getConnection();
+		} catch (SQLException errorSQL) {
+			new ErrorDAOCompany().connectionLost(errorSQL);
+		}
 		try (PreparedStatement queryDeleteComputer = connection.prepareStatement(DELETE_COMPUTER_BY_COMPANY);
 				PreparedStatement queryDeleteCompany = connection.prepareStatement(DELETE_COMPANY_BY_ID);){
 			connection.setAutoCommit(false);
@@ -98,15 +100,19 @@ public class DAOCompany{
 			queryDeleteCompany.executeUpdate();
 			
 			connection.commit();
-		}catch(ErrorDAOCompany errorSQL){
+		}catch(SQLException errorSQL){
 			try {
 				connection.rollback();
-		        } catch (ErrorDAOCompany excep) {
-		          excep.printStackTrace();
+		        } catch (SQLException roolbackExcpetion) {
+		        	new ErrorDAOCompany().connectionLost(roolbackExcpetion);
 		        }
-			throw new ErrorDAOComputer();
+			new ErrorDAOCompany().idInvalid(errorSQL);
 		}finally {
-			connection.close();
+			try {
+				connection.close();
+			} catch (SQLException errorSQL) {
+				new ErrorDAOCompany().connectionLost(errorSQL);
+			}
 		}
 	}
 }

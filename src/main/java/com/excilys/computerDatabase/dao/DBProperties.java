@@ -7,10 +7,14 @@ import com.excilys.computerDatabase.error.ErreurIO;
 import java.io.InputStream;
 import java.io.IOException;
 
-@SuppressWarnings("serial")
 class DBProperties extends Properties{
 
-	private final static String PROPERTIES_FILE_NAME = "db.properties";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static final String PROPERTIES_FILE_NAME = "db.properties";
 
 	private static DBProperties INSTANCE;
 	

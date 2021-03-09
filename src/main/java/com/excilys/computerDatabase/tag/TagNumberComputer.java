@@ -14,7 +14,6 @@ public class TagNumberComputer extends SimpleTagSupport{
 	}
 	public void doTag() throws JspException {
 		try {
-			
 			getJspContext().getOut().println (numberComputer + " Computers found");
 		} catch (IOException e) {
 			throw new JspException ("I/O Error", e);

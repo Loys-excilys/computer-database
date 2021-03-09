@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <%@ taglib uri="/WEB-INF/TagFormComputer.tld" prefix="FormComputer" %>
-<html>
+<html lang="fr">
 <head>
 	<meta charset="UTF-8">
 	<title>Computer Database</title>
@@ -30,6 +30,7 @@
                     <form action="/computer-database/ServletAddComputer" method="POST">
                     	${sessionScope.errorSaisie}
                         <fieldset>
+                        	<legend>Add Computer</legend>
 								<FormComputer:FormAddComputer listCompany="${sessionScope.listCompany}" computerFormAddDTO="${sessionScope.currentEntry}"/>                 
                         </fieldset>
                         <div class="actions pull-right">

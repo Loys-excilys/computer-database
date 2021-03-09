@@ -10,7 +10,11 @@ public class ErrorSaisieUser extends Throwable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(ErrorSaisieUser.class);
+	private final transient Logger logger;
+	
+	public ErrorSaisieUser(Class<?> classe) {
+		this.logger = LoggerFactory.getLogger(classe.getName());
+	}
 	
 	public void formatEntry() {
 		logger.error("entrée invalide");

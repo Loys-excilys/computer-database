@@ -17,11 +17,11 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
 
-public class TestServletAddComputer {
+class TestServletAddComputer {
 	
 	
 	@Test
-	public void testDoGet() {
+	void testDoGet() {
 		ServletRunner servletRunner = new ServletRunner();
 		servletRunner.registerServlet( "computer-database/ServletAddComputer", ServletAddComputer.class.getName() );
 		ServletUnitClient testServlet = servletRunner.newClient() ;
@@ -33,13 +33,12 @@ public class TestServletAddComputer {
 			assertNotNull(response, "No response received");
 		    assertEquals("text/plain", response.getContentType() );
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	@Test
-	public void testDoPostAddComputer() {
+	void testDoPostAddComputer() {
 		ServletRunner servletRunner = new ServletRunner();
 		servletRunner.registerServlet( "computer-database/ServletAddComputer", ServletAddComputer.class.getName() );
 		ServletUnitClient testServlet = servletRunner.newClient() ;
@@ -58,7 +57,6 @@ public class TestServletAddComputer {
 		    assertEquals("text/plain", response.getContentType() );
 		    assertEquals(ArrayList.class, session.getAttribute("listCompany").getClass());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}

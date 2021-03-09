@@ -3,11 +3,9 @@ package com.excilys.computerDatabase.data;
 public class Page {
 
 	private int numPage = 0;
-	private int MaxPrint = 25;
-	
-	
-	public Page() {}
-	
+	private int maxPrint = 25;
+	private int maxComputer = 0;
+		
 	public void next() {
 		this.numPage++;
 	}
@@ -26,10 +24,18 @@ public class Page {
 	}
 
 	public void setMaxPrint(int maxPrint) {
-		MaxPrint = maxPrint;
+		this.maxPrint = maxPrint;
 	}
 	
 	public int getMaxPrint() {
-		return this.MaxPrint;
+		return this.maxPrint;
+	}
+
+	public int getMaxComputer() {
+		return maxComputer;
+	}
+
+	public void setMaxComputer(int maxComputer) {
+		this.maxComputer = maxComputer;
 	}
 }

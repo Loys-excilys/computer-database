@@ -11,7 +11,7 @@ import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.Test;
 
 
-public class TestDB extends DataSourceBasedDBTestCase {
+class TestDB extends DataSourceBasedDBTestCase {
 	
     @Override
     protected DataSource getDataSource() {
@@ -29,7 +29,7 @@ public class TestDB extends DataSourceBasedDBTestCase {
     }
     
     @Test
-    public void givenDataSetEmptySchema_whenDataSetCreated_thenTablesAreEqual() throws Exception {
+    void givenDataSetEmptySchema_whenDataSetCreated_thenTablesAreEqual() throws Exception {
         IDataSet expectedDataSet = getDataSet();
         ITable expectedTable = expectedDataSet.getTable("computer");
         IDataSet databaseDataSet = getConnection().createDataSet();
