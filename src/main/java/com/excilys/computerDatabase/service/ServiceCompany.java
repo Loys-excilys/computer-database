@@ -10,7 +10,6 @@ import com.excilys.computerDatabase.dao.DAOCompany;
 import com.excilys.computerDatabase.data.Company;
 
 @Component
-@Scope("singleton")
 public class ServiceCompany{
 	
 	@Autowired

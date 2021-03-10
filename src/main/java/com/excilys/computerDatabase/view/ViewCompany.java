@@ -9,7 +9,6 @@ import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.data.Page;
 
 @Component
-@Scope("singleton")
 public class ViewCompany extends View{
 
 	

@@ -16,7 +16,6 @@ import com.excilys.computerDatabase.data.Company;
 import com.excilys.computerDatabase.error.ErrorDAOCompany;
 
 @Component
-@Scope("singleton")
 public class DAOCompany{
 	
 	private static final int MAX_ENTRY_PRINT = 25;

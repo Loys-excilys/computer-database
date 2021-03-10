@@ -12,7 +12,6 @@ import com.excilys.computerDatabase.service.Service;
 import com.excilys.computerDatabase.view.View;
 
 @Component
-@Scope("singleton")
 public class Controller{
 	
 	@Autowired

@@ -12,7 +12,7 @@
 	  	<maven.compiler.target>1.8</maven.compiler.target>
 	    
 	  	
-    	<mysql.connector.version>8.0.23</mysql.connector.version>
+    	<mariadb.version>2.7.2</mariadb.version>
     	<hikariCP.version>4.0.2</hikariCP.version>
     	
     	
@@ -43,12 +43,13 @@
 		    <artifactId>spring-web</artifactId>
 		    <version>${spring.version}</version>
 		</dependency>
-    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-    <dependency>
-	    <groupId>mysql</groupId>
-	    <artifactId>mysql-connector-java</artifactId>
-	    <version>${mysql.connector.version}</version>
-	</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+		<dependency>
+		    <groupId>org.mariadb.jdbc</groupId>
+		    <artifactId>mariadb-java-client</artifactId>
+		    <version>${mariadb.version}</version>
+		</dependency>
+
 	
 	<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
 	<dependency>

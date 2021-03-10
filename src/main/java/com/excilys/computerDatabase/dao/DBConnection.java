@@ -10,21 +10,12 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Component
-@Scope("singleton")
 public final class DBConnection {
 	
 	private HikariDataSource connection;
-	private HikariConfig config = new HikariConfig();
 	
 	private Boolean open(){
-		DBProperties dbProperties = DBProperties.getInstance();
-		config.setDriverClassName(dbProperties.getDriver());
-		config.setJdbcUrl(dbProperties.getUrl());
-		config.setUsername(dbProperties.getLogin());
-		config.setPassword(dbProperties.getPassword());
-		config.addDataSourceProperty( "cachePrepStmts" , "true" );
-		config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
-		config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
+		HikariConfig config = new HikariConfig("/db.properties");
 		connection = new HikariDataSource( config );
 		return true;
 	}

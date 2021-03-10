@@ -13,7 +13,6 @@ import com.excilys.computerDatabase.data.Page;
 import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
 @Component
-@Scope("singleton")
 public class ViewComputer extends View{
 
 	public void printListComputer(List<Computer> listComputer) {

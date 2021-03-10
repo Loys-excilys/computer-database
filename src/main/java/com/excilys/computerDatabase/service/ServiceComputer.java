@@ -14,7 +14,6 @@ import com.excilys.computerDatabase.error.ErrorSaisieUser;
 
 
 @Component
-@Scope("singleton")
 public class ServiceComputer{
 	
 	@Autowired

@@ -14,7 +14,6 @@ import com.excilys.computerDatabase.error.ErrorSaisieUser;
 import com.excilys.computerDatabase.service.Service;
 
 @Component("View")
-@Scope("singleton")
 public class View{
 
 	@Autowired
