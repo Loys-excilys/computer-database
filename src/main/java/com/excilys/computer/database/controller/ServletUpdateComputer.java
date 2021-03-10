@@ -29,20 +29,24 @@ import com.excilys.computer.database.service.Service;
  */
 @WebServlet("/ServletUpdateComputer")
 public class ServletUpdateComputer extends HttpServlet {
-private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	private Service service;
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-    @Override
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		try {
-			Optional<Computer> computer = this.service.getServiceComputer().getComputer(Integer.parseInt(request.getParameter("id")));
-			session.setAttribute("listCompany", MapperCompany.listCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
-			if(computer.isPresent()) {
+			Optional<Computer> computer = this.service.getServiceComputer()
+					.getComputer(Integer.parseInt(request.getParameter("id")));
+			session.setAttribute("listCompany",
+					MapperCompany.listCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
+			if (computer.isPresent()) {
 				session.setAttribute("updateComputer", MapperComputer.computerToComputerDTO(computer.get()));
 			}
 			session.setAttribute("idComputer", request.getParameter("id"));
@@ -53,22 +57,22 @@ private static final long serialVersionUID = 1L;
 			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		} catch (ErrorSaisieUser exception) {
 			exception.formatEntry();
-		}catch(NumberFormatException exception) {
+		} catch (NumberFormatException exception) {
 			new ErrorSaisieUser(this.getClass()).formatEntry();
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-    @Override
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-		ComputerFormUpdateDTO computerFormUpdateDTO = null;
+		ComputerFormUpdateDTO computerFormUpdateDTO = MapperComputer.requestToComputerFormUpdateDTO(request);
 		HttpSession session = request.getSession();
 		String pathRedirection = "/index";
 		List<CompanyDTO> listCompany = (List) session.getAttribute("listCompany");
 		try {
-			computerFormUpdateDTO = MapperComputer.requestToComputerFormUpdateDTO(request);
 			Computer computer = MapperComputer.computerFormUpdateDTOToComputer(computerFormUpdateDTO, listCompany);
 			this.service.getServiceComputer().updateComputer(computer);
 			pathRedirection = "ServletComputer";
@@ -84,7 +88,7 @@ private static final long serialVersionUID = 1L;
 			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}
 	}
-    
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());

@@ -22,16 +22,16 @@ class TestServletComputer {
 	@Test
 	void testDoGetPageUndefined() {
 		ServletRunner servletRunner = new ServletRunner();
-		servletRunner.registerServlet( "computer-database/ServletComputer", ServletComputer.class.getName() );
-		ServletUnitClient testServlet = servletRunner.newClient() ;
-		WebRequest request   = new GetMethodWebRequest( "http://localhost:8080/computer-database/ServletComputer" );
-	    WebResponse response;
+		servletRunner.registerServlet("computer-database/ServletComputer", ServletComputer.class.getName());
+		ServletUnitClient testServlet = servletRunner.newClient();
+		WebRequest request = new GetMethodWebRequest("http://localhost:8080/computer-database/ServletComputer");
+		WebResponse response;
 		try {
-			response = testServlet.getResponse( request );
+			response = testServlet.getResponse(request);
 			HttpSession session = testServlet.getSession(true);
 			assertNotNull(response, "No response received");
-		    assertEquals("text/plain", response.getContentType() );
-		    assertEquals(ArrayList.class, session.getAttribute("listComputer").getClass());
+			assertEquals("text/plain", response.getContentType());
+			assertEquals(ArrayList.class, session.getAttribute("listComputer").getClass());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,17 +41,17 @@ class TestServletComputer {
 	@Test
 	void testDoGetPagedefined() {
 		ServletRunner servletRunner = new ServletRunner();
-		servletRunner.registerServlet( "computer-database/ServletComputer", ServletComputer.class.getName() );
-		ServletUnitClient testServlet = servletRunner.newClient() ;
-		WebRequest request   = new GetMethodWebRequest( "http://localhost:8080/computer-database/ServletComputer" );
+		servletRunner.registerServlet("computer-database/ServletComputer", ServletComputer.class.getName());
+		ServletUnitClient testServlet = servletRunner.newClient();
+		WebRequest request = new GetMethodWebRequest("http://localhost:8080/computer-database/ServletComputer");
 		request.setParameter("page", "2");
-	    WebResponse response;
+		WebResponse response;
 		try {
-			response = testServlet.getResponse( request );
+			response = testServlet.getResponse(request);
 			HttpSession session = testServlet.getSession(true);
 			assertNotNull(response, "No response received");
-		    assertEquals("text/plain", response.getContentType() );
-		    assertEquals(ArrayList.class, session.getAttribute("listComputer").getClass());
+			assertEquals("text/plain", response.getContentType());
+			assertEquals(ArrayList.class, session.getAttribute("listComputer").getClass());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -2,8 +2,8 @@ package com.excilys.computer.database.dto;
 
 import java.io.Serializable;
 
-public class ComputerDTO implements Serializable{
-	
+public class ComputerDTO implements Serializable {
+
 	/**
 	 * 
 	 */

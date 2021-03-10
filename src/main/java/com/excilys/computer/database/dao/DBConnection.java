@@ -10,17 +10,17 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Component
 public final class DBConnection {
-	
+
 	private HikariDataSource connection;
-	
-	private Boolean open(){
+
+	private Boolean open() {
 		HikariConfig config = new HikariConfig("/db.properties");
-		connection = new HikariDataSource( config );
+		connection = new HikariDataSource(config);
 		return true;
 	}
-	
-	public Connection getConnection() throws SQLException{
-		if(this.connection == null || this.connection.isClosed()) {
+
+	public Connection getConnection() throws SQLException {
+		if (this.connection == null || this.connection.isClosed()) {
 			this.open();
 		}
 		return this.connection.getConnection();

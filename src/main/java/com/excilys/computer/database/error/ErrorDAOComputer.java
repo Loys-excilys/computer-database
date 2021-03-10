@@ -8,27 +8,30 @@ import org.slf4j.LoggerFactory;
 import com.excilys.computer.database.dao.DAOComputer;
 
 @SuppressWarnings("serial")
-public class ErrorDAOComputer extends SQLException{
-	
-	private static final Logger logger = LoggerFactory.getLogger(DAOComputer.class);
+public class ErrorDAOComputer extends SQLException {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DAOComputer.class);
 
 	public void idInvalid(SQLException exception) {
-		logger.error("Id renseigner incorrect : ", exception);
+		LOGGER.error("Id renseigner incorrect : ", exception);
 	}
-	
+
 	public void connectionLost(SQLException exception) {
-		logger.error("Connection à la base de donnée perdu : ", exception);
+		LOGGER.error("Connection à la base de donnée perdu : ", exception);
 	}
-	
+
 	public void insertError(SQLException exception) {
-		logger.error("insert computer impossible, vérifier les valeurs données et la connection à la base de donnée : ", exception);
+		LOGGER.error("insert computer impossible, vérifier les valeurs données et la connection à la base de donnée : ",
+				exception);
 	}
-	
+
 	public void updateError(SQLException exception) {
-		logger.error("Update computer impossible, vérifier les valeurs données et la connection à la base de donnée : ", exception);
+		LOGGER.error("Update computer impossible, vérifier les valeurs données et la connection à la base de donnée : ",
+				exception);
 	}
-	
+
 	public void deleteError(SQLException exception) {
-		logger.error("Delete computer impossible, vérifier les valeurs données et la connection à la base de donnée : ", exception);
+		LOGGER.error("Delete computer impossible, vérifier les valeurs données et la connection à la base de donnée : ",
+				exception);
 	}
 }

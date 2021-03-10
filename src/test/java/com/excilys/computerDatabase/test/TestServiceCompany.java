@@ -8,22 +8,21 @@ import org.junit.jupiter.api.Test;
 
 import com.excilys.computer.database.service.Service;
 
+class TestServiceCompany {
 
-class TestServiceCompany{
-	
 	@Test
 	void testGetListCompany() throws Exception {
 		Service service;
 		service = new Service();
-		
+
 		assertEquals(ArrayList.class, service.getServiceCompany().getListCompany(0).getClass());
 	}
-	
+
 	@Test
 	void testGetAllListCompany() throws Exception {
 		Service service;
 		service = new Service();
-		
+
 		assertEquals(ArrayList.class, service.getServiceCompany().getListCompany().getClass());
 	}
 }

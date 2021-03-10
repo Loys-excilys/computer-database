@@ -18,73 +18,74 @@ import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.validator.ValidateurComputer;
 
 public class MapperComputer {
-	
-	private MapperComputer() {}
+
+	private MapperComputer() {
+	}
 
 	public static ComputerDTO computerToComputerDTO(Computer computer) {
 		Optional<LocalDate> introduced = computer.getIntroduced();
 		Optional<LocalDate> discontinued = computer.getDiscontinued();
 		Optional<Company> company = computer.getCompany();
-		
-		return new ComputerDTO(computer.getId(),
-				computer.getName(),
+
+		return new ComputerDTO(computer.getId(), computer.getName(),
 				introduced.isPresent() ? introduced.get().toString() : "",
 				discontinued.isPresent() ? discontinued.get().toString() : "",
-				company.isPresent() ? company.get().getName(): "");
+				company.isPresent() ? company.get().getName() : "");
 	}
-	public static List<ComputerDTO> listComputerToListComputerDTO(List<Computer> listComputer){
-		List<ComputerDTO> listComputerDTO= new ArrayList<>();
-		for(Computer computer : listComputer) {
+
+	public static List<ComputerDTO> listComputerToListComputerDTO(List<Computer> listComputer) {
+		List<ComputerDTO> listComputerDTO = new ArrayList<>();
+		for (Computer computer : listComputer) {
 			listComputerDTO.add(computerToComputerDTO(computer));
 		}
 		return listComputerDTO;
 	}
-	
+
 	public static ComputerFormAddDTO requestToComputerFormAddDTO(HttpServletRequest request) {
-		return new ComputerFormAddDTO(request.getParameter("computerName"),
-				request.getParameter("dateIntroduced"),
-				request.getParameter("dateDiscontinued"),
-				request.getParameter("companyName"));
+		return new ComputerFormAddDTO(request.getParameter("computerName"), request.getParameter("dateIntroduced"),
+				request.getParameter("dateDiscontinued"), request.getParameter("companyName"));
 	}
-	
+
 	public static ComputerFormUpdateDTO requestToComputerFormUpdateDTO(HttpServletRequest request) {
 		return new ComputerFormUpdateDTO(Long.parseLong(request.getSession().getAttribute("idComputer").toString()),
-				request.getParameter("computerName"),
-				request.getParameter("dateIntroduced"),
-				request.getParameter("dateDiscontinued"),
-				request.getParameter("companyName"));
+				request.getParameter("computerName"), request.getParameter("dateIntroduced"),
+				request.getParameter("dateDiscontinued"), request.getParameter("companyName"));
 	}
-	
-	public static Computer computerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
-		
-		return ValidateurComputer.getInstance().getValidate(new ComputerBuilder()
-				.addName(computerFormAddDTO.getName())
-				.addIntroduced(computerFormAddDTO.getIntroduced().compareTo("") != 0 ?
-						Optional.of(LocalDate.parse(computerFormAddDTO.getIntroduced())) :
-						Optional.empty())
-				.addDiscontinued(computerFormAddDTO.getDiscontinued().compareTo("") != 0 ?
-						Optional.of(LocalDate.parse(computerFormAddDTO.getDiscontinued())) :
-						Optional.empty())
-				.addCompany(computerFormAddDTO.getCompanyId().compareTo("") != 0 ?
-						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId())-1))) :
-						Optional.empty())
-				.getComputer());
+
+	public static Computer computerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO,
+			List<CompanyDTO> listCompany) throws ErrorSaisieUser {
+
+		return ValidateurComputer.getInstance()
+				.getValidate(new ComputerBuilder().addName(computerFormAddDTO.getName())
+						.addIntroduced(computerFormAddDTO.getIntroduced().compareTo("") != 0
+								? Optional.of(LocalDate.parse(computerFormAddDTO.getIntroduced()))
+								: Optional.empty())
+						.addDiscontinued(computerFormAddDTO.getDiscontinued().compareTo("") != 0
+								? Optional.of(LocalDate.parse(computerFormAddDTO.getDiscontinued()))
+								: Optional.empty())
+						.addCompany(computerFormAddDTO.getCompanyId().compareTo("") != 0
+								? Optional.ofNullable(MapperCompany.companyDTOToCompany(
+										listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId()) - 1)))
+								: Optional.empty())
+						.getComputer());
 	}
-	
-	public static Computer computerFormUpdateDTOToComputer(ComputerFormUpdateDTO computerFormUpdateDTO, List<CompanyDTO> listCompany) throws ErrorSaisieUser {
-		
-		return ValidateurComputer.getInstance().getValidate(new ComputerBuilder()
-				.addId(computerFormUpdateDTO.getId())
-				.addName(computerFormUpdateDTO.getName())
-				.addIntroduced(computerFormUpdateDTO.getIntroduced().compareTo("") != 0 ?
-						Optional.of(LocalDate.parse(computerFormUpdateDTO.getIntroduced())) :
-						Optional.empty())
-				.addDiscontinued(computerFormUpdateDTO.getDiscontinued().compareTo("") != 0 ?
-						Optional.of(LocalDate.parse(computerFormUpdateDTO.getDiscontinued())) :
-						Optional.empty())
-				.addCompany(computerFormUpdateDTO.getCompanyId().compareTo("") != 0 ?
-						Optional.ofNullable(MapperCompany.companyDTOToCompany(listCompany.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId())-1))) :
-						Optional.empty())
-				.getComputer());
+
+	public static Computer computerFormUpdateDTOToComputer(ComputerFormUpdateDTO computerFormUpdateDTO,
+			List<CompanyDTO> listCompany) throws ErrorSaisieUser {
+
+		return ValidateurComputer.getInstance()
+				.getValidate(new ComputerBuilder().addId(computerFormUpdateDTO.getId())
+						.addName(computerFormUpdateDTO.getName())
+						.addIntroduced(computerFormUpdateDTO.getIntroduced().compareTo("") != 0
+								? Optional.of(LocalDate.parse(computerFormUpdateDTO.getIntroduced()))
+								: Optional.empty())
+						.addDiscontinued(computerFormUpdateDTO.getDiscontinued().compareTo("") != 0
+								? Optional.of(LocalDate.parse(computerFormUpdateDTO.getDiscontinued()))
+								: Optional.empty())
+						.addCompany(computerFormUpdateDTO.getCompanyId().compareTo("") != 0
+								? Optional.ofNullable(MapperCompany.companyDTOToCompany(
+										listCompany.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId()) - 1)))
+								: Optional.empty())
+						.getComputer());
 	}
 }

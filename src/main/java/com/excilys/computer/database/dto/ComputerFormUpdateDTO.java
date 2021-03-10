@@ -2,7 +2,7 @@ package com.excilys.computer.database.dto;
 
 import java.io.Serializable;
 
-public class ComputerFormUpdateDTO implements Serializable{
+public class ComputerFormUpdateDTO implements Serializable {
 
 	/**
 	 * 
@@ -13,8 +13,8 @@ public class ComputerFormUpdateDTO implements Serializable{
 	private String introduced;
 	private String discontinued;
 	private String companyId;
-	
-	public ComputerFormUpdateDTO(long id ,String name, String introduced, String discontinued, String companyId) {
+
+	public ComputerFormUpdateDTO(long id, String name, String introduced, String discontinued, String companyId) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;

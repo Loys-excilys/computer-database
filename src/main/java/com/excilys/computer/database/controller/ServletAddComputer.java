@@ -54,12 +54,11 @@ public class ServletAddComputer extends HttpServlet {
 	 */
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-		ComputerFormAddDTO computerFormAddDTO = null;
+		ComputerFormAddDTO computerFormAddDTO = MapperComputer.requestToComputerFormAddDTO(request);
 		HttpSession session = request.getSession();
 		String pathRedirection = "/index";
 		List<CompanyDTO> listCompany = (List) session.getAttribute("listCompany");
 		try {
-			computerFormAddDTO = MapperComputer.requestToComputerFormAddDTO(request);
 			Computer computer = MapperComputer.computerFormAddDTOToComputer(computerFormAddDTO, listCompany);
 			this.service.getServiceComputer().addComputer(computer);
 			pathRedirection = "ServletComputer";
