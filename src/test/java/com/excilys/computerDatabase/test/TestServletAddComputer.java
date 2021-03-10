@@ -29,7 +29,6 @@ class TestServletAddComputer {
 	    WebResponse response;
 		try {
 			response = testServlet.getResponse( request );
-			HttpSession session = testServlet.getSession(true);
 			assertNotNull(response, "No response received");
 		    assertEquals("text/plain", response.getContentType() );
 		} catch (Exception e) {

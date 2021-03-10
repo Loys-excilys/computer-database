@@ -29,7 +29,7 @@
     <description></description>
     <display-name>ServletComputer</display-name>
     <servlet-name>ServletComputer</servlet-name>
-    <servlet-class>com.excilys.computerDatabase.controller.ServletComputer</servlet-class>
+    <servlet-class>com.excilys.computer.database.controller.ServletComputer</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ServletComputer</servlet-name>

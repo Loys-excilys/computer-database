@@ -3,7 +3,6 @@ package com.excilys.computer.database.view;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.builder.ComputerBuilder;
@@ -64,7 +63,7 @@ public class ViewComputer extends View{
 				.addName(this.printAskEntryString("Can you give me the Name ? : "))
 				.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
 				.addDiscontinued(this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
-				.addCompany(Optional.of(this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : "))))
+				.addCompany(this.service.getServiceCompany().getCompany(this.printAskEntryString("Can you give me the name company ? : ")))
 				.getComputer();
 		this.service.getServiceComputer().addComputer(computer);		
 		System.out.println("Done");		
@@ -84,10 +83,10 @@ public class ViewComputer extends View{
 					"What is the new name ? (actual = " + computer.getName() + ") :", computer.getName()));
 			
 			computer.setIntroduced(this.printAskEntryDate(
-					"What is the new date of introduce ? (actual = " + computer.getIntroduced() + ") :"));
+					"What is the new date of introduce ? (actual = " + computer.getIntroduced().get() + ") :"));
 
 			computer.setDiscontinued(this.printAskEntryDate(
-					"What is the new date of discontinued ? (actual = " + computer.getDiscontinued() + ") :"));
+					"What is the new date of discontinued ? (actual = " + computer.getDiscontinued().get() + ") :"));
 			
 			computer.setCompany(this.verifAskNewValueCompanyComputer(
 					"What is the new company owner ? (actual = " + computer.getCompany().get().getName() + ") :",
@@ -114,7 +113,7 @@ public class ViewComputer extends View{
 	}
 	
 	protected Optional<Company> verifAskNewValueCompanyComputer(String message, Optional<Company> Company){
-		Optional<Company> company = Optional.ofNullable(this.service.getServiceCompany().getCompany(this.printAskEntryString(message)));
+		Optional<Company> company = this.service.getServiceCompany().getCompany(this.printAskEntryString(message));
 		if(company.isPresent()) {
 			return company;
 		}else {

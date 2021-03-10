@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.excilys.computer.database.builder.ComputerBuilder;
+import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.dto.CompanyDTO;
 import com.excilys.computer.database.dto.ComputerDTO;
@@ -21,11 +22,15 @@ public class MapperComputer {
 	private MapperComputer() {}
 
 	public static ComputerDTO computerToComputerDTO(Computer computer) {
+		Optional<LocalDate> introduced = computer.getIntroduced();
+		Optional<LocalDate> discontinued = computer.getDiscontinued();
+		Optional<Company> company = computer.getCompany();
+		
 		return new ComputerDTO(computer.getId(),
 				computer.getName(),
-				computer.getIntroduced().isPresent() ? computer.getIntroduced().get().toString() : "",
-				computer.getDiscontinued().isPresent() ? computer.getDiscontinued().get().toString() : "",
-				computer.getCompany().isPresent() ? computer.getCompany().get().getName(): "");
+				introduced.isPresent() ? introduced.get().toString() : "",
+				discontinued.isPresent() ? discontinued.get().toString() : "",
+				company.isPresent() ? company.get().getName(): "");
 	}
 	public static List<ComputerDTO> listComputerToListComputerDTO(List<Computer> listComputer){
 		List<ComputerDTO> listComputerDTO= new ArrayList<>();

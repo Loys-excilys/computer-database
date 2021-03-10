@@ -62,9 +62,9 @@ public class ServletAddComputer extends HttpServlet {
 			computerFormAddDTO = MapperComputer.requestToComputerFormAddDTO(request);
 			Computer computer = MapperComputer.computerFormAddDTOToComputer(computerFormAddDTO, listCompany);
 			this.service.getServiceComputer().addComputer(computer);
-			pathRedirection = "/computer-database/ServletComputer";
+			pathRedirection = "ServletComputer";
 		} catch (ErrorSaisieUser errorUser) {
-			pathRedirection = "/computer-database/ServletAddComputer";
+			pathRedirection = "ServletAddComputer";
 			errorUser.formatEntry();
 			session.setAttribute("currentEntry", computerFormAddDTO);
 			session.setAttribute("errorSaisie", "Name ou date non valide, vérifiez vos informations");

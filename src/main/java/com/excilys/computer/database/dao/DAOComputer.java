@@ -102,37 +102,6 @@ public class DAOComputer{
 		return numberComputer;
 	}
 	
-	public int getNumberComputerOrder(String orderField, String sort) {
-		int numberComputer = 0;
-		try(Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(COUNT_COMPUTER + ORDER_BY + orderField + " " + sort);){
-        	
-            ResultSet result = query.executeQuery();
-            result.next();
-            numberComputer = result.getInt(1);
-            
-        } catch (SQLException errorSQL) {
-        	new ErrorDAOComputer().connectionLost(errorSQL);
-        }
-		return numberComputer;
-	}
-	
-	public int getSearchNumberComputerOrder(String search, String orderField, String sort) {
-		int numberComputer = 0;
-		search = "%" + search + "%";
-		try(Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(COUNT_COMPUTER + SEARCH_COMPUTER + ORDER_BY + orderField + " " + sort);){
-			query.setString(1, search);
-            ResultSet result = query.executeQuery();
-            result.next();
-            numberComputer = result.getInt(1);
-            
-        } catch (SQLException errorSQL) {
-        	new ErrorDAOComputer().connectionLost(errorSQL);
-        }
-		return numberComputer;
-	}
-	
 	public Optional<Computer> getComputer(int id) throws ErrorSaisieUser {
 		Optional<Computer> computer = Optional.empty();
 		try(Connection connection = this.dbConnection.getConnection();
@@ -234,9 +203,9 @@ public class DAOComputer{
             	query.setString(1, computer.getName());
             	query.setDate(2, MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
             	query.setDate(3, MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));
-
-    			if(computer.getCompany().isPresent()) {
-    				query.setLong(4, computer.getCompany().get().getId());
+            	Optional<Company> company = computer.getCompany();
+    			if(company.isPresent()) {
+    				query.setLong(4, company.get().getId());
     			}else {
     				query.setString(4, null);
     			}
@@ -259,8 +228,9 @@ public class DAOComputer{
 				query.setString(1, computer.getName());
             	query.setDate(2, MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
             	query.setDate(3, MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));    			
-            	if(computer.getCompany().isPresent()) {
-    				query.setLong(4, computer.getCompany().get().getId());
+            	Optional<Company> company = computer.getCompany();
+    			if(company.isPresent()) {
+    				query.setLong(4, company.get().getId());
     			}else {
     				query.setString(4, null);
     			}

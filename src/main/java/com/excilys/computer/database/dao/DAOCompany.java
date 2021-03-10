@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.data.Company;
@@ -88,16 +87,17 @@ public class DAOCompany{
 		} catch (SQLException errorSQL) {
 			new ErrorDAOCompany().connectionLost(errorSQL);
 		}
+		
 		try (PreparedStatement queryDeleteComputer = connection.prepareStatement(DELETE_COMPUTER_BY_COMPANY);
-				PreparedStatement queryDeleteCompany = connection.prepareStatement(DELETE_COMPANY_BY_ID);){
+					PreparedStatement queryDeleteCompany = connection.prepareStatement(DELETE_COMPANY_BY_ID);){
 			connection.setAutoCommit(false);
-			
+				
 			queryDeleteComputer.setLong(1, id);
 			queryDeleteComputer.executeUpdate();
-			
+				
 			queryDeleteCompany.setLong(1, id);
 			queryDeleteCompany.executeUpdate();
-			
+				
 			connection.commit();
 		}catch(SQLException errorSQL){
 			try {

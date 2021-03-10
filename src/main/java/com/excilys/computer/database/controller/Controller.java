@@ -3,7 +3,6 @@ package com.excilys.computer.database.controller;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.data.Page;

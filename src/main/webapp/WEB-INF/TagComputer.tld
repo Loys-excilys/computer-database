@@ -9,7 +9,7 @@
 	  	<short-name>TagComputer</short-name>
 			<tag>
 				<name>NumberComputer</name>
-				<tag-class>com.excilys.computerDatabase.tag.TagNumberComputer</tag-class>
+				<tag-class>com.excilys.computer.database.tag.TagNumberComputer</tag-class>
 				<body-content>scriptless</body-content>
 				<attribute>
 					<name>numberComputer</name>
@@ -20,7 +20,7 @@
 			
 			<tag>
 				<name>NumberPage</name>
-				<tag-class>com.excilys.computerDatabase.tag.TagNumberPage</tag-class>
+				<tag-class>com.excilys.computer.database.tag.TagNumberPage</tag-class>
 				<body-content>scriptless</body-content>
 				<attribute>
 					<name>numberComputer</name>
@@ -40,7 +40,7 @@
 			</tag>
 			<tag>
 				<name>Computer</name>
-				<tag-class>com.excilys.computerDatabase.tag.TagComputer</tag-class>
+				<tag-class>com.excilys.computer.database.tag.TagComputer</tag-class>
 				<body-content>scriptless</body-content>
 				<attribute>
 					<name>listComputer</name>
@@ -51,7 +51,7 @@
 			
 			<tag>
 				<name>OrderComputer</name>
-				<tag-class>com.excilys.computerDatabase.tag.TagOrderComputer</tag-class>
+				<tag-class>com.excilys.computer.database.tag.TagOrderComputer</tag-class>
 				<body-content>scriptless</body-content>
 				<attribute>
 					<name>orderField</name>

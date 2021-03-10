@@ -86,9 +86,7 @@ public class ServletComputer extends HttpServlet {
 			session.setAttribute(SORT, request.getParameter(SORT));
 		}
 		if(session.getAttribute(SEARCH) != null && session.getAttribute(ORDER_FIELD) != null && session.getAttribute(SORT) != null){
-			page.setMaxComputer(this.service.getServiceComputer().getSearchNumberComputerOrder(session.getAttribute(SEARCH).toString(),
-					session.getAttribute(ORDER_FIELD).toString(),
-					session.getAttribute(SORT).toString()));
+			page.setMaxComputer(this.service.getServiceComputer().getSearchNumberComputer(session.getAttribute(SEARCH).toString()));
 			
 			return MapperComputer.listComputerToListComputerDTO(
 				this.service.getServiceComputer().getResearchComputerOrder(session.getAttribute(SEARCH).toString(),
@@ -100,8 +98,7 @@ public class ServletComputer extends HttpServlet {
 			return MapperComputer.listComputerToListComputerDTO(
 				this.service.getServiceComputer().getSearchComputer(session.getAttribute(SEARCH).toString(), page));
 		}else if(session.getAttribute(ORDER_FIELD) != null && session.getAttribute(SORT) != null) {
-			page.setMaxComputer(this.service.getServiceComputer().getNumberComputerOrder(session.getAttribute(ORDER_FIELD).toString(),
-					(String) session.getAttribute(SORT)));
+			page.setMaxComputer(this.service.getServiceComputer().getNumberComputer());
 			return MapperComputer.listComputerToListComputerDTO(
 				this.service.getServiceComputer().getListComputerOrder(session.getAttribute(ORDER_FIELD).toString(),
 					session.getAttribute(SORT).toString(),
@@ -128,7 +125,7 @@ public class ServletComputer extends HttpServlet {
 			}
 		}
 		try {
-			response.sendRedirect("/computer-database/ServletComputer");
+			response.sendRedirect("ServletComputer");
 		} catch (IOException errorIO) {
 			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		}

@@ -35,7 +35,7 @@ class TestServiceCumputer{
 				.addName("testUnitaire")
 				.addIntroduced(Optional.of(LocalDate.parse("2015-06-22")))
 				.addDiscontinued(Optional.of(LocalDate.parse("2021-04-30")))
-				.addCompany(Optional.of(service.getServiceCompany().getCompany("Apple Inc.")))
+				.addCompany(service.getServiceCompany().getCompany("Apple Inc."))
 				.getComputer();
 		
 		

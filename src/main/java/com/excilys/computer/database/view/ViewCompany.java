@@ -2,7 +2,6 @@ package com.excilys.computer.database.view;
 
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.data.Company;

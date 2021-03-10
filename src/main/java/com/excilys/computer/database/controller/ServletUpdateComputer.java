@@ -2,6 +2,7 @@ package com.excilys.computer.database.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -39,9 +40,11 @@ private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		try {
+			Optional<Computer> computer = this.service.getServiceComputer().getComputer(Integer.parseInt(request.getParameter("id")));
 			session.setAttribute("listCompany", MapperCompany.listCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
-			session.setAttribute("updateComputer", MapperComputer.computerToComputerDTO(this.service.getServiceComputer()
-					.getComputer(Integer.parseInt(request.getParameter("id"))).get()));
+			if(computer.isPresent()) {
+				session.setAttribute("updateComputer", MapperComputer.computerToComputerDTO(computer.get()));
+			}
 			session.setAttribute("idComputer", request.getParameter("id"));
 			this.getServletContext().getRequestDispatcher("/WEB-INF/JSP/UpdateComputer.jsp").forward(request, response);
 		} catch (ServletException errorServlet) {
@@ -50,6 +53,8 @@ private static final long serialVersionUID = 1L;
 			new ErreurIO(this.getClass()).redirectionFail(errorIO);
 		} catch (ErrorSaisieUser exception) {
 			exception.formatEntry();
+		}catch(NumberFormatException exception) {
+			new ErrorSaisieUser(this.getClass()).formatEntry();
 		}
 	}
 
@@ -66,9 +71,9 @@ private static final long serialVersionUID = 1L;
 			computerFormUpdateDTO = MapperComputer.requestToComputerFormUpdateDTO(request);
 			Computer computer = MapperComputer.computerFormUpdateDTOToComputer(computerFormUpdateDTO, listCompany);
 			this.service.getServiceComputer().updateComputer(computer);
-			pathRedirection = "/computer-database/ServletComputer";
+			pathRedirection = "ServletComputer";
 		} catch (ErrorSaisieUser errorUser) {
-			pathRedirection = "/computer-database/ServletAddComputer";
+			pathRedirection = "ServletAddComputer";
 			errorUser.formatEntry();
 			session.setAttribute("updateComputer", computerFormUpdateDTO);
 			session.setAttribute("errorSaisie", "Name ou date non valide, vérifiez vos informations");

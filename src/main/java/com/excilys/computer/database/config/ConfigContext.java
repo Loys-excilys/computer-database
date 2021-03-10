@@ -7,8 +7,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 @Configuration
-@ComponentScan({ "com.excilys.computerDatabase.dao", "com.excilys.computerDatabase.service",
-		"com.excilys.computerDatabase.controller", "com.excilys.computerDatabase.view"})
+@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.service",
+		"com.excilys.computer.database.controller", "com.excilys.computer.database.view"})
 
 public class ConfigContext 
 extends AbstractContextLoaderInitializer {

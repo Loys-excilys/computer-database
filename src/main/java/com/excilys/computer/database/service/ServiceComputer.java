@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.dao.DAOComputer;
@@ -58,15 +57,7 @@ public class ServiceComputer{
 		return this.database.getListComputerOrder(orderField, sort, page);
 	}
 	
-	public int getNumberComputerOrder(String orderField, String sort ) {
-		return this.database.getNumberComputerOrder(orderField, sort);
-	}
-	
 	public List<Computer> getResearchComputerOrder(String search, String orderField, String sort, Page page) throws ErrorSaisieUser {
 		return this.database.getSearchComputerOrder(search, orderField, sort, page);
-	}
-	
-	public int getSearchNumberComputerOrder(String search, String orderField, String sort) {
-		return this.database.getSearchNumberComputerOrder(search, orderField, sort);
 	}
 }

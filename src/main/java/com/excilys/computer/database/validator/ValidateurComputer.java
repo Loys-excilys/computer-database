@@ -1,5 +1,8 @@
 package com.excilys.computer.database.validator;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 
@@ -28,7 +31,9 @@ public class ValidateurComputer {
 	}
 	
 	public void valideDate(Computer computer) throws ErrorSaisieUser {
-		if(computer.getIntroduced().isPresent() && computer.getDiscontinued().isPresent() && !computer.getIntroduced().get().isBefore(computer.getDiscontinued().get())) {
+		Optional<LocalDate> introduced= computer.getIntroduced();
+		Optional<LocalDate> discontinued= computer.getDiscontinued();
+		if(introduced.isPresent() && discontinued.isPresent() && !introduced.get().isBefore(discontinued.get())) {
 			throw new ErrorSaisieUser(this.getClass());
 		}
 	}

@@ -1,9 +1,9 @@
 package com.excilys.computer.database.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.dao.DAOCompany;
@@ -15,8 +15,8 @@ public class ServiceCompany{
 	@Autowired
 	private DAOCompany database;
 	
-	public Company getCompany(String nameCompany){
-		return this.database.getCompany(nameCompany).get();
+	public Optional<Company> getCompany(String nameCompany){
+		return this.database.getCompany(nameCompany);
 	}
 
 	public List<Company> getListCompany(){

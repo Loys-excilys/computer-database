@@ -9,7 +9,7 @@
 	  	<short-name>testTag</short-name>
 			<tag>
 				<name>FormAddComputer</name>
-				<tag-class>com.excilys.computerDatabase.tag.TagAddComputer</tag-class>
+				<tag-class>com.excilys.computer.database.tag.TagAddComputer</tag-class>
 				<body-content>scriptless</body-content>
 				<attribute>
 					<name>listCompany</name>
@@ -25,7 +25,7 @@
 			
 			<tag>
 				<name>FormUpdateComputer</name>
-				<tag-class>com.excilys.computerDatabase.tag.TagUpdateComputer</tag-class>
+				<tag-class>com.excilys.computer.database.tag.TagUpdateComputer</tag-class>
 				<body-content>scriptless</body-content>
 				<attribute>
 					<name>listCompany</name>
