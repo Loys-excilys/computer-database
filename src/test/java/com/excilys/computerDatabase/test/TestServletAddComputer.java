@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.Test;
 
-import com.excilys.computerDatabase.controller.ServletAddComputer;
+import com.excilys.computer.database.controller.ServletAddComputer;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.PostMethodWebRequest;
 import com.meterware.httpunit.WebRequest;

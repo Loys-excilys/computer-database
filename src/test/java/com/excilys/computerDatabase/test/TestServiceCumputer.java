@@ -7,11 +7,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import com.excilys.computerDatabase.builder.ComputerBuilder;
-import com.excilys.computerDatabase.data.Computer;
-import com.excilys.computerDatabase.data.Page;
-import com.excilys.computerDatabase.error.ErrorSaisieUser;
-import com.excilys.computerDatabase.service.Service;
+import com.excilys.computer.database.builder.ComputerBuilder;
+import com.excilys.computer.database.data.Computer;
+import com.excilys.computer.database.data.Page;
+import com.excilys.computer.database.error.ErrorSaisieUser;
+import com.excilys.computer.database.service.Service;
 
 
 class TestServiceCumputer{

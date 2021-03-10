@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import com.excilys.computerDatabase.service.Service;
+import com.excilys.computer.database.service.Service;
 
 
 class TestServiceCompany{
