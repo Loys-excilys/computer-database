@@ -7,14 +7,17 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.service.Service;
+import com.excilys.computer.database.service.ServiceCompany;
+import com.excilys.computer.database.service.ServiceComputer;
 import com.excilys.computer.database.view.View;
 
 @Component
 public class Controller {
 
 	@Autowired
-	private Service service;
+	private ServiceComputer serviceComputer;
+	@Autowired
+	private ServiceCompany serviceCompany;
 	@Resource(name = "View")
 	private View view;
 
@@ -30,10 +33,10 @@ public class Controller {
 		Page page = new Page();
 		switch (commande) {
 		case LIST_COMPUTER:
-			this.view.getViewComputer().printListComputer(this.service.getServiceComputer().getListComputer(page));
+			this.view.getViewComputer().printListComputer(this.serviceComputer.getListComputer(page));
 			break;
 		case LIST_COMPANY:
-			this.view.getViewCompany().printListCompany(this.service.getServiceCompany().getListCompany(0));
+			this.view.getViewCompany().printListCompany(this.serviceCompany.getListCompany(0));
 			break;
 		case DETAIL_COMPUTER:
 			this.view.getViewComputer().printAskIdDetailComputer();
@@ -57,14 +60,14 @@ public class Controller {
 	}
 
 	public void chooseIdDetailcomputer(int commande) throws ErrorSaisieUser {
-		this.view.getViewComputer().printDetailComputer(this.service.getServiceComputer().getComputer(commande));
+		this.view.getViewComputer().printDetailComputer(this.serviceComputer.getComputer(commande));
 	}
 
 	public void changePageComputer(Page page) throws ErrorSaisieUser {
-		this.view.getViewComputer().printListComputer(this.service.getServiceComputer().getListComputer(page));
+		this.view.getViewComputer().printListComputer(this.serviceComputer.getListComputer(page));
 	}
 
 	public void changePageCompany(int page) {
-		this.view.getViewCompany().printListCompany(this.service.getServiceCompany().getListCompany(page));
+		this.view.getViewCompany().printListCompany(this.serviceCompany.getListCompany(page));
 	}
 }

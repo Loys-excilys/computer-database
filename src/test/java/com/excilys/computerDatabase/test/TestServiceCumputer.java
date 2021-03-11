@@ -11,7 +11,8 @@ import com.excilys.computer.database.builder.ComputerBuilder;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.service.Service;
+import com.excilys.computer.database.service.ServiceCompany;
+import com.excilys.computer.database.service.ServiceComputer;
 
 class TestServiceCumputer {
 
@@ -19,45 +20,42 @@ class TestServiceCumputer {
 
 	@Test
 	void testGetListComputer() throws Exception, ErrorSaisieUser {
-		Service service;
-		service = new Service();
+		ServiceComputer serviceComputer = new ServiceComputer();
 		Page page = new Page();
 
 		page.setPage(0);
-		assertEquals("MacBook Pro 15.4 inch", service.getServiceComputer().getListComputer(page).get(0).getName());
+		assertEquals("MacBook Pro 15.4 inch", serviceComputer.getListComputer(page).get(0).getName());
 	}
 
 	@Test
 	void testInsertComputer() throws Exception, ErrorSaisieUser {
-		Service service;
-		service = new Service();
+		ServiceComputer serviceComputer = new ServiceComputer();
+		ServiceCompany serviceCompany = new ServiceCompany();
 		Computer computer = new ComputerBuilder().addName("testUnitaire")
 				.addIntroduced(Optional.of(LocalDate.parse("2015-06-22")))
 				.addDiscontinued(Optional.of(LocalDate.parse("2021-04-30")))
-				.addCompany(service.getServiceCompany().getCompany("Apple Inc.")).getComputer();
+				.addCompany(serviceCompany.getCompany("Apple Inc.")).getComputer();
 
-		idTest = (int) service.getServiceComputer().addComputer(computer);
+		idTest = (int) serviceComputer.addComputer(computer);
 
-		assertEquals(service.getServiceComputer().getNumberComputer(), idTest);
+		assertEquals(serviceComputer.getNumberComputer(), idTest);
 
 	}
 
 	@Test
 	void testGetComputer() throws Exception, ErrorSaisieUser {
-		Service service;
-		service = new Service();
-		assertEquals(Computer.class, service.getServiceComputer().getComputer(idTest).get().getClass());
+		ServiceComputer serviceComputer = new ServiceComputer();
+		assertEquals(Computer.class, serviceComputer.getComputer(idTest).get().getClass());
 	}
 
 	@Test
 	void testUpdateComputer() throws Exception, ErrorSaisieUser {
-		Service service;
-		service = new Service();
-		Computer computer = service.getServiceComputer().getComputer(idTest).get();
+		ServiceComputer serviceComputer = new ServiceComputer();
+		Computer computer = serviceComputer.getComputer(idTest).get();
 
 		computer.setName("testUnitaire2");
 
-		service.getServiceComputer().updateComputer(computer);
-		assertEquals(computer.getName(), service.getServiceComputer().getComputer(idTest).get().getName());
+		serviceComputer.updateComputer(computer);
+		assertEquals(computer.getName(), serviceComputer.getComputer(idTest).get().getName());
 	}
 }

@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.computer.database.data.Page;
@@ -19,12 +20,13 @@ import com.excilys.computer.database.dto.ComputerDTO;
 import com.excilys.computer.database.error.ErreurIO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperComputer;
-import com.excilys.computer.database.service.Service;
+import com.excilys.computer.database.service.ServiceComputer;
 
 /**
  * Servlet implementation class ServletComputer
  */
-@Controller
+@Component
+@WebServlet("/ServletComputer")
 public class ServletComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String MAX_NUMBER_ENTRY = "maxNumberPrint";
@@ -33,7 +35,7 @@ public class ServletComputer extends HttpServlet {
 	private static final String SORT = "sort";
 
 	@Autowired
-	private Service service;
+	private ServiceComputer serviceComputer;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -88,24 +90,24 @@ public class ServletComputer extends HttpServlet {
 		if (session.getAttribute(SEARCH) != null && session.getAttribute(ORDER_FIELD) != null
 				&& session.getAttribute(SORT) != null) {
 			page.setMaxComputer(
-					this.service.getServiceComputer().getSearchNumberComputer(session.getAttribute(SEARCH).toString()));
+					this.serviceComputer.getSearchNumberComputer(session.getAttribute(SEARCH).toString()));
 
 			return MapperComputer.listComputerToListComputerDTO(
-					this.service.getServiceComputer().getResearchComputerOrder(session.getAttribute(SEARCH).toString(),
+					this.serviceComputer.getResearchComputerOrder(session.getAttribute(SEARCH).toString(),
 							session.getAttribute(ORDER_FIELD).toString(), session.getAttribute(SORT).toString(), page));
 		} else if (session.getAttribute(SEARCH) != null) {
 			page.setMaxComputer(
-					this.service.getServiceComputer().getSearchNumberComputer(session.getAttribute(SEARCH).toString()));
+					this.serviceComputer.getSearchNumberComputer(session.getAttribute(SEARCH).toString()));
 			return MapperComputer.listComputerToListComputerDTO(
-					this.service.getServiceComputer().getSearchComputer(session.getAttribute(SEARCH).toString(), page));
+					this.serviceComputer.getSearchComputer(session.getAttribute(SEARCH).toString(), page));
 		} else if (session.getAttribute(ORDER_FIELD) != null && session.getAttribute(SORT) != null) {
-			page.setMaxComputer(this.service.getServiceComputer().getNumberComputer());
-			return MapperComputer.listComputerToListComputerDTO(this.service.getServiceComputer().getListComputerOrder(
+			page.setMaxComputer(this.serviceComputer.getNumberComputer());
+			return MapperComputer.listComputerToListComputerDTO(this.serviceComputer.getListComputerOrder(
 					session.getAttribute(ORDER_FIELD).toString(), session.getAttribute(SORT).toString(), page));
 		} else {
-			page.setMaxComputer(this.service.getServiceComputer().getNumberComputer());
+			page.setMaxComputer(this.serviceComputer.getNumberComputer());
 			return MapperComputer
-					.listComputerToListComputerDTO(this.service.getServiceComputer().getListComputer(page));
+					.listComputerToListComputerDTO(this.serviceComputer.getListComputer(page));
 
 		}
 	}
@@ -119,7 +121,7 @@ public class ServletComputer extends HttpServlet {
 		String[] ids = request.getParameter("selection").split(",");
 		for (String id : ids) {
 			try {
-				this.service.getServiceComputer().deleteComputerById(Integer.parseInt(id));
+				this.serviceComputer.deleteComputerById(Integer.parseInt(id));
 			} catch (NumberFormatException exceptionUser) {
 				new ErrorSaisieUser(this.getClass()).formatEntry();
 			}

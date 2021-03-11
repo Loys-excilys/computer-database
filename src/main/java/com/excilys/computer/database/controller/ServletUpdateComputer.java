@@ -22,7 +22,8 @@ import com.excilys.computer.database.error.ErreurIO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperCompany;
 import com.excilys.computer.database.mappeur.MapperComputer;
-import com.excilys.computer.database.service.Service;
+import com.excilys.computer.database.service.ServiceCompany;
+import com.excilys.computer.database.service.ServiceComputer;
 
 /**
  * Servlet implementation class ServletUpdateComputerSer
@@ -32,7 +33,10 @@ public class ServletUpdateComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private Service service;
+	private ServiceCompany serviceCompany;
+
+	@Autowired
+	private ServiceComputer serviceComputer;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -42,10 +46,10 @@ public class ServletUpdateComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		try {
-			Optional<Computer> computer = this.service.getServiceComputer()
+			Optional<Computer> computer = this.serviceComputer
 					.getComputer(Integer.parseInt(request.getParameter("id")));
 			session.setAttribute("listCompany",
-					MapperCompany.listCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
+					MapperCompany.listCompanyToListCompanyDTO(this.serviceCompany.getListCompany()));
 			if (computer.isPresent()) {
 				session.setAttribute("updateComputer", MapperComputer.computerToComputerDTO(computer.get()));
 			}
@@ -74,7 +78,7 @@ public class ServletUpdateComputer extends HttpServlet {
 		List<CompanyDTO> listCompany = (List) session.getAttribute("listCompany");
 		try {
 			Computer computer = MapperComputer.computerFormUpdateDTOToComputer(computerFormUpdateDTO, listCompany);
-			this.service.getServiceComputer().updateComputer(computer);
+			this.serviceComputer.updateComputer(computer);
 			pathRedirection = "ServletComputer";
 		} catch (ErrorSaisieUser errorUser) {
 			pathRedirection = "ServletAddComputer";

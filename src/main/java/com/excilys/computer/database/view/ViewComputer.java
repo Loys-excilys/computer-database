@@ -3,6 +3,7 @@ package com.excilys.computer.database.view;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.builder.ComputerBuilder;
@@ -10,9 +11,17 @@ import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
+import com.excilys.computer.database.service.ServiceCompany;
+import com.excilys.computer.database.service.ServiceComputer;
 
 @Component
 public class ViewComputer extends View {
+
+	@Autowired
+	protected ServiceComputer serviceComputer;
+
+	@Autowired
+	protected ServiceCompany serviceCompany;
 
 	public void printListComputer(List<Computer> listComputer) {
 		String actionPage = "";
@@ -29,7 +38,7 @@ public class ViewComputer extends View {
 					page.previous();
 				}
 				try {
-					listComputer = this.service.getServiceComputer().getListComputer(page);
+					listComputer = this.serviceComputer.getListComputer(page);
 					if (listComputer.isEmpty()) {
 						page.previous();
 					}
@@ -62,10 +71,10 @@ public class ViewComputer extends View {
 		computer = new ComputerBuilder().addName(this.printAskEntryString("Can you give me the Name ? : "))
 				.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
 				.addDiscontinued(this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
-				.addCompany(this.service.getServiceCompany()
+				.addCompany(this.serviceCompany
 						.getCompany(this.printAskEntryString("Can you give me the name company ? : ")))
 				.getComputer();
-		this.service.getServiceComputer().addComputer(computer);
+		this.serviceComputer.addComputer(computer);
 		System.out.println("Done");
 		this.space();
 	}
@@ -73,7 +82,7 @@ public class ViewComputer extends View {
 	public void printUpdateComputer() {
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
-			optionalComputer = this.service.getServiceComputer()
+			optionalComputer = this.serviceComputer
 					.getComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
 		} catch (ErrorSaisieUser exception) {
 			exception.formatEntry();
@@ -92,13 +101,12 @@ public class ViewComputer extends View {
 			computer.setCompany(this.verifAskNewValueCompanyComputer(
 					"What is the new company owner ? (actual = " + computer.getCompany().get().getName() + ") :",
 					computer.getCompany()));
-			this.service.getServiceComputer().updateComputer(computer);
+			this.serviceComputer.updateComputer(computer);
 		}
 	}
 
 	public void printDeleteComputer() {
-		this.service.getServiceComputer()
-				.deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
+		this.serviceComputer.deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
 		System.out.println("done");
 
 		this.space();
@@ -114,7 +122,7 @@ public class ViewComputer extends View {
 	}
 
 	protected Optional<Company> verifAskNewValueCompanyComputer(String message, Optional<Company> oldCompany) {
-		Optional<Company> company = this.service.getServiceCompany().getCompany(this.printAskEntryString(message));
+		Optional<Company> company = this.serviceCompany.getCompany(this.printAskEntryString(message));
 		if (company.isPresent()) {
 			return company;
 		} else {

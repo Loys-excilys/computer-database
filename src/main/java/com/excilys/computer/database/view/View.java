@@ -10,15 +10,12 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.controller.Controller;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.service.Service;
 
 @Component("View")
 public class View {
 
 	@Autowired
 	protected Controller controller;
-	@Autowired
-	protected Service service;
 	@Autowired
 	private ViewComputer viewComputer;
 	@Autowired

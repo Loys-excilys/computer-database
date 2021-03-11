@@ -21,7 +21,8 @@ import com.excilys.computer.database.error.ErreurIO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperCompany;
 import com.excilys.computer.database.mappeur.MapperComputer;
-import com.excilys.computer.database.service.Service;
+import com.excilys.computer.database.service.ServiceCompany;
+import com.excilys.computer.database.service.ServiceComputer;
 
 /**
  * Servlet implementation class ServletAddComputer
@@ -31,7 +32,10 @@ public class ServletAddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private Service service;
+	private ServiceCompany serviceCompany;
+	
+	@Autowired
+	private ServiceComputer serviceComputer;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,7 +44,7 @@ public class ServletAddComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		try {
-			session.setAttribute("listCompany", MapperCompany.listCompanyToListCompanyDTO(this.service.getServiceCompany().getListCompany()));
+			session.setAttribute("listCompany", MapperCompany.listCompanyToListCompanyDTO(this.serviceCompany.getListCompany()));
 			this.getServletContext().getRequestDispatcher("/WEB-INF/JSP/AddComputer.jsp").forward(request, response);
 		} catch (ServletException errorServlet) {
 			new ErreurIO(this.getClass()).redirectionFail(errorServlet);
@@ -60,7 +64,7 @@ public class ServletAddComputer extends HttpServlet {
 		List<CompanyDTO> listCompany = (List) session.getAttribute("listCompany");
 		try {
 			Computer computer = MapperComputer.computerFormAddDTOToComputer(computerFormAddDTO, listCompany);
-			this.service.getServiceComputer().addComputer(computer);
+			this.serviceComputer.addComputer(computer);
 			pathRedirection = "ServletComputer";
 		} catch (ErrorSaisieUser errorUser) {
 			pathRedirection = "ServletAddComputer";

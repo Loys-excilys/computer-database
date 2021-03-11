@@ -1,18 +1,21 @@
 package com.excilys.computer.database.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computer.database.data.Company;
-import com.excilys.computer.database.error.ErrorDAOCompany;
 
 @Component
 public class DAOCompany {
@@ -23,94 +26,55 @@ public class DAOCompany {
 	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
 	private static final String SELECT_COMPANY_NO_LIMIT = "Select * FROM company";
 
-	private static final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
-	private static final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = ?";
+	private static final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = :id";
+	private static final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = :id";
 
 	@Autowired
-	private DBConnection dbConnection;
+	private DataSource dataSource;
 
 	public Optional<Company> getCompany(String name) {
 		Optional<Company> company = Optional.empty();
-		try (Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(SELECT_COMPANY_NAME);) {
-			query.setString(1, name);
-			ResultSet result = query.executeQuery();
-			result.next();
-			company = Optional.ofNullable(new Company(result.getInt("id"), result.getString("name")));
-			return company;
-		} catch (SQLException exceptionSQL) {
-			new ErrorDAOCompany().connectionLost(exceptionSQL);
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
+
+		RowMapper<Company> vRowMapper = this.getRowMapper();
+		List<Company> result = jdbcTemplate.query(SELECT_COMPANY_NAME, vRowMapper, name);
+
+		if (!result.isEmpty()) {
+			company = Optional.ofNullable(result.get(0));
 		}
 		return company;
 	}
 
 	public List<Company> getListCompany(int page) {
-		List<Company> resultList = new ArrayList<>();
-
-		try (Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(SELECT_COMPANY);) {
-			query.setInt(1, MAX_ENTRY_PRINT);
-			query.setInt(2, page * MAX_ENTRY_PRINT);
-			ResultSet result = query.executeQuery();
-			while (result.next()) {
-				resultList.add(new Company(result.getInt("id"), result.getString("name")));
-			}
-		} catch (SQLException exceptionSQL) {
-			new ErrorDAOCompany().connectionLost(exceptionSQL);
-		}
-
-		return resultList;
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
+		RowMapper<Company> vRowMapper = this.getRowMapper();
+		List<Company> result = jdbcTemplate.query(SELECT_COMPANY, vRowMapper, MAX_ENTRY_PRINT, page * MAX_ENTRY_PRINT);
+		return result;
 	}
 
 	public List<Company> getListCompany() {
-		List<Company> resultList = new ArrayList<>();
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
+		RowMapper<Company> vRowMapper = this.getRowMapper();
+		List<Company> result = jdbcTemplate.query(SELECT_COMPANY_NO_LIMIT, vRowMapper);
+		return result;
+	}
+	
+	@Transactional
+	public void deleteCompanyById(int id) {
+		MapSqlParameterSource param = new MapSqlParameterSource();
+		param.addValue("id", id);
+		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
+		jdbcTemplate.update(DELETE_COMPUTER_BY_COMPANY, param);
+		jdbcTemplate.update(DELETE_COMPANY_BY_ID, param);
 
-		try (Connection connection = this.dbConnection.getConnection();
-				PreparedStatement query = connection.prepareStatement(SELECT_COMPANY_NO_LIMIT);) {
-
-			ResultSet result = query.executeQuery();
-			while (result.next()) {
-				resultList.add(new Company(result.getInt("id"), result.getString("name")));
-			}
-		} catch (SQLException exceptionSQL) {
-			new ErrorDAOCompany().connectionLost(exceptionSQL);
-		}
-
-		return resultList;
 	}
 
-	public void deleteCompanyById(int id) {
-		Connection connection = null;
-		try {
-			connection = this.dbConnection.getConnection();
-		} catch (SQLException errorSQL) {
-			new ErrorDAOCompany().connectionLost(errorSQL);
-		}
-
-		try (PreparedStatement queryDeleteComputer = connection.prepareStatement(DELETE_COMPUTER_BY_COMPANY);
-				PreparedStatement queryDeleteCompany = connection.prepareStatement(DELETE_COMPANY_BY_ID);) {
-			connection.setAutoCommit(false);
-
-			queryDeleteComputer.setLong(1, id);
-			queryDeleteComputer.executeUpdate();
-
-			queryDeleteCompany.setLong(1, id);
-			queryDeleteCompany.executeUpdate();
-
-			connection.commit();
-		} catch (SQLException errorSQL) {
-			try {
-				connection.rollback();
-			} catch (SQLException roolbackExcpetion) {
-				new ErrorDAOCompany().connectionLost(roolbackExcpetion);
+	private RowMapper<Company> getRowMapper() {
+		return new RowMapper<Company>() {
+			public Company mapRow(ResultSet pRS, int pRowNum) throws SQLException {
+				Company company = new Company(pRS.getInt("id"), pRS.getString("name"));
+				return company;
 			}
-			new ErrorDAOCompany().idInvalid(errorSQL);
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException errorSQL) {
-				new ErrorDAOCompany().connectionLost(errorSQL);
-			}
-		}
+		};
 	}
 }

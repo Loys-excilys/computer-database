@@ -2,13 +2,17 @@ package com.excilys.computer.database.view;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Page;
+import com.excilys.computer.database.service.ServiceCompany;
 
 @Component
 public class ViewCompany extends View {
+	@Autowired
+	private ServiceCompany serviceCompany;
 
 	public void printListCompany(List<Company> listCompany) {
 		String next = "";
@@ -24,7 +28,7 @@ public class ViewCompany extends View {
 				} else if (next.compareTo("previous") == 0) {
 					page.previous();
 				}
-				listCompany = this.service.getServiceCompany().getListCompany(page.getPage());
+				listCompany = this.serviceCompany.getListCompany(page.getPage());
 				if (listCompany.isEmpty()) {
 					page.previous();
 				}
@@ -35,7 +39,7 @@ public class ViewCompany extends View {
 
 	public void printDeleteCompany() {
 		int idCompanySelected = this.printAskEntryInt("Enter the id of the company : ");
-		this.service.getServiceCompany().deleteCompanyById(idCompanySelected);
+		this.serviceCompany.deleteCompanyById(idCompanySelected);
 		System.out.println("done");
 		this.space();
 	}

@@ -6,23 +6,21 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import com.excilys.computer.database.service.Service;
+import com.excilys.computer.database.service.ServiceCompany;
 
 class TestServiceCompany {
 
 	@Test
 	void testGetListCompany() throws Exception {
-		Service service;
-		service = new Service();
+		ServiceCompany serviceCompany = new ServiceCompany();
 
-		assertEquals(ArrayList.class, service.getServiceCompany().getListCompany(0).getClass());
+		assertEquals(ArrayList.class, serviceCompany.getListCompany(0).getClass());
 	}
 
 	@Test
 	void testGetAllListCompany() throws Exception {
-		Service service;
-		service = new Service();
+		ServiceCompany serviceCompany = new ServiceCompany();
 
-		assertEquals(ArrayList.class, service.getServiceCompany().getListCompany().getClass());
+		assertEquals(ArrayList.class, serviceCompany.getListCompany().getClass());
 	}
 }
