@@ -8,16 +8,16 @@ import com.excilys.computer.database.error.ErrorSaisieUser;
 
 public class ValidateurComputer {
 
-	private static ValidateurComputer INSTANCE;
+	private static ValidateurComputer instance;
 
 	private ValidateurComputer() {
 	}
 
 	public static synchronized ValidateurComputer getInstance() {
-		if (ValidateurComputer.INSTANCE == null) {
-			ValidateurComputer.INSTANCE = new ValidateurComputer();
+		if (ValidateurComputer.instance == null) {
+			ValidateurComputer.instance = new ValidateurComputer();
 		}
-		return ValidateurComputer.INSTANCE;
+		return ValidateurComputer.instance;
 	}
 
 	public Computer getValidate(Computer computer) throws ErrorSaisieUser {
