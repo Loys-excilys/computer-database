@@ -14,7 +14,6 @@ import com.excilys.computer.database.error.ErrorSaisieUser;
 @Component("View")
 public class View {
 
-	@Autowired
 	protected Controller controller;
 	@Autowired
 	private ViewComputer viewComputer;
@@ -23,6 +22,15 @@ public class View {
 
 	protected Scanner saisieUser = new Scanner(System.in);
 
+//	public View(ViewComputer viewComputer, ViewCompany viewCompany) {
+//		this.viewComputer = viewComputer;
+//		this.viewCompany = viewCompany;
+//	}
+//	@Autowired
+//	public void setController(Controller controller) {
+//		this.controller = controller;
+//	}
+	
 	public void cli() {
 		boolean boucle = true;
 		while (boucle) {

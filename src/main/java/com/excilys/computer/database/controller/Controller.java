@@ -1,8 +1,6 @@
 package com.excilys.computer.database.controller;
 
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.data.Page;
@@ -14,11 +12,8 @@ import com.excilys.computer.database.view.View;
 @Component
 public class Controller {
 
-	@Autowired
 	private ServiceComputer serviceComputer;
-	@Autowired
 	private ServiceCompany serviceCompany;
-	@Resource(name = "View")
 	private View view;
 
 	private static final int LIST_COMPUTER = 1;
@@ -28,6 +23,12 @@ public class Controller {
 	private static final int UPDATE_COMPUTER = 5;
 	private static final int DELETE_COMPUTER = 6;
 	private static final int DELETE_COMPANY = 7;
+
+	public Controller(ServiceComputer serviceComputer, ServiceCompany serviceCompany, @Qualifier ("View") View view) {
+		this.serviceCompany = serviceCompany;
+		this.serviceComputer = serviceComputer;
+		this.view = view;
+	}
 
 	public boolean action(int commande, boolean boucle) throws ErrorSaisieUser {
 		Page page = new Page();

@@ -23,6 +23,7 @@
 
 
 		<servlet.version>4.0.0</servlet.version>
+		<jstl.version>1.2</jstl.version>
 
 		<junit.jupiter.version>5.1.0</junit.jupiter.version>
 		<httpUnit.version>1.7</httpUnit.version>
@@ -79,6 +80,12 @@
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>${jstl.version}</version>
+		</dependency>
+		
 
 		<!-- Test Unitaire -->
 		<dependency>

@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,8 +36,9 @@ public class DAOComputer {
 
 	private static final String INSERT_COMPUTER = "INSERT INTO computer(name, introduced, discontinued, company_id)"
 			+ " values(:name, :introduced, :discontinued, :company_id) ";
-	private static final String UPDATE_COMPUTER = "UPDATE computer" + " SET name = :name," + " introduced = :introduced,"
-			+ " discontinued = :discontinued," + " company_id = :company_id" + " WHERE id = :id";
+	private static final String UPDATE_COMPUTER = "UPDATE computer" + " SET name = :name,"
+			+ " introduced = :introduced," + " discontinued = :discontinued," + " company_id = :company_id"
+			+ " WHERE id = :id";
 	private static final String SEARCH_COMPUTER_JOIN = " WHERE computer.name LIKE ?";
 
 	private static final String SEARCH_COMPUTER = " WHERE name LIKE ?";
@@ -51,8 +51,11 @@ public class DAOComputer {
 
 	private static final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
 
-	@Autowired
 	private DataSource dataSource;
+
+	public DAOComputer(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
 	public int getNumberComputer() {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);

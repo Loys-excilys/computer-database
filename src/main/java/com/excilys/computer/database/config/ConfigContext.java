@@ -38,7 +38,7 @@ public class ConfigContext extends AbstractContextLoaderInitializer
 		HikariDataSource connection = new HikariDataSource(config);
 		return connection;
 	}
-
+	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("index");

@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -29,9 +28,12 @@ public class DAOCompany {
 	private static final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = :id";
 	private static final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = :id";
 
-	@Autowired
 	private DataSource dataSource;
 
+	public DAOCompany(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+	
 	public Optional<Company> getCompany(String name) {
 		Optional<Company> company = Optional.empty();
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);

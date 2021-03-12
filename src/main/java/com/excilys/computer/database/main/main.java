@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.computer.database.config.ConfigContext;
+import com.excilys.computer.database.controller.Controller;
 import com.excilys.computer.database.view.View;
 
 public class main {
@@ -18,6 +19,7 @@ public class main {
 	public static void main(String[] args) {
 		ApplicationContext context = new AnnotationConfigApplicationContext(ConfigContext.class);
 		final View view = context.getBean("View", View.class);
+		//view.setController(context.getBean("Controller", Controller.class));
 		view.cli();
 	}
 

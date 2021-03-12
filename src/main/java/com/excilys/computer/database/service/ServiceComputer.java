@@ -3,7 +3,6 @@ package com.excilys.computer.database.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.computer.database.dao.DAOComputer;
@@ -14,8 +13,11 @@ import com.excilys.computer.database.error.ErrorSaisieUser;
 @Service
 public class ServiceComputer {
 
-	@Autowired
 	private DAOComputer database;
+	
+	public ServiceComputer(DAOComputer database) {
+		this.database = database;
+	}
 
 	public Optional<Computer> getComputer(int id) throws ErrorSaisieUser {
 		return this.database.getComputer(id);

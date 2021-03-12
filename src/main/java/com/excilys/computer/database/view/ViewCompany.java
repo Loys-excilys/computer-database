@@ -11,6 +11,7 @@ import com.excilys.computer.database.service.ServiceCompany;
 
 @Component
 public class ViewCompany extends View {
+
 	@Autowired
 	private ServiceCompany serviceCompany;
 
