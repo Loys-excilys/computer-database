@@ -18,6 +18,8 @@ public class ControllerComputer {
 			@RequestParam(required = false) String search,
 			@RequestParam(required = false) String orderField,
 			@RequestParam(required = false) String sort) {
+		
+		
 		return "Computer";
 	}
 }

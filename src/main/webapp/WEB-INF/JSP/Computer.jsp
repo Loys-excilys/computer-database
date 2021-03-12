@@ -10,15 +10,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">
 	<!-- Bootstrap -->
-	<link href="/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/css/font-awesome.css" rel="stylesheet">
-	<link href="/css/main.css" rel="stylesheet">
+	<link href="/computerDatabase/resources/css/bootstrap.min.css" rel="stylesheet" media="screen" type="text/css">
+ 	<link href="/computerDatabase/resources/css/font-awesome.css" rel="stylesheet" media="screen" type="text/css">
+	<link href="/computerDatabase/resources/css/main.css" rel="stylesheet" media="screen" type="text/css">
 	
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/dashboard.js"></script>
+	<script src="/computerDatabase/resources/js/jquery.min.js"></script>
+	<script src="/computerDatabase/resources/js/bootstrap.min.js"></script>
+	<script src="/computerDatabase/resources/js/dashboard.js"></script>
 </head>
 <body>
 
@@ -28,7 +28,7 @@
         </div>
     </header>
 
-    <section id="main">
+    <%-- <section id="main">
         <div class="container">
             <h1 id="homeTitle">
             <computer:NumberComputer numberComputer ="${ sessionScope.numberComputer }" />
@@ -98,6 +98,6 @@
 	        	</ul>
 		    </div>
 		</div>
-    </footer>
+    </footer> --%>
 </body>
 </html>
