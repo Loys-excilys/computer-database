@@ -32,6 +32,17 @@ public class MapperComputer {
 				discontinued.isPresent() ? discontinued.get().toString() : "",
 				company.isPresent() ? company.get().getName() : "");
 	}
+	
+	public static ComputerFormUpdateDTO computerToComputerFormUpdateDTO(Computer computer) {
+		Optional<LocalDate> introduced = computer.getIntroduced();
+		Optional<LocalDate> discontinued = computer.getDiscontinued();
+		Optional<Company> company = computer.getCompany();
+
+		return new ComputerFormUpdateDTO(computer.getId(), computer.getName(),
+				introduced.isPresent() ? introduced.get().toString() : "",
+				discontinued.isPresent() ? discontinued.get().toString() : "",
+				company.isPresent() ? String.valueOf(company.get().getId()) : "");
+	}
 
 	public static List<ComputerDTO> listComputerToListComputerDTO(List<Computer> listComputer) {
 		List<ComputerDTO> listComputerDTO = new ArrayList<>();

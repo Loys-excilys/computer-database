@@ -20,6 +20,9 @@ public class ComputerFormAddDTO implements Serializable {
 		this.companyId = companyId;
 	}
 
+	public ComputerFormAddDTO() {
+	}
+
 	public String getName() {
 		return name;
 	}

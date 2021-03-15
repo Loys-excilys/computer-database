@@ -98,6 +98,7 @@ public class DAOComputer {
 
 	public List<Computer> getSearchComputer(String search, Page page) throws ErrorSaisieUser {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
+		search = "%" + search + "%";
 		RowMapper<Computer> vRowMapper = this.getRowMapper();
 		List<Computer> result = jdbcTemplate.query(SELECT_COMPUTER + SEARCH_COMPUTER_JOIN + LIMIT_OFFSET, vRowMapper,
 				search, page.getMaxPrint(), page.getPage() * page.getMaxPrint());

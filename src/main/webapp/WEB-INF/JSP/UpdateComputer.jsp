@@ -3,22 +3,23 @@
 <!DOCTYPE html>
 
 <%@ taglib uri="/WEB-INF/TagFormComputer.tld" prefix="FormComputer" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html lang="fr">
 <head>
 	<meta charset="UTF-8">
 	<title>Computer Database</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap -->
-	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-	<link href="css/main.css" rel="stylesheet" media="screen">
+	<link href="/computerDatabase/resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="/computerDatabase/resources/css/font-awesome.css" rel="stylesheet" media="screen">
+	<link href="/computerDatabase/resources/css/main.css" rel="stylesheet" media="screen">
 	
-	<script type="text/javascript" src ="js/AddComputer.js"></script>
+	<script type="text/javascript" src ="/computerDatabase/resources/js/AddComputer.js"></script>
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="ServletComputer"> Application - Computer Database </a>
+            <a class="navbar-brand" href="Computer"> Application - Computer Database </a>
         </div>
     </header>
     
@@ -27,18 +28,49 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Update Computer</h1>
-                    <form action="ServletUpdateComputer" method="POST">
-                    	${sessionScope.errorSaisie}
-                        <fieldset>
-                        	<legend>Update Computer</legend>
-								<FormComputer:FormUpdateComputer listCompany="${sessionScope.listCompany}" computerFormUpdateDTO="${sessionScope.updateComputer}"/>                 
-                        </fieldset>
-                        <div class="actions pull-right">
-                            <input type="submit" value="Valider le form" class="btn btn-primary">
-                            or
-                            <a href="ServletComputer" class="btn btn-default">Cancel</a>
-                        </div>
-                    </form>
+                    <form:form action="AddComputer" method="POST"
+						modelAttribute="ComputerFormUpdateDTO">
+						<fieldset>
+							<legend>Add Computer</legend>
+
+
+							<form:input path="id" type="hidden"/>
+							<div class="form-group">
+								<form:label path="name">Computer name</form:label>
+								<form:input path="name" type="text" class="form-control"
+									id="computerName" placeholder="Computer name"
+									name="computerName" maxlength="255" required="required"
+									onchange="verifNameComputer(this.value)" />
+							</div>
+							<div class="form-group">
+								<form:label path="introduced">introduced</form:label>
+								<form:input path="introduced" type="date" class="form-control"
+									id="introduced" placeholder="Introduced date"
+									name="dateIntroduced" onchange="limitMinDate(this.value)"
+									value="" />
+							</div>
+							<div class="form-group">
+								<form:label path="discontinued">discontinued</form:label>
+								<form:input path="discontinued" type="date" class="form-control"
+									id="discontinued" placeholder="Discontinued date"
+									name="dateDiscontinued" onchange="limitMaxDate(this.value)"
+									value="" />
+							</div>
+							<div class="form-group">
+								<form:label path="companyId">companyId</form:label>
+								<form:select path="CompanyId" class="form-control"
+									id="companyId" name="companyName">
+									<form:option value="" label="--Please Select" />
+									<form:options items="${listCompany}"/>
+								</form:select>
+							</div>
+							<div class="actions pull-right">
+								<input type="submit" value="Valider le form"
+									class="btn btn-primary"> or <a href="Computer"
+									class="btn btn-default">Cancel</a>
+							</div>
+						</fieldset>
+					</form:form>
                 </div>
             </div>
         </div>
