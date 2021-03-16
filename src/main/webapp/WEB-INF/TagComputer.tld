@@ -7,16 +7,6 @@
 	      
 	      <tlib-version>2.0</tlib-version>
 	  	<short-name>TagComputer</short-name>
-			<tag>
-				<name>NumberComputer</name>
-				<tag-class>com.excilys.computer.database.tag.TagNumberComputer</tag-class>
-				<body-content>scriptless</body-content>
-				<attribute>
-					<name>numberComputer</name>
-					<required>true</required>
-					<rtexprvalue>true</rtexprvalue>
-				</attribute>
-			</tag>
 			
 			<tag>
 				<name>NumberPage</name>

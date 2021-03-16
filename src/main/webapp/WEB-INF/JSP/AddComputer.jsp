@@ -2,12 +2,12 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<%@ taglib uri="/WEB-INF/TagFormComputer.tld" prefix="FormComputer"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Computer Database</title>
+<title><fmt:message key="label.title" /></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="/computerDatabase/resources/css/bootstrap.min.css"
@@ -23,8 +23,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="Computer"> Application - Computer
-				Database </a>
+			<a class="navbar-brand" href="Computer"> <fmt:message key="label.home" /> </a>
 		</div>
 	</header>
 
@@ -32,35 +31,34 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<h1>Add Computer</h1>
+					<h1><fmt:message key="label.form.add" /></h1>
 					<form:form action="AddComputer" method="POST"
 						modelAttribute="ComputerFormAddDTO">
 						<fieldset>
-							<legend>Add Computer</legend>
-
+							<legend><fmt:message key="label.form.add" /></legend>
 							<div class="form-group">
-								<form:label path="name">Computer name</form:label>
+								<form:label path="name"><fmt:message key="label.form.nameComputer" /></form:label>
 								<form:input path="name" type="text" class="form-control"
 									id="computerName" placeholder="Computer name"
 									name="computerName" maxlength="255" required="required"
 									onchange="verifNameComputer(this.value)" />
 							</div>
 							<div class="form-group">
-								<form:label path="introduced">introduced</form:label>
+								<form:label path="introduced"><fmt:message key="label.form.introduced" /></form:label>
 								<form:input path="introduced" type="date" class="form-control"
 									id="introduced" placeholder="Introduced date"
 									name="dateIntroduced" onchange="limitMinDate(this.value)"
 									value="" />
 							</div>
 							<div class="form-group">
-								<form:label path="discontinued">discontinued</form:label>
+								<form:label path="discontinued"><fmt:message key="label.form.discontinued" /></form:label>
 								<form:input path="discontinued" type="date" class="form-control"
 									id="discontinued" placeholder="Discontinued date"
 									name="dateDiscontinued" onchange="limitMaxDate(this.value)"
 									value="" />
 							</div>
 							<div class="form-group">
-								<form:label path="companyId">companyId</form:label>
+								<form:label path="companyId"><fmt:message key="label.form.company" /></form:label>
 								<form:select path="CompanyId" class="form-control"
 									id="companyId" name="companyName">
 									<form:option value="" label="--Please Select" />
@@ -68,9 +66,9 @@
 								</form:select>
 							</div>
 							<div class="actions pull-right">
-								<input type="submit" value="Valider le form"
-									class="btn btn-primary"> or <a href="Computer"
-									class="btn btn-default">Cancel</a>
+								<input type="submit" value="<fmt:message key="label.form.valide" />"
+									class="btn btn-primary"> <fmt:message key="label.form.or" /> <a href="Computer"
+									class="btn btn-default"><fmt:message key="label.form.cancel" /></a>
 							</div>
 						</fieldset>
 					</form:form>

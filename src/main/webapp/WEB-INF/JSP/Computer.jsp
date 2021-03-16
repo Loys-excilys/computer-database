@@ -2,11 +2,12 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib uri="/WEB-INF/TagComputer.tld" prefix="computer"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<title>Computer Database</title>
+<title><fmt:message key="label.title" /></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -29,15 +30,23 @@
 
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="Computer"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="Computer"> <fmt:message
+					key="label.home" />
+			</a>
+			<div class = "pull-right">
+			<ul>
+				<li><a href="?lang=en"><fmt:message key="label.lang.en" /></a></li>
+				<li><a href="?lang=fr"><fmt:message key="label.lang.fr" /></a></li>
+			</ul>
+		</div>
 		</div>
 	</header>
 
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
-				<computer:NumberComputer numberComputer="${ numberComputer }" />
+				${ numberComputer }
+				<fmt:message key="label.dashboard.computerNumber" />
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
@@ -46,15 +55,17 @@
 
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
+							type="submit" id="searchsubmit"
+							value="<fmt:message
+					key="label.dashboard.filter" />"
 							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer"
-						href="AddComputer">Add Computer</a> <a
-						class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="AddComputer"><fmt:message
+							key="label.dashboard.addComputer" /></a> <a class="btn btn-default"
+						id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><fmt:message
+							key="label.dashboard.edit" /></a>
 				</div>
 			</div>
 		</div>
@@ -78,9 +89,80 @@
 									<em class="fa fa-trash-o fa-lg"></em>
 							</a>
 						</span></th>
-						<computer:OrderComputer sort="${sessionScope.session.sort}"
-							orderField="${sessionScope.session.orderField}" />
-
+						<%-- 						<computer:OrderComputer sort="${sessionScope.session.sort}"
+							orderField="${sessionScope.session.orderField}" /> --%>
+						<c:choose>
+							<c:when test="${sessionScope.session.orderField != \"name\"}">
+								<th><fmt:message key="label.dashboard.nameComputer" /><a
+									href="?orderField=name&sort=ASC" class="fa fa-fw fa-sort"></a></th>
+							</c:when>
+							<c:when
+								test="${sessionScope.session.orderField == \"name\" && sessionScope.session.sort == \"ASC\"}">
+								<th><fmt:message key="label.dashboard.nameComputer" /><a
+									href="?orderField=name&sort=DESC" class="fa fa-fw fa-sort-asc"></a></th>
+							</c:when>
+							<c:when
+								test="${sessionScope.session.orderField == \"name\" && sessionScope.session.sort == \"DESC\"}">
+								<th><fmt:message key="label.dashboard.nameComputer" /><a
+									href="?orderField=name&sort=ASC" class="fa fa-fw fa-sort-desc"></a></th>
+							</c:when>
+						</c:choose>
+						<c:choose>
+							<c:when
+								test="${sessionScope.session.orderField != \"introduced\"}">
+								<th><fmt:message key="label.dashboard.introduced" /><a
+									href="?orderField=introduced&sort=ASC" class="fa fa-fw fa-sort"></a></th>
+							</c:when>
+							<c:when
+								test="${sessionScope.session.orderField == \"introduced\" && sessionScope.session.sort == \"ASC\"}">
+								<th><fmt:message key="label.dashboard.introduced" /><a
+									href="?orderField=introduced&sort=DESC"
+									class="fa fa-fw fa-sort-asc"></a></th>
+							</c:when>
+							<c:when
+								test="${sessionScope.session.orderField == \"introduced\" && sessionScope.session.sort == \"DESC\"}">
+								<th><fmt:message key="label.dashboard.introduced" /><a
+									href="?orderField=introduced&sort=ASC"
+									class="fa fa-fw fa-sort-desc"></a></th>
+							</c:when>
+						</c:choose>
+						<c:choose>
+							<c:when
+								test="${sessionScope.session.orderField != \"discontinued\"}">
+								<th><fmt:message key="label.dashboard.discontinued" /><a
+									href="?orderField=discontinued&sort=ASC"
+									class="fa fa-fw fa-sort"></a></th>
+							</c:when>
+							<c:when
+								test="${sessionScope.session.orderField == \"discontinued\" && sessionScope.session.sort == \"ASC\"}">
+								<th><fmt:message key="label.dashboard.discontinued" /><a
+									href="?orderField=discontinued&sort=DESC"
+									class="fa fa-fw fa-sort-asc"></a></th>
+							</c:when>
+							<c:when
+								test="${sessionScope.session.orderField == \"discontinued\" && sessionScope.session.sort == \"DESC\"}">
+								<th><fmt:message key="label.dashboard.discontinued" /><a
+									href="?orderField=discontinued&sort=ASC"
+									class="fa fa-fw fa-sort-desc"></a></th>
+							</c:when>
+						</c:choose>
+						<c:choose>
+							<c:when
+								test="${sessionScope.session.orderField != \"company_id\"}">
+								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company_id&sort=ASC"
+									class="fa fa-fw fa-sort"></a></th>
+							</c:when>
+							<c:when
+								test="${sessionScope.session.orderField == \"company_id\" && sessionScope.session.sort == \"ASC\"}">
+								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company_id&sort=DESC"
+									class="fa fa-fw fa-sort-asc"></a></th>
+							</c:when>
+							<c:when
+								test="${sessionScope.session.orderField == \"company_id\" && sessionScope.session.sort == \"DESC\"}">
+								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company_id&sort=ASC"
+									class="fa fa-fw fa-sort-desc"></a></th>
+							</c:when>
+						</c:choose>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
@@ -98,8 +180,7 @@
 			<ul class="pagination">
 
 				<computer:NumberPage numberComputer="${numberComputer}"
-					currentPage="${currentPage}"
-					maxNumberPrint="${maxNumberPrint}" />
+					currentPage="${currentPage}" maxNumberPrint="${maxNumberPrint}" />
 
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
