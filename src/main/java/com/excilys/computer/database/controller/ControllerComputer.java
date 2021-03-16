@@ -42,6 +42,8 @@ public class ControllerComputer {
 		modelView.getModel().put("currentPage", vPage.getPage() + 1);
 		modelView.getModel().put("numberComputer", vPage.getMaxComputer());
 		modelView.getModel().put("listComputer", listComputer);
+		modelView.addObject("session", 
+				session);
 		return modelView;
 	}
 	
