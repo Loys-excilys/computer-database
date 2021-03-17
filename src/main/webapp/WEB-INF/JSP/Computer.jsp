@@ -21,10 +21,6 @@
 <link
 	href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
 	rel="stylesheet">
-
-<script src="/computerDatabase/resources/js/jquery.min.js"></script>
-<script src="/computerDatabase/resources/js/bootstrap.min.js"></script>
-<script src="/computerDatabase/resources/js/dashboard.js"></script>
 </head>
 <body>
 
@@ -191,4 +187,8 @@
 		</div>
 	</footer>
 </body>
+
+<script src="/computerDatabase/resources/js/jquery.min.js"></script>
+<script src="/computerDatabase/resources/js/bootstrap.min.js"></script>
+<script src="/computerDatabase/resources/js/dashboard.js"></script>
 </html>

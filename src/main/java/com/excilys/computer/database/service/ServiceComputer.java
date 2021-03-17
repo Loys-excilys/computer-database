@@ -27,8 +27,8 @@ public class ServiceComputer {
 		return this.database.getListComputer(page);
 	}
 
-	public long addComputer(Computer computer) {
-		return this.database.insertComputer(computer);
+	public void addComputer(Computer computer) {
+		this.database.insertComputer(computer);
 	}
 
 	public void updateComputer(Computer computer) {

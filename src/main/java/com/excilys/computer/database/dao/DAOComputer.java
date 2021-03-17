@@ -7,8 +7,7 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -21,7 +20,7 @@ import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MappeurDate;
 
-@Component
+@Repository
 public class DAOComputer {
 
 	private static final String SELECT_COMPUTER = "SELECT computer.id as id," + " computer.name as name,"
@@ -126,16 +125,14 @@ public class DAOComputer {
 		return result;
 	}
 
-	public long insertComputer(Computer computer) {
+	public void insertComputer(Computer computer) {
 		MapSqlParameterSource param = new MapSqlParameterSource();
 		param.addValue("name", computer.getName());
 		param.addValue("introduced", MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
 		param.addValue("discontinued", MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));
 		param.addValue("company_id", computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
-		long newKey = jdbcTemplate.update(INSERT_COMPUTER, param);
-
-		return newKey;
+		jdbcTemplate.update(INSERT_COMPUTER, param);
 	}
 
 	public void updateComputer(Computer computer) {

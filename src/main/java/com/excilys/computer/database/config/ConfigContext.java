@@ -31,7 +31,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.service",
 		"com.excilys.computer.database.controller", "com.excilys.computer.database.view",
-		"com.excilys.computer.database.config" })
+		"com.excilys.computer.database.config"})
 @EnableWebMvc
 public class ConfigContext implements WebApplicationInitializer, WebMvcConfigurer {
 

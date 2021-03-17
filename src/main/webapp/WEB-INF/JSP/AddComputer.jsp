@@ -16,9 +16,6 @@
 	rel="stylesheet" media="screen">
 <link href="/computerDatabase/resources/css/main.css" rel="stylesheet"
 	media="screen">
-
-<script type="text/javascript"
-	src="/computerDatabase/resources/js/AddComputer.js"></script>
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -77,4 +74,6 @@
 		</div>
 	</section>
 </body>
+<script type="text/javascript"
+	src="/computerDatabase/resources/js/AddComputer.js"></script>
 </html>
