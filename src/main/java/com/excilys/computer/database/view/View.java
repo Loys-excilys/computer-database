@@ -2,7 +2,6 @@ package com.excilys.computer.database.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,15 +93,15 @@ public class View {
 		return num;
 	}
 
-	protected Optional<LocalDate> printAskEntryDate(String message) {
-		Optional<LocalDate> date = Optional.empty();
+	protected LocalDate printAskEntryDate(String message) {
+		LocalDate date = null;
 		boolean boucle = false;
 		do {
 			System.out.print("\n" + message);
 			try {
 				String text = this.saisieUser.nextLine();
 				if (!text.isEmpty()) {
-					date = Optional.of(LocalDate.parse(text));
+					date = LocalDate.parse(text);
 				}
 				boucle = true;
 			} catch (DateTimeParseException e) {

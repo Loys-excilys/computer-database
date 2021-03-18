@@ -1,7 +1,6 @@
 package com.excilys.computer.database.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ public class ServiceCompany {
 		this.database = database;
 	}
 	
-	public Optional<Company> getCompany(String nameCompany) {
+	public Company getCompany(String nameCompany) {
 		return this.database.getCompany(nameCompany);
 	}
 

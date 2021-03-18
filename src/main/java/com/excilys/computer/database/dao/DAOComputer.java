@@ -5,9 +5,16 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
+import org.hibernate.SessionFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -51,22 +58,37 @@ public class DAOComputer {
 	private static final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
 
 	private DataSource dataSource;
+	private SessionFactory sessionFactory;
 
-	public DAOComputer(DataSource dataSource) {
+	public DAOComputer(DataSource dataSource, SessionFactory sessionFactory) {
 		this.dataSource = dataSource;
+		this.sessionFactory = sessionFactory;
 	}
 
-	public int getNumberComputer() {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-		int numberComputer = jdbcTemplate.queryForObject(COUNT_COMPUTER, Integer.class);
-		return numberComputer;
+	public long getNumberComputer() {
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		
+		CriteriaQuery<Long> query = cb.createQuery(Long.class);
+		Root<Computer> computer = query.from(Computer.class);
+		query.select(cb.count(computer));
+		
+		return em.createQuery(query).getSingleResult();
 	}
 
-	public int getSearchNumberComputer(String search) {
-		search = "%" + search + "%";
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-		int numberComputer = jdbcTemplate.queryForObject(COUNT_COMPUTER + SEARCH_COMPUTER, Integer.class, search);
-		return numberComputer;
+	public long getSearchNumberComputer(String search) {
+		
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		
+		CriteriaQuery<Long> query = cb.createQuery(Long.class);
+		Root<Computer> computer = query.from(Computer.class);
+		
+		query.select(cb.count(computer));
+		
+		query.where(cb.like(computer.get("name"), "%" + search + "%"));
+		
+		return em.createQuery(query).getSingleResult();
 	}
 
 	public Optional<Computer> getComputer(int id) throws ErrorSaisieUser {
@@ -157,10 +179,9 @@ public class DAOComputer {
 		return new RowMapper<Computer>() {
 			public Computer mapRow(ResultSet pRS, int pRowNum) throws SQLException {
 				Computer computer = new ComputerBuilder().addId(pRS.getInt("id")).addName(pRS.getString("name"))
-						.addIntroduced((MappeurDate.dateToOptionalLocalDate(pRS.getDate("introduced"))))
-						.addDiscontinued((MappeurDate.dateToOptionalLocalDate(pRS.getDate("discontinued"))))
-						.addCompany(Optional
-								.ofNullable(new Company(pRS.getLong("companyID"), pRS.getString("companyName"))))
+						.addIntroduced((MappeurDate.dateToLocalDate(pRS.getDate("introduced"))))
+						.addDiscontinued((MappeurDate.dateToLocalDate(pRS.getDate("discontinued"))))
+						.addCompany(new Company(pRS.getLong("companyID"), pRS.getString("companyName")))
 						.getComputer();
 				return computer;
 			}

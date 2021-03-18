@@ -3,7 +3,6 @@ package com.excilys.computer.database.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -34,15 +33,15 @@ public class DAOCompany {
 		this.dataSource = dataSource;
 	}
 	
-	public Optional<Company> getCompany(String name) {
-		Optional<Company> company = Optional.empty();
+	public Company getCompany(String name) {
+		Company company = null;
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
 
 		RowMapper<Company> vRowMapper = this.getRowMapper();
 		List<Company> result = jdbcTemplate.query(SELECT_COMPANY_NAME, vRowMapper, name);
 
 		if (!result.isEmpty()) {
-			company = Optional.ofNullable(result.get(0));
+			company = result.get(0);
 		}
 		return company;
 	}

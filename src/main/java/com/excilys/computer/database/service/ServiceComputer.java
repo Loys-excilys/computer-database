@@ -41,7 +41,7 @@ public class ServiceComputer {
 		}
 	}
 
-	public int getNumberComputer() {
+	public long getNumberComputer() {
 		return this.database.getNumberComputer();
 	}
 
@@ -49,7 +49,7 @@ public class ServiceComputer {
 		return this.database.getSearchComputer(search, page);
 	}
 
-	public int getSearchNumberComputer(String search) {
+	public long getSearchNumberComputer(String search) {
 		return this.database.getSearchNumberComputer(search);
 	}
 

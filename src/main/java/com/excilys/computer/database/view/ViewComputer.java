@@ -121,12 +121,12 @@ public class ViewComputer extends View {
 		}
 	}
 
-	protected Optional<Company> verifAskNewValueCompanyComputer(String message, Optional<Company> oldCompany) {
-		Optional<Company> company = this.serviceCompany.getCompany(this.printAskEntryString(message));
-		if (company.isPresent()) {
+	protected Company verifAskNewValueCompanyComputer(String message, Optional<Company> oldCompany) {
+		Company company = this.serviceCompany.getCompany(this.printAskEntryString(message));
+		if (company != null) {
 			return company;
 		} else {
-			return oldCompany;
+			return oldCompany.get();
 		}
 	}
 }

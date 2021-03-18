@@ -8,14 +8,13 @@ public class MappeurDate {
 	private MappeurDate() {
 	}
 
-	public static Optional<LocalDate> dateToOptionalLocalDate(java.sql.Date date) {
-		Optional<LocalDate> optionalDate;
-		if (date == null) {
-			optionalDate = Optional.empty();
+	public static LocalDate dateToLocalDate(java.sql.Date date) {
+		if (date != null) {
+			return date.toLocalDate();
 		} else {
-			optionalDate = Optional.of(date.toLocalDate());
+			return null;
 		}
-		return optionalDate;
+
 	}
 
 	public static java.sql.Date optionalLocalDateToDate(Optional<LocalDate> date) {

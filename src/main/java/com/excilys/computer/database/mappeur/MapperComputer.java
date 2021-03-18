@@ -69,15 +69,15 @@ public class MapperComputer {
 		return ValidateurComputer.getInstance()
 				.getValidate(new ComputerBuilder().addName(computerFormAddDTO.getName())
 						.addIntroduced(computerFormAddDTO.getIntroduced().compareTo("") != 0
-								? Optional.of(LocalDate.parse(computerFormAddDTO.getIntroduced()))
-								: Optional.empty())
+								? LocalDate.parse(computerFormAddDTO.getIntroduced())
+								: null)
 						.addDiscontinued(computerFormAddDTO.getDiscontinued().compareTo("") != 0
-								? Optional.of(LocalDate.parse(computerFormAddDTO.getDiscontinued()))
-								: Optional.empty())
+								? LocalDate.parse(computerFormAddDTO.getDiscontinued())
+								: null)
 						.addCompany(computerFormAddDTO.getCompanyId().compareTo("") != 0
-								? Optional.ofNullable(MapperCompany.companyDTOToCompany(
-										listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId()) - 1)))
-								: Optional.empty())
+								? MapperCompany.companyDTOToCompany(
+										listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId()) - 1))
+								: null)
 						.getComputer());
 	}
 
@@ -88,15 +88,15 @@ public class MapperComputer {
 				.getValidate(new ComputerBuilder().addId(computerFormUpdateDTO.getId())
 						.addName(computerFormUpdateDTO.getName())
 						.addIntroduced(computerFormUpdateDTO.getIntroduced().compareTo("") != 0
-								? Optional.of(LocalDate.parse(computerFormUpdateDTO.getIntroduced()))
-								: Optional.empty())
+								? LocalDate.parse(computerFormUpdateDTO.getIntroduced())
+								: null)
 						.addDiscontinued(computerFormUpdateDTO.getDiscontinued().compareTo("") != 0
-								? Optional.of(LocalDate.parse(computerFormUpdateDTO.getDiscontinued()))
-								: Optional.empty())
+								? LocalDate.parse(computerFormUpdateDTO.getDiscontinued())
+								: null)
 						.addCompany(computerFormUpdateDTO.getCompanyId().compareTo("") != 0
-								? Optional.ofNullable(MapperCompany.companyDTOToCompany(
-										listCompany.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId()) - 1)))
-								: Optional.empty())
+								? MapperCompany.companyDTOToCompany(
+										listCompany.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId()) - 1))
+								: null)
 						.getComputer());
 	}
 }

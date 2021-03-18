@@ -1,7 +1,6 @@
 package com.excilys.computer.database.builder;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
@@ -23,17 +22,17 @@ public class ComputerBuilder {
 		return this;
 	}
 	
-	public ComputerBuilder addIntroduced(Optional<LocalDate> introduced) {
-		this.computer.setIntroduced(introduced);
+	public ComputerBuilder addIntroduced(LocalDate localDate) {
+		this.computer.setIntroduced(localDate);
 		return this;
 	}
 	
-	public ComputerBuilder addDiscontinued(Optional<LocalDate> discontinued) {
+	public ComputerBuilder addDiscontinued(LocalDate discontinued) {
 		this.computer.setDiscontinued(discontinued);
 		return this;
 	}
 	
-	public ComputerBuilder addCompany(Optional<Company> company) {
+	public ComputerBuilder addCompany(Company company) {
 		this.computer.setCompany(company);
 		return this;
 	}

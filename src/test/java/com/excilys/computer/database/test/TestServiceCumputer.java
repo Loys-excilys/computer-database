@@ -3,7 +3,6 @@ package com.excilys.computer.database.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,8 +55,8 @@ class TestServiceCumputer {
 	@Test
 	void testInsertComputer() throws Exception, ErrorSaisieUser {
 		Computer computer = new ComputerBuilder().addName("testUnitaire")
-				.addIntroduced(Optional.of(LocalDate.parse("2015-06-22")))
-				.addDiscontinued(Optional.of(LocalDate.parse("2021-04-30")))
+				.addIntroduced(LocalDate.parse("2015-06-22"))
+				.addDiscontinued(LocalDate.parse("2021-04-30"))
 				.addCompany(serviceCompany.getCompany("Apple Inc.")).getComputer();
 
 		serviceComputer.addComputer(computer);
