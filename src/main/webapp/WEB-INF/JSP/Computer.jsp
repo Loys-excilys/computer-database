@@ -174,14 +174,14 @@
 			<ul class="pagination">
 
 				<computer:NumberPage numberComputer="${numberComputer}"
-					currentPage="${currentPage}" maxNumberPrint="${maxNumberPrint}" />
+					currentPage="${session.currentPage}" maxNumberPrint="${session.maxNumberPrint}" />
 
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<ul class="pagination">
-					<li><a href="?numberEntry=10&page=${currentPage}">10</a></li>
-					<li><a href="?numberEntry=25&page=${currentPage}">25</a></li>
-					<li><a href="?numberEntry=50&page=${currentPage}">50</a></li>
+					<li><a href="?numberEntry=10&page=${session.currentPage}">10</a></li>
+					<li><a href="?numberEntry=25&page=${session.currentPage}">25</a></li>
+					<li><a href="?numberEntry=50&page=${session.currentPage}">50</a></li>
 				</ul>
 			</div>
 		</div>

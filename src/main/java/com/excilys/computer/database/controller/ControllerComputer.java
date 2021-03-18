@@ -20,7 +20,7 @@ public class ControllerComputer {
 
 	@Autowired
 	private ServiceComputer serviceComputer;
-	
+
 	@Autowired
 	private SessionComputer session;
 
@@ -38,22 +38,28 @@ public class ControllerComputer {
 		}
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("Computer");
-		modelView.getModel().put("maxNumberPrint", vPage.getMaxPrint());
-		modelView.getModel().put("currentPage", vPage.getPage() + 1);
 		modelView.getModel().put("numberComputer", vPage.getMaxComputer());
 		modelView.getModel().put("listComputer", listComputer);
-		modelView.addObject("session", 
-				session);
+		modelView.addObject("session", session);
 		return modelView;
 	}
-	
+
 	private void pagination(Page page, String numPage, String numberEntry) {
 		if (numPage != null) {
-			page.setPage(Integer.parseInt(numPage) - 1);
+			session.setCurrentPage(Integer.parseInt(numPage));
 		}
 		if (numberEntry != null) {
-			page.setMaxPrint(Integer.parseInt(numberEntry));
+			session.setMaxNumberPrint(Integer.parseInt(numberEntry));
 		}
+		if (session.getCurrentPage() == 0) {
+			session.setCurrentPage(page.getPage() + 1);
+		}
+
+		if (session.getMaxNumberPrint() == 0) {
+			session.setMaxNumberPrint(page.getMaxPrint());
+		}
+		page.setPage(session.getCurrentPage() - 1);
+		page.setMaxPrint(session.getMaxNumberPrint());
 	}
 
 	private List<ComputerDTO> getListComputer(Page page, String search, String orderField, String sort)
@@ -65,29 +71,25 @@ public class ControllerComputer {
 			session.setOrderField(orderField);
 			session.setSort(sort);
 		}
-		if (session.getSearch() != null && session.getOrderField() != null
-				&& session.getSort() != null) {
-			page.setMaxComputer(
-					this.serviceComputer.getSearchNumberComputer(session.getSearch()));
-			return MapperComputer.listComputerToListComputerDTO(
-					this.serviceComputer.getResearchComputerOrder(session.getSearch(),
-							session.getOrderField(), session.getSort(), page));
+		if (session.getSearch() != null && session.getOrderField() != null && session.getSort() != null) {
+			page.setMaxComputer(this.serviceComputer.getSearchNumberComputer(session.getSearch()));
+			return MapperComputer.listComputerToListComputerDTO(this.serviceComputer
+					.getResearchComputerOrder(session.getSearch(), session.getOrderField(), session.getSort(), page));
 		} else if (session.getSearch() != null) {
-			page.setMaxComputer(
-					this.serviceComputer.getSearchNumberComputer(session.getSearch()));
-			return MapperComputer.listComputerToListComputerDTO(
-					this.serviceComputer.getSearchComputer(session.getSearch(), page));
+			page.setMaxComputer(this.serviceComputer.getSearchNumberComputer(session.getSearch()));
+			return MapperComputer
+					.listComputerToListComputerDTO(this.serviceComputer.getSearchComputer(session.getSearch(), page));
 		} else if (session.getOrderField() != null && session.getSort() != null) {
 			page.setMaxComputer(this.serviceComputer.getNumberComputer());
-			return MapperComputer.listComputerToListComputerDTO(this.serviceComputer.getListComputerOrder(
-					session.getOrderField(), session.getSort(), page));
+			return MapperComputer.listComputerToListComputerDTO(
+					this.serviceComputer.getListComputerOrder(session.getOrderField(), session.getSort(), page));
 		} else {
 			page.setMaxComputer(this.serviceComputer.getNumberComputer());
-			return MapperComputer
-					.listComputerToListComputerDTO(this.serviceComputer.getListComputer(page));
+			return MapperComputer.listComputerToListComputerDTO(this.serviceComputer.getListComputer(page));
 
 		}
 	}
+
 	@PostMapping("/Computer")
 	public ModelAndView deleteComputer(@RequestParam String selection) {
 		for (String id : selection.split(",")) {
@@ -97,7 +99,7 @@ public class ControllerComputer {
 				new ErrorSaisieUser(this.getClass()).formatEntry();
 			}
 		}
-		
+
 		return this.getComputerListScreen(null, null, null, null, null);
 	}
 }

@@ -13,6 +13,8 @@ public class SessionComputer implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int currentPage = 1;
+	private int maxNumberPrint = 25;
 	private String search;
 	private String orderField;
 	private String sort;
@@ -39,5 +41,21 @@ public class SessionComputer implements Serializable {
 
 	public void setSort(String sort) {
 		this.sort = sort;
+	}
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public int getMaxNumberPrint() {
+		return maxNumberPrint;
+	}
+
+	public void setMaxNumberPrint(int maxNumberPrint) {
+		this.maxNumberPrint = maxNumberPrint;
 	}
 }
