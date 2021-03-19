@@ -1,27 +1,18 @@
 package com.excilys.computer.database.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
-import javax.sql.DataSource;
-
 import org.springframework.stereotype.Repository;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
-import com.excilys.computer.database.builder.ComputerBuilder;
-import com.excilys.computer.database.data.Company;
+import org.hibernate.Transaction;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
@@ -30,161 +21,156 @@ import com.excilys.computer.database.mappeur.MappeurDate;
 @Repository
 public class DAOComputer {
 
-	private static final String SELECT_COMPUTER = "SELECT computer.id as id," + " computer.name as name,"
-			+ " computer.introduced as introduced," + " computer.discontinued as discontinued,"
-			+ " company.id as companyId," + " company.name as companyName" + " FROM computer "
-			+ " LEFT JOIN company ON computer.company_id = company.id";
-
-	private static final String SELECT_COMPUTER_ID = "SELECT computer.id as id," + " computer.name as name,"
-			+ " computer.introduced as introduced," + " computer.discontinued as discontinued,"
-			+ " company.id as companyId," + " company.name as companyName" + " FROM computer "
-			+ " LEFT JOIN company ON computer.company_id = company.id" + " WHERE computer.id = ?";
-
-	private static final String INSERT_COMPUTER = "INSERT INTO computer(name, introduced, discontinued, company_id)"
-			+ " values(:name, :introduced, :discontinued, :company_id) ";
-	private static final String UPDATE_COMPUTER = "UPDATE computer" + " SET name = :name,"
-			+ " introduced = :introduced," + " discontinued = :discontinued," + " company_id = :company_id"
-			+ " WHERE id = :id";
-	private static final String SEARCH_COMPUTER_JOIN = " WHERE computer.name LIKE ?";
-
-	private static final String SEARCH_COMPUTER = " WHERE name LIKE ?";
-
-	private static final String ORDER_BY = " ORDER BY ";
-
-	private static final String LIMIT_OFFSET = " LIMIT ? OFFSET ?";
-
-	private static final String DELETE_COMPUTER_BY_ID = "DELETE FROM computer WHERE id = :id";
-
-	private static final String COUNT_COMPUTER = "SELECT COUNT(*) FROM computer";
-
-	private DataSource dataSource;
 	private SessionFactory sessionFactory;
 
-	public DAOComputer(DataSource dataSource, SessionFactory sessionFactory) {
-		this.dataSource = dataSource;
+	public DAOComputer(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
 	public long getNumberComputer() {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		
+
 		CriteriaQuery<Long> query = cb.createQuery(Long.class);
 		Root<Computer> computer = query.from(Computer.class);
 		query.select(cb.count(computer));
-		
+
 		return em.createQuery(query).getSingleResult();
 	}
 
 	public long getSearchNumberComputer(String search) {
-		
+
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		
+
 		CriteriaQuery<Long> query = cb.createQuery(Long.class);
 		Root<Computer> computer = query.from(Computer.class);
-		
-		query.select(cb.count(computer));
-		
-		query.where(cb.like(computer.get("name"), "%" + search + "%"));
-		
+
+		query.select(cb.count(computer)).where(cb.like(computer.get("name"), "%" + search + "%"));
+
 		return em.createQuery(query).getSingleResult();
 	}
 
 	public Optional<Computer> getComputer(int id) throws ErrorSaisieUser {
-		Optional<Computer> computer = Optional.empty();
 
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		RowMapper<Computer> vRowMapper = this.getRowMapper();
-		List<Computer> result = jdbcTemplate.query(SELECT_COMPUTER_ID, vRowMapper, id);
+		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
+		Root<Computer> computer = query.from(Computer.class);
 
-		if (!result.isEmpty()) {
-			computer = Optional.ofNullable(result.get(0));
-		}
-//		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-//		computer = Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_COMPUTER_ID, Computer.class));
+		query.select(computer).where(cb.equal(computer.get("id"), id));
 
-		return computer;
+		return Optional.ofNullable(em.createQuery(query).getSingleResult());
 	}
 
 	public List<Computer> getListComputer(Page page) throws ErrorSaisieUser {
 
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-		RowMapper<Computer> vRowMapper = this.getRowMapper();
-		List<Computer> result = jdbcTemplate.query(SELECT_COMPUTER + LIMIT_OFFSET, vRowMapper, page.getMaxPrint(),
-				page.getPage() * page.getMaxPrint());
-		return result;
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
+		Root<Computer> computer = query.from(Computer.class);
+
+		query.select(computer);
+
+		return em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
+				.setMaxResults(page.getMaxPrint()).getResultList();
 	}
 
 	public List<Computer> getSearchComputer(String search, Page page) throws ErrorSaisieUser {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-		search = "%" + search + "%";
-		RowMapper<Computer> vRowMapper = this.getRowMapper();
-		List<Computer> result = jdbcTemplate.query(SELECT_COMPUTER + SEARCH_COMPUTER_JOIN + LIMIT_OFFSET, vRowMapper,
-				search, page.getMaxPrint(), page.getPage() * page.getMaxPrint());
-		return result;
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
+		Root<Computer> computer = query.from(Computer.class);
+
+		query.select(computer).where(cb.like(computer.get("name"), "%" + search + "%"));
+
+		return em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
+				.setMaxResults(page.getMaxPrint()).getResultList();
 	}
 
 	public List<Computer> getListComputerOrder(String orderField, String sort, Page page) throws ErrorSaisieUser {
-		orderField = "computer." + orderField;
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-		RowMapper<Computer> vRowMapper = this.getRowMapper();
-		List<Computer> result = jdbcTemplate.query(SELECT_COMPUTER + ORDER_BY + orderField + " " + sort + LIMIT_OFFSET,
-				vRowMapper, page.getMaxPrint(), page.getPage() * page.getMaxPrint());
-		return result;
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
+		Root<Computer> computer = query.from(Computer.class);
+
+		query.select(computer);
+
+		if (sort.compareTo("ASC") == 0) {
+			query.orderBy(cb.asc(computer.get(orderField)));
+		} else if (sort.compareTo("DESC") == 0) {
+			query.orderBy(cb.desc(computer.get(orderField)));
+		}
+
+		return em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
+				.setMaxResults(page.getMaxPrint()).getResultList();
 	}
 
 	public List<Computer> getSearchComputerOrder(String search, String orderField, String sort, Page page)
 			throws ErrorSaisieUser {
-		orderField = "computer." + orderField;
-		search = "%" + search + "%";
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-		RowMapper<Computer> vRowMapper = this.getRowMapper();
-		List<Computer> result = jdbcTemplate.query(
-				SELECT_COMPUTER + SEARCH_COMPUTER_JOIN + ORDER_BY + orderField + " " + sort + LIMIT_OFFSET, vRowMapper,
-				search, page.getMaxPrint(), page.getPage() * page.getMaxPrint());
-		return result;
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
+		Root<Computer> computer = query.from(Computer.class);
+
+		query.select(computer).where(cb.like(computer.get("name"), "%" + search + "%"));
+		
+		if (sort.compareTo("ASC") == 0) {
+			query.orderBy(cb.asc(computer.get(orderField)));
+		} else if (sort.compareTo("DESC") == 0) {
+			query.orderBy(cb.desc(computer.get(orderField)));
+		}
+
+		return em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
+				.setMaxResults(page.getMaxPrint()).getResultList();
 	}
 
 	public void insertComputer(Computer computer) {
-		MapSqlParameterSource param = new MapSqlParameterSource();
-		param.addValue("name", computer.getName());
-		param.addValue("introduced", MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
-		param.addValue("discontinued", MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));
-		param.addValue("company_id", computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
-		jdbcTemplate.update(INSERT_COMPUTER, param);
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.save(computer);
+		tx.commit();
+		session.close();
+		
 	}
 
 	public void updateComputer(Computer computer) {
-		MapSqlParameterSource param = new MapSqlParameterSource();
-		param.addValue("name", computer.getName());
-		param.addValue("introduced", MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
-		param.addValue("discontinued", MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));
-		param.addValue("company_id", computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
-		param.addValue("id", computer.getId());
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
-		jdbcTemplate.update(UPDATE_COMPUTER, param);
-	}
+		
+		EntityManager em = this.sessionFactory.createEntityManager();
+		em.getTransaction().begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 
+		CriteriaUpdate<Computer> query = cb.createCriteriaUpdate(Computer.class);
+		Root<Computer> rootComputer = query.from(Computer.class);
+		
+		query.set("name", computer.getName());
+		query.set("introduced", MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
+		query.set("discontinued", MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));
+		query.set("company_id", computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
+		query.where(cb.equal(rootComputer.get("id"), computer.getId()));
+		
+		em.createQuery(query).executeUpdate();
+		em.getTransaction().commit();
+		em.close();
+	}
+	
 	public void deleteComputerById(int id) {
-		MapSqlParameterSource param = new MapSqlParameterSource();
-		param.addValue("id", id);
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
-		jdbcTemplate.update(DELETE_COMPUTER_BY_ID, param);
-	}
+		EntityManager em = this.sessionFactory.createEntityManager();
+		em.getTransaction().begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-	private RowMapper<Computer> getRowMapper() {
-		return new RowMapper<Computer>() {
-			public Computer mapRow(ResultSet pRS, int pRowNum) throws SQLException {
-				Computer computer = new ComputerBuilder().addId(pRS.getInt("id")).addName(pRS.getString("name"))
-						.addIntroduced((MappeurDate.dateToLocalDate(pRS.getDate("introduced"))))
-						.addDiscontinued((MappeurDate.dateToLocalDate(pRS.getDate("discontinued"))))
-						.addCompany(new Company(pRS.getLong("companyID"), pRS.getString("companyName")))
-						.getComputer();
-				return computer;
-			}
-		};
+		CriteriaDelete<Computer> query = cb.createCriteriaDelete(Computer.class);
+		Root<Computer> rootComputer = query.from(Computer.class);
+		query.where(cb.equal(rootComputer.get("id"), id));
+		
+		em.createQuery(query).executeUpdate();
+		em.getTransaction().commit();
+		em.close();
 	}
 }

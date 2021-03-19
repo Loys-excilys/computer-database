@@ -1,81 +1,81 @@
 package com.excilys.computer.database.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-
-import javax.sql.DataSource;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.excilys.computer.database.data.Company;
+import com.excilys.computer.database.data.Computer;
 
 @Repository
 public class DAOCompany {
 
 	private static final int MAX_ENTRY_PRINT = 25;
 
-	private static final String SELECT_COMPANY_NAME = "Select * FROM company WHERE name = ?";
-	private static final String SELECT_COMPANY = "Select * FROM company LIMIT ? OFFSET ?";
-	private static final String SELECT_COMPANY_NO_LIMIT = "Select * FROM company";
+	private SessionFactory sessionFactory;
 
-	private static final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = :id";
-	private static final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id = :id";
-
-	private DataSource dataSource;
-
-	public DAOCompany(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public DAOCompany(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 	
 	public Company getCompany(String name) {
-		Company company = null;
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		RowMapper<Company> vRowMapper = this.getRowMapper();
-		List<Company> result = jdbcTemplate.query(SELECT_COMPANY_NAME, vRowMapper, name);
+		CriteriaQuery<Company> query = cb.createQuery(Company.class);
+		Root<Company> company = query.from(Company.class);
 
-		if (!result.isEmpty()) {
-			company = result.get(0);
-		}
-		return company;
+		query.select(company).where(cb.equal(company.get("name"), name));
+
+		return em.createQuery(query).getSingleResult();
 	}
 
 	public List<Company> getListCompany(int page) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-		RowMapper<Company> vRowMapper = this.getRowMapper();
-		List<Company> result = jdbcTemplate.query(SELECT_COMPANY, vRowMapper, MAX_ENTRY_PRINT, page * MAX_ENTRY_PRINT);
-		return result;
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Company> query = cb.createQuery(Company.class);
+		Root<Company> computer = query.from(Company.class);
+
+		query.select(computer);
+
+		return em.createQuery(query).setFirstResult(MAX_ENTRY_PRINT * page)
+				.setMaxResults(MAX_ENTRY_PRINT).getResultList();
 	}
 
 	public List<Company> getListCompany() {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
-		RowMapper<Company> vRowMapper = this.getRowMapper();
-		List<Company> result = jdbcTemplate.query(SELECT_COMPANY_NO_LIMIT, vRowMapper);
-		return result;
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Company> query = cb.createQuery(Company.class);
+		Root<Company> computer = query.from(Company.class);
+
+		query.select(computer);
+
+		return em.createQuery(query).getResultList();
 	}
 	
-	@Transactional
 	public void deleteCompanyById(int id) {
-		MapSqlParameterSource param = new MapSqlParameterSource();
-		param.addValue("id", id);
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
-		jdbcTemplate.update(DELETE_COMPUTER_BY_COMPANY, param);
-		jdbcTemplate.update(DELETE_COMPANY_BY_ID, param);
+		EntityManager em = this.sessionFactory.createEntityManager();
+		em.getTransaction().begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-	}
+		CriteriaDelete<Computer> queryComputer = cb.createCriteriaDelete(Computer.class);
+		Root<Computer> rootComputer = queryComputer.from(Computer.class);
+		queryComputer.where(cb.equal(rootComputer.get("company_id"), id));
+		
+		CriteriaDelete<Company> queryCompany = cb.createCriteriaDelete(Company.class);
+		Root<Company> rootCompany = queryCompany.from(Company.class);
+		queryCompany.where(cb.equal(rootCompany.get("id"), id));
+		
+		em.createQuery(queryComputer).executeUpdate();
+		em.createQuery(queryCompany).executeUpdate();
+		em.getTransaction().commit();
+		em.close();
 
-	private RowMapper<Company> getRowMapper() {
-		return new RowMapper<Company>() {
-			public Company mapRow(ResultSet pRS, int pRowNum) throws SQLException {
-				Company company = new Company(pRS.getInt("id"), pRS.getString("name"));
-				return company;
-			}
-		};
 	}
 }
