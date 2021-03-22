@@ -1,32 +1,32 @@
 package com.excilys.computer.database.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.time.LocalDate;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import com.excilys.computer.database.builder.ComputerBuilder;
-import com.excilys.computer.database.config.ConfigContext;
-import com.excilys.computer.database.data.Computer;
-import com.excilys.computer.database.data.Page;
-import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.service.ServiceCompany;
-import com.excilys.computer.database.service.ServiceComputer;
-
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { ConfigContext.class })
-@WebAppConfiguration
-class TestServiceCumputer {
+//import static org.junit.jupiter.api.Assertions.assertEquals;
+//
+//import java.time.LocalDate;
+//
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.test.context.ContextConfiguration;
+//import org.springframework.test.context.junit.jupiter.SpringExtension;
+//import org.springframework.test.context.web.WebAppConfiguration;
+//import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+//import org.springframework.web.context.WebApplicationContext;
+//
+//import com.excilys.computer.database.builder.ComputerBuilder;
+//import com.excilys.computer.database.config.ConfigContext;
+//import com.excilys.computer.database.data.Computer;
+//import com.excilys.computer.database.data.Page;
+//import com.excilys.computer.database.error.ErrorSaisieUser;
+//import com.excilys.computer.database.service.ServiceCompany;
+//import com.excilys.computer.database.service.ServiceComputer;
+//
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(classes = { ConfigContext.class })
+//@WebAppConfiguration
+//class TestServiceCumputer {
 
 //	
 //	@Autowired
@@ -79,4 +79,4 @@ class TestServiceCumputer {
 //		serviceComputer.updateComputer(computer);
 //		assertEquals(computer.getName(), serviceComputer.getComputer(idTest).get().getName());
 //	}
-}
+//}
