@@ -1,5 +1,7 @@
 package com.excilys.computer.database.webapp.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,14 +21,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
     @Autowired
+    DataSource dataSource;
+    @Autowired
     PasswordEncoder passwordEncoder;
     
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-        .withUser("user").password(passwordEncoder.encode("lol")).roles("USER")
-        .and()
-        .withUser("admin").password(passwordEncoder.encode("lol")).roles("USER", "ADMIN");
+        auth
+        .jdbcAuthentication()
+        .dataSource(dataSource);
+//        .inMemoryAuthentication()
+//        .withUser("user").password(passwordEncoder.encode("lol")).roles("USER")
+//        .and()
+//        .withUser("admin").password(passwordEncoder.encode("lol")).roles("USER", "ADMIN");
     }
  
     @Bean
