@@ -2,13 +2,15 @@ package com.excilys.computer.database.mappeur;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.dto.CompanyDTO;
+import com.excilys.computer.database.dto.CompanyDatabaseDTO;
 
 public class MapperCompany {
 
-	private MapperCompany() {
+	public MapperCompany() {
 	}
 
 	public static CompanyDTO companyToCompanyDTO(Company company) {
@@ -26,4 +28,22 @@ public class MapperCompany {
 	public static Company companyDTOToCompany(CompanyDTO companyDTO) {
 		return new Company(companyDTO.getId(), companyDTO.getName());
 	}
+	
+	public Company companyDatabaseDTOToCompany(Optional<CompanyDatabaseDTO> companyDTO) {
+		if(companyDTO.isPresent()) {
+			return new Company(companyDTO.get().getId(), companyDTO.get().getName());
+		}else {
+			return null;
+		}
+		
+	}
+	public CompanyDatabaseDTO companyToCompanyDatabaseDTO(Optional<Company> company) {
+		if(company.isPresent()) {
+			return new CompanyDatabaseDTO(company.get().getId(), company.get().getName());
+		}else {
+			return null;
+		}
+		
+	}
+	
 }

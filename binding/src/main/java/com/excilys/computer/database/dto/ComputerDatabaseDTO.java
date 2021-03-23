@@ -1,15 +1,39 @@
-package com.excilys.computer.database.data;
+package com.excilys.computer.database.dto;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class Computer {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
+@Entity(name = "ComputerDatabaseDTO")
+@Table(name = "computer")
+public class ComputerDatabaseDTO {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private Company company;
+	@OneToOne
+	private CompanyDatabaseDTO company;
+	
+	
+	public ComputerDatabaseDTO() {
+	}
+	
+	public ComputerDatabaseDTO(long id, String name, LocalDate introduced, LocalDate discontinued, CompanyDatabaseDTO company) {
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.company = company;
+	}
 
 	public void setId(long id) {
 		this.id = id;
@@ -43,11 +67,11 @@ public class Computer {
 		return Optional.ofNullable(this.discontinued);
 	}
 
-	public void setCompany(Company company) {
+	public void setCompany(CompanyDatabaseDTO company) {
 		this.company = company;
 	}
 
-	public Optional<Company> getCompany() {
+	public Optional<CompanyDatabaseDTO> getCompany() {
 		return Optional.ofNullable(this.company);
 	}
 

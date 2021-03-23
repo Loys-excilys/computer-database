@@ -4,7 +4,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.computer.database.console.config.ConsoleConfigContext;
-import com.excilys.computer.database.controller.Controller;
 import com.excilys.computer.database.view.View;
 
 public class main {

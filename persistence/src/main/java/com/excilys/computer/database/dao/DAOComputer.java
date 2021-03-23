@@ -1,5 +1,6 @@
 package com.excilys.computer.database.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
+import com.excilys.computer.database.dto.ComputerDatabaseDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
+import com.excilys.computer.database.mappeur.MapperComputer;
 import com.excilys.computer.database.mappeur.MappeurDate;
 
 @Repository
@@ -32,7 +35,7 @@ public class DAOComputer {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
 		CriteriaQuery<Long> query = cb.createQuery(Long.class);
-		Root<Computer> computer = query.from(Computer.class);
+		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 		query.select(cb.count(computer));
 		long result = em.createQuery(query).getSingleResult();
 		em.close();
@@ -45,7 +48,7 @@ public class DAOComputer {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
 		CriteriaQuery<Long> query = cb.createQuery(Long.class);
-		Root<Computer> computer = query.from(Computer.class);
+		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(cb.count(computer)).where(cb.like(computer.get("name"), "%" + search + "%"));
 
@@ -59,14 +62,15 @@ public class DAOComputer {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
-		Root<Computer> computer = query.from(Computer.class);
+		CriteriaQuery<ComputerDatabaseDTO> query = cb.createQuery(ComputerDatabaseDTO.class);
+		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer).where(cb.equal(computer.get("id"), id));
 
-		Optional<Computer> result = Optional.ofNullable(em.createQuery(query).getSingleResult());
+		Optional<ComputerDatabaseDTO> resultDTO = Optional.ofNullable(em.createQuery(query).getSingleResult());
 		em.close();
-		return result;
+		
+		return Optional.ofNullable(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.orElseThrow()));
 	}
 
 	public List<Computer> getListComputer(Page page) throws ErrorSaisieUser {
@@ -74,14 +78,21 @@ public class DAOComputer {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
-		Root<Computer> computer = query.from(Computer.class);
+		CriteriaQuery<ComputerDatabaseDTO> query = cb.createQuery(ComputerDatabaseDTO.class);
+		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer);
 		
-		List<Computer> result = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
+		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
+		
+		List<Computer> result = new ArrayList<>();
+		
+		for(int i = 0; i < resultDTO.size(); i++) {
+			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+		}
+		
 		return result;
 	}
 
@@ -89,15 +100,21 @@ public class DAOComputer {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
-		Root<Computer> computer = query.from(Computer.class);
+		CriteriaQuery<ComputerDatabaseDTO> query = cb.createQuery(ComputerDatabaseDTO.class);
+		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer).where(cb.like(computer.get("name"), "%" + search + "%"));
 
 		
-		List<Computer> result = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
+		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
+		
+		List<Computer> result = new ArrayList<>();
+		
+		for(int i = 0; i < resultDTO.size(); i++) {
+			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+		}
 		return result;
 	}
 
@@ -105,8 +122,8 @@ public class DAOComputer {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
-		Root<Computer> computer = query.from(Computer.class);
+		CriteriaQuery<ComputerDatabaseDTO> query = cb.createQuery(ComputerDatabaseDTO.class);
+		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer);
 
@@ -116,9 +133,15 @@ public class DAOComputer {
 			query.orderBy(cb.desc(computer.get(orderField)));
 		}
 		
-		List<Computer> result = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
+		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
+		
+		List<Computer> result = new ArrayList<>();
+		
+		for(int i = 0; i < resultDTO.size(); i++) {
+			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+		}
 		return result;
 	}
 
@@ -127,8 +150,8 @@ public class DAOComputer {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<Computer> query = cb.createQuery(Computer.class);
-		Root<Computer> computer = query.from(Computer.class);
+		CriteriaQuery<ComputerDatabaseDTO> query = cb.createQuery(ComputerDatabaseDTO.class);
+		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer).where(cb.like(computer.get("name"), "%" + search + "%"));
 		
@@ -138,9 +161,15 @@ public class DAOComputer {
 			query.orderBy(cb.desc(computer.get(orderField)));
 		}
 
-		List<Computer> result = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
+		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
+		
+		List<Computer> result = new ArrayList<>();
+		
+		for(int i = 0; i < resultDTO.size(); i++) {
+			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+		}
 		return result;
 	}
 
@@ -148,26 +177,26 @@ public class DAOComputer {
 		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(computer);
+		session.save(new MapperComputer().computerToComputerDatabaseDTO(computer));
 		tx.commit();
 		session.close();
 		
 	}
 
 	public void updateComputer(Computer computer) {
-		
+		ComputerDatabaseDTO computerDTO = new MapperComputer().computerToComputerDatabaseDTO(computer);
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaUpdate<Computer> query = cb.createCriteriaUpdate(Computer.class);
-		Root<Computer> rootComputer = query.from(Computer.class);
+		CriteriaUpdate<ComputerDatabaseDTO> query = cb.createCriteriaUpdate(ComputerDatabaseDTO.class);
+		Root<ComputerDatabaseDTO> rootComputer = query.from(ComputerDatabaseDTO.class);
 		
-		query.set("name", computer.getName());
-		query.set("introduced", MappeurDate.optionalLocalDateToDate(computer.getIntroduced()));
-		query.set("discontinued", MappeurDate.optionalLocalDateToDate(computer.getDiscontinued()));
-		query.set("company_id", computer.getCompany().isPresent() ? computer.getCompany().get().getId() : null);
-		query.where(cb.equal(rootComputer.get("id"), computer.getId()));
+		query.set("name", computerDTO.getName());
+		query.set("introduced", MappeurDate.optionalLocalDateToDate(computerDTO.getIntroduced()));
+		query.set("discontinued", MappeurDate.optionalLocalDateToDate(computerDTO.getDiscontinued()));
+		query.set("company_id", computerDTO.getCompany().isPresent() ? computerDTO.getCompany().get().getId() : null);
+		query.where(cb.equal(rootComputer.get("id"), computerDTO.getId()));
 		
 		em.createQuery(query).executeUpdate();
 		em.getTransaction().commit();
@@ -179,8 +208,8 @@ public class DAOComputer {
 		em.getTransaction().begin();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaDelete<Computer> query = cb.createCriteriaDelete(Computer.class);
-		Root<Computer> rootComputer = query.from(Computer.class);
+		CriteriaDelete<ComputerDatabaseDTO> query = cb.createCriteriaDelete(ComputerDatabaseDTO.class);
+		Root<ComputerDatabaseDTO> rootComputer = query.from(ComputerDatabaseDTO.class);
 		query.where(cb.equal(rootComputer.get("id"), id));
 		
 		em.createQuery(query).executeUpdate();

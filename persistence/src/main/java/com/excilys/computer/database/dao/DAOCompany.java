@@ -1,6 +1,9 @@
 package com.excilys.computer.database.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -9,7 +12,9 @@ import javax.persistence.criteria.Root;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import com.excilys.computer.database.data.Company;
-import com.excilys.computer.database.data.Computer;
+import com.excilys.computer.database.dto.CompanyDatabaseDTO;
+import com.excilys.computer.database.dto.ComputerDatabaseDTO;
+import com.excilys.computer.database.mappeur.MapperCompany;
 
 @Repository
 public class DAOCompany {
@@ -26,28 +31,33 @@ public class DAOCompany {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<Company> query = cb.createQuery(Company.class);
-		Root<Company> company = query.from(Company.class);
+		CriteriaQuery<CompanyDatabaseDTO> query = cb.createQuery(CompanyDatabaseDTO.class);
+		Root<CompanyDatabaseDTO> company = query.from(CompanyDatabaseDTO.class);
 
 		query.select(company).where(cb.equal(company.get("name"), name));
 
-		Company result = em.createQuery(query).getSingleResult();
+		Optional<CompanyDatabaseDTO> result = Optional.ofNullable(em.createQuery(query).getSingleResult());
 		em.close();
-		return result;
+		
+		return new MapperCompany().companyDatabaseDTOToCompany(result);
 	}
 
 	public List<Company> getListCompany(int page) {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<Company> query = cb.createQuery(Company.class);
-		Root<Company> computer = query.from(Company.class);
+		CriteriaQuery<CompanyDatabaseDTO> query = cb.createQuery(CompanyDatabaseDTO.class);
+		Root<CompanyDatabaseDTO> computer = query.from(CompanyDatabaseDTO.class);
 
 		query.select(computer);
 
-		List<Company> result = em.createQuery(query).setFirstResult(MAX_ENTRY_PRINT * page)
+		List<CompanyDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(MAX_ENTRY_PRINT * page)
 				.setMaxResults(MAX_ENTRY_PRINT).getResultList();
 		em.close();
+		List<Company> result = new ArrayList<>();
+		for(int i = 0; i < resultDTO.size(); i++) {
+			result.add(new MapperCompany().companyDatabaseDTOToCompany(Optional.ofNullable(resultDTO.get(i))));
+		}
 		return result;
 	}
 
@@ -55,13 +65,17 @@ public class DAOCompany {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<Company> query = cb.createQuery(Company.class);
-		Root<Company> computer = query.from(Company.class);
+		CriteriaQuery<CompanyDatabaseDTO> query = cb.createQuery(CompanyDatabaseDTO.class);
+		Root<CompanyDatabaseDTO> computer = query.from(CompanyDatabaseDTO.class);
 
 		query.select(computer);
 
-		List<Company> result = em.createQuery(query).getResultList();
+		List<CompanyDatabaseDTO> resultDTO = em.createQuery(query).getResultList();
 		em.close();
+		List<Company> result = new ArrayList<>();
+		for(int i = 0; i < resultDTO.size(); i++) {
+			result.add(new MapperCompany().companyDatabaseDTOToCompany(Optional.ofNullable(resultDTO.get(i))));
+		}
 		return result;
 	}
 	
@@ -70,12 +84,12 @@ public class DAOCompany {
 		em.getTransaction().begin();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaDelete<Computer> queryComputer = cb.createCriteriaDelete(Computer.class);
-		Root<Computer> rootComputer = queryComputer.from(Computer.class);
+		CriteriaDelete<ComputerDatabaseDTO> queryComputer = cb.createCriteriaDelete(ComputerDatabaseDTO.class);
+		Root<ComputerDatabaseDTO> rootComputer = queryComputer.from(ComputerDatabaseDTO.class);
 		queryComputer.where(cb.equal(rootComputer.get("company_id"), id));
 		
-		CriteriaDelete<Company> queryCompany = cb.createCriteriaDelete(Company.class);
-		Root<Company> rootCompany = queryCompany.from(Company.class);
+		CriteriaDelete<CompanyDatabaseDTO> queryCompany = cb.createCriteriaDelete(CompanyDatabaseDTO.class);
+		Root<CompanyDatabaseDTO> rootCompany = queryCompany.from(CompanyDatabaseDTO.class);
 		queryCompany.where(cb.equal(rootCompany.get("id"), id));
 		
 		em.createQuery(queryComputer).executeUpdate();

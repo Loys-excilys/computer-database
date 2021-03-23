@@ -18,15 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController 
 {
 	@GetMapping("/login")
-    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String error, 
-                            @RequestParam(value = "logout", required = false) String logout) {
-        String errorMessge = null;
-        if(error != null) {
-            errorMessge = "Username or Password is incorrect !!";
-        }
-        if(logout != null) {
-            errorMessge = "You have been successfully logged out !!";
-        }
+    public ModelAndView getLoginPage() {
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("login");
 		return modelView;

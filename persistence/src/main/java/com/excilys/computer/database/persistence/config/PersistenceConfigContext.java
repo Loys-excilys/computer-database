@@ -28,7 +28,7 @@ public class PersistenceConfigContext {
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(getDataSource());
-		sessionFactory.setPackagesToScan("com.excilys.computer.database.data");
+		sessionFactory.setPackagesToScan("com.excilys.computer.database.dto");
 		sessionFactory.setHibernateProperties(hibernateProperties());
 
 		return sessionFactory;

@@ -6,8 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.service",
 	"com.excilys.computer.database.controller", "com.excilys.computer.database.view",
-	"com.excilys.computer.database.config" })
+	"com.excilys.computer.database.config", "com.excilys.computer.database.dto" })
 public class WebMvcConfig implements WebMvcConfigurer{
 	@Bean
 	public InternalResourceViewResolver viewResolver(){

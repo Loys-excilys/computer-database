@@ -37,27 +37,27 @@
 								<form:label path="name"><fmt:message key="label.form.nameComputer" /></form:label>
 								<form:input path="name" type="text" class="form-control"
 									id="computerName" placeholder="Computer name"
-									name="computerName" maxlength="255" required="required"
+									maxlength="255" required="required"
 									onchange="verifNameComputer(this.value)" />
 							</div>
 							<div class="form-group">
 								<form:label path="introduced"><fmt:message key="label.form.introduced" /></form:label>
 								<form:input path="introduced" type="date" class="form-control"
 									id="introduced" placeholder="Introduced date"
-									name="dateIntroduced" onchange="limitMinDate(this.value)"
+									onchange="limitMinDate(this.value)"
 									value="" />
 							</div>
 							<div class="form-group">
 								<form:label path="discontinued"><fmt:message key="label.form.discontinued" /></form:label>
 								<form:input path="discontinued" type="date" class="form-control"
 									id="discontinued" placeholder="Discontinued date"
-									name="dateDiscontinued" onchange="limitMaxDate(this.value)"
+									onchange="limitMaxDate(this.value)"
 									value="" />
 							</div>
 							<div class="form-group">
 								<form:label path="companyId"><fmt:message key="label.form.company" /></form:label>
 								<form:select path="CompanyId" class="form-control"
-									id="companyId" name="companyName">
+									id="companyId">
 									<form:option value="" label="--Please Select" />
 									<form:options items="${listCompany}"/>
 								</form:select>
