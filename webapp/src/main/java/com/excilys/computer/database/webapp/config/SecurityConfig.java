@@ -30,10 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth
         .jdbcAuthentication()
         .dataSource(dataSource);
-//        .inMemoryAuthentication()
-//        .withUser("user").password(passwordEncoder.encode("lol")).roles("USER")
-//        .and()
-//        .withUser("admin").password(passwordEncoder.encode("lol")).roles("USER", "ADMIN");
     }
  
     @Bean

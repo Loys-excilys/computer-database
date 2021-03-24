@@ -7,12 +7,13 @@ import java.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.excilys.computer.database.controller.Controller;
+import com.excilys.computer.database.console.controller.Controller;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 
 @Component("View")
 public class View {
-
+	
+	@Autowired
 	protected Controller controller;
 	@Autowired
 	private ViewComputer viewComputer;
@@ -25,7 +26,6 @@ public class View {
 //		this.viewComputer = viewComputer;
 //		this.viewCompany = viewCompany;
 //	}
-//	@Autowired
 //	public void setController(Controller controller) {
 //		this.controller = controller;
 //	}

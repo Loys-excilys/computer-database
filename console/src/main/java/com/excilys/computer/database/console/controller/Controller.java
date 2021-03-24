@@ -1,5 +1,6 @@
-package com.excilys.computer.database.controller;
+package com.excilys.computer.database.console.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -24,10 +25,9 @@ public class Controller {
 	private static final int DELETE_COMPUTER = 6;
 	private static final int DELETE_COMPANY = 7;
 
-	public Controller(ServiceComputer serviceComputer, ServiceCompany serviceCompany, @Qualifier ("View") View view) {
+	public Controller(ServiceComputer serviceComputer, ServiceCompany serviceCompany) {
 		this.serviceCompany = serviceCompany;
 		this.serviceComputer = serviceComputer;
-		this.view = view;
 	}
 
 	public boolean action(int commande, boolean boucle) throws ErrorSaisieUser {
@@ -70,5 +70,10 @@ public class Controller {
 
 	public void changePageCompany(int page) {
 		this.view.getViewCompany().printListCompany(this.serviceCompany.getListCompany(page));
+	}
+	
+	@Autowired
+	public void setView(@Qualifier("View")View view) {
+		this.view = view;
 	}
 }

@@ -15,9 +15,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.service",
-	"com.excilys.computer.database.controller", "com.excilys.computer.database.view",
-	"com.excilys.computer.database.config" })
+@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.config" })
 public class HibernateConfig {
 	@Bean
 	public DataSource getDataSource() {

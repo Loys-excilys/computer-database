@@ -14,7 +14,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.config" })
+@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.dto" })
 public class PersistenceConfigContext {
 
 	@Bean

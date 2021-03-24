@@ -35,7 +35,6 @@ public class MapperCompany {
 		}else {
 			return null;
 		}
-		
 	}
 	public CompanyDatabaseDTO companyToCompanyDatabaseDTO(Optional<Company> company) {
 		if(company.isPresent()) {

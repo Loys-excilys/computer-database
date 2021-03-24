@@ -86,7 +86,7 @@ public class DAOCompany {
 
 		CriteriaDelete<ComputerDatabaseDTO> queryComputer = cb.createCriteriaDelete(ComputerDatabaseDTO.class);
 		Root<ComputerDatabaseDTO> rootComputer = queryComputer.from(ComputerDatabaseDTO.class);
-		queryComputer.where(cb.equal(rootComputer.get("company_id"), id));
+		queryComputer.where(cb.equal(rootComputer.get("company"), id));
 		
 		CriteriaDelete<CompanyDatabaseDTO> queryCompany = cb.createCriteriaDelete(CompanyDatabaseDTO.class);
 		Root<CompanyDatabaseDTO> rootCompany = queryCompany.from(CompanyDatabaseDTO.class);
