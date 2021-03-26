@@ -29,12 +29,11 @@ public class MapperCompany {
 		return new Company(companyDTO.getId(), companyDTO.getName());
 	}
 	
-	public Company companyDatabaseDTOToCompany(Optional<CompanyDatabaseDTO> companyDTO) {
-		if(companyDTO.isPresent()) {
-			return new Company(companyDTO.get().getId(), companyDTO.get().getName());
-		}else {
-			return null;
+	public Company companyDatabaseDTOToCompany(CompanyDatabaseDTO companyDTO) {
+		if(companyDTO != null) {
+			return new Company(companyDTO.getId(), companyDTO.getName());
 		}
+		return null;
 	}
 	public CompanyDatabaseDTO companyToCompanyDatabaseDTO(Optional<Company> company) {
 		if(company.isPresent()) {

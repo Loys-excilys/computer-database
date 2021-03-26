@@ -125,11 +125,11 @@ public class DAOComputer {
 		CriteriaQuery<ComputerDatabaseDTO> query = cb.createQuery(ComputerDatabaseDTO.class);
 		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
-		query.select(computer);
-
+		query.select(computer);		
 		if (sort.compareTo("ASC") == 0) {
 			query.orderBy(cb.asc(computer.get(orderField)));
 		} else if (sort.compareTo("DESC") == 0) {
+			
 			query.orderBy(cb.desc(computer.get(orderField)));
 		}
 		
@@ -193,9 +193,9 @@ public class DAOComputer {
 		Root<ComputerDatabaseDTO> rootComputer = query.from(ComputerDatabaseDTO.class);
 		
 		query.set("name", computerDTO.getName());
-		query.set("introduced", MappeurDate.optionalLocalDateToDate(computerDTO.getIntroduced()));
-		query.set("discontinued", MappeurDate.optionalLocalDateToDate(computerDTO.getDiscontinued()));
-		query.set("company_id", computerDTO.getCompany().isPresent() ? computerDTO.getCompany().get().getId() : null);
+		query.set("introduced", MappeurDate.localDateToDate(computerDTO.getIntroduced()));
+		query.set("discontinued", MappeurDate.localDateToDate(computerDTO.getDiscontinued()));
+		query.set("company_id", computerDTO.getCompany().getId());
 		query.where(cb.equal(rootComputer.get("id"), computerDTO.getId()));
 		
 		em.createQuery(query).executeUpdate();

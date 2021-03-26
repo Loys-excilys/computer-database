@@ -3,7 +3,6 @@ package com.excilys.computer.database.dto;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -56,24 +55,24 @@ public class ComputerDatabaseDTO {
 		this.introduced = introduced;
 	}
 
-	public Optional<LocalDate> getIntroduced() {
-		return Optional.ofNullable(this.introduced);
+	public LocalDate getIntroduced() {
+		return this.introduced;
 	}
 
 	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 
-	public Optional<LocalDate> getDiscontinued() {
-		return Optional.ofNullable(this.discontinued);
+	public LocalDate getDiscontinued() {
+		return this.discontinued;
 	}
 
 	public void setCompany(CompanyDatabaseDTO company) {
 		this.company = company;
 	}
 
-	public Optional<CompanyDatabaseDTO> getCompany() {
-		return Optional.ofNullable(this.company);
+	public CompanyDatabaseDTO getCompany() {
+		return this.company;
 	}
 
 	public String toString() {

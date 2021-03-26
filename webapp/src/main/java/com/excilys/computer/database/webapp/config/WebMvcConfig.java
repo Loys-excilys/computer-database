@@ -18,12 +18,11 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.service",
-	"com.excilys.computer.database.controller", "com.excilys.computer.database.view",
-	"com.excilys.computer.database.config", "com.excilys.computer.database.dto" })
-public class WebMvcConfig implements WebMvcConfigurer{
+@ComponentScan({ "com.excilys.computer.database.service", "com.excilys.computer.database.controller",
+	"com.excilys.computer.database.api" })
+public class WebMvcConfig implements WebMvcConfigurer {
 	@Bean
-	public InternalResourceViewResolver viewResolver(){
+	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver bean = new InternalResourceViewResolver();
 
 		bean.setViewClass(JstlView.class);
@@ -52,7 +51,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		localeChangeInterceptor.setParamName("lang");
 		registry.addInterceptor(localeChangeInterceptor);
 	}
-	
+
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
@@ -61,5 +60,11 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
+	
+	@Bean
+	public MyBasicAuthenticationEntryPoint myBasicAuthenticationEntryPoint()
+	{
+	return new MyBasicAuthenticationEntryPoint();
 	}
 }

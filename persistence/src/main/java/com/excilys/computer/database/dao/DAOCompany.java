@@ -36,7 +36,7 @@ public class DAOCompany {
 
 		query.select(company).where(cb.equal(company.get("name"), name));
 
-		Optional<CompanyDatabaseDTO> result = Optional.ofNullable(em.createQuery(query).getSingleResult());
+		CompanyDatabaseDTO result = em.createQuery(query).getSingleResult();
 		em.close();
 		
 		return new MapperCompany().companyDatabaseDTOToCompany(result);
@@ -56,7 +56,7 @@ public class DAOCompany {
 		em.close();
 		List<Company> result = new ArrayList<>();
 		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperCompany().companyDatabaseDTOToCompany(Optional.ofNullable(resultDTO.get(i))));
+			result.add(new MapperCompany().companyDatabaseDTOToCompany(resultDTO.get(i)));
 		}
 		return result;
 	}
@@ -74,7 +74,7 @@ public class DAOCompany {
 		em.close();
 		List<Company> result = new ArrayList<>();
 		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperCompany().companyDatabaseDTOToCompany(Optional.ofNullable(resultDTO.get(i))));
+			result.add(new MapperCompany().companyDatabaseDTOToCompany(resultDTO.get(i)));
 		}
 		return result;
 	}

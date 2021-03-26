@@ -15,9 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.service",
-	"com.excilys.computer.database.controller",
-	"com.excilys.computer.database.webapp.config" })
+@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.webapp.config"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
     @Autowired
@@ -26,10 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     PasswordEncoder passwordEncoder;
     
     @Autowired
+    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+    
+    @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
         .jdbcAuthentication()
-        .dataSource(dataSource);
+        .dataSource(dataSource)
+        .passwordEncoder(passwordEncoder);
     }
  
     @Bean
@@ -42,8 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
         .antMatchers("/login")
             .permitAll()
-        .antMatchers("/**")
-            .hasAnyRole("ADMIN", "USER")
+        .anyRequest().authenticated()
+            .and()
+            .httpBasic().realmName("TEST REALM")
+            .authenticationEntryPoint(authenticationEntryPoint)
         .and()
             .formLogin()
             .loginPage("/login")

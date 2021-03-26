@@ -28,7 +28,7 @@ public class AppTest {
 	DAOComputer DAOComputer;
 
 	@Test
-	@DatabaseSetup("/data.xml")
+	@DatabaseSetup("data.xml")
 	public void testFind() throws Exception {
 		try {
 			assertEquals("Computer_1", DAOComputer.getComputer(1).get().getName());

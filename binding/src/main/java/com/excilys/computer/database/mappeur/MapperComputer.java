@@ -104,8 +104,8 @@ public class MapperComputer {
 
 	public Computer computerDatabaseDTOToComputer(ComputerDatabaseDTO computerDTO) throws ErrorSaisieUser {
 		return ValidateurComputer.getInstance().getValidate(new ComputerBuilder().addName(computerDTO.getName())
-				.addId(computerDTO.getId()).addIntroduced(computerDTO.getIntroduced().orElse(null))
-				.addDiscontinued(computerDTO.getDiscontinued().orElse(null))
+				.addId(computerDTO.getId()).addIntroduced(computerDTO.getIntroduced())
+				.addDiscontinued(computerDTO.getDiscontinued())
 				.addCompany(new MapperCompany().companyDatabaseDTOToCompany(computerDTO.getCompany())).getComputer());
 	}
 

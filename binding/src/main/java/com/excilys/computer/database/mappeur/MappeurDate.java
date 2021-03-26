@@ -18,10 +18,10 @@ public class MappeurDate {
 
 	}
 
-	public static Date optionalLocalDateToDate(Optional<LocalDate> date) {
+	public static Date localDateToDate(LocalDate date) {
 		Date dateSql = null;
-		if (date.isPresent()) {
-			dateSql = Date.valueOf(date.get());
+		if (date != null) {
+			dateSql = Date.valueOf(date);
 		}
 		return dateSql;
 	}

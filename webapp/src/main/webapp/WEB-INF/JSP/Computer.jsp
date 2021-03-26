@@ -142,18 +142,18 @@
 						</c:choose>
 						<c:choose>
 							<c:when
-								test="${session.orderField != \"company_id\"}">
-								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company_id&sort=ASC"
+								test="${session.orderField != \"company\"}">
+								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company&sort=ASC"
 									class="fa fa-fw fa-sort"></a></th>
 							</c:when>
 							<c:when
-								test="${session.orderField == \"company_id\" && session.sort == \"ASC\"}">
-								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company_id&sort=DESC"
+								test="${session.orderField == \"company\" && session.sort == \"ASC\"}">
+								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company&sort=DESC"
 									class="fa fa-fw fa-sort-asc"></a></th>
 							</c:when>
 							<c:when
-								test="${session.orderField == \"company_id\" && session.sort == \"DESC\"}">
-								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company_id&sort=ASC"
+								test="${session.orderField == \"company\" && session.sort == \"DESC\"}">
+								<th><fmt:message key="label.dashboard.company" /><a href="?orderField=company&sort=ASC"
 									class="fa fa-fw fa-sort-desc"></a></th>
 							</c:when>
 						</c:choose>
