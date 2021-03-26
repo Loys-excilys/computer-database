@@ -107,6 +107,18 @@ public class APIComputer {
 	}
 	
 	
+	
+	@GetMapping(value = "/count", produces = "application/json")
+	public long getCountComputer() {
+		return this.serviceComputer.getNumberComputer();
+	}
+
+	@GetMapping(value = "/count/search", produces = "application/json")
+	public long getSearchComputer(@RequestParam String search) {
+		return this.serviceComputer.getSearchNumberComputer(search);
+	}
+	
+	
 	@PostMapping(value = "/add", produces = "application/json")
 	public void AddComputer(@RequestParam String Name, @RequestParam LocalDate introduced, @RequestParam LocalDate discontinued, @RequestParam String company) {
 		this.serviceComputer.addComputer(new ComputerBuilder().addName(Name).addIntroduced(introduced)

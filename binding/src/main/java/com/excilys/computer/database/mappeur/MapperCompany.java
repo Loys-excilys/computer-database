@@ -35,9 +35,9 @@ public class MapperCompany {
 		}
 		return null;
 	}
-	public CompanyDatabaseDTO companyToCompanyDatabaseDTO(Optional<Company> company) {
-		if(company.isPresent()) {
-			return new CompanyDatabaseDTO(company.get().getId(), company.get().getName());
+	public CompanyDatabaseDTO companyToCompanyDatabaseDTO(Company company) {
+		if(company != null) {
+			return new CompanyDatabaseDTO(company.getId(), company.getName());
 		}else {
 			return null;
 		}

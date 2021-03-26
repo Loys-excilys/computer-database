@@ -112,6 +112,6 @@ public class MapperComputer {
 	public ComputerDatabaseDTO computerToComputerDatabaseDTO(Computer computer) {
 		return new ComputerDatabaseDTO(computer.getId(), computer.getName(), computer.getIntroduced().orElse(null),
 				computer.getDiscontinued().orElse(null),
-				new MapperCompany().companyToCompanyDatabaseDTO(computer.getCompany()));
+				new MapperCompany().companyToCompanyDatabaseDTO(computer.getCompany().orElse(null)));
 	}
 }
