@@ -6,7 +6,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 @Configuration
 @ComponentScan({ "com.excilys.computer.database.service", "com.excilys.computer.database.controller",
-		"com.excilys.computer.database.api" })
+		"com.excilys.computer.database.api", "com.excilys.computer.database.error" })
 public class WebappConfigContext extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override

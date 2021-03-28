@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.webapp.config"})
+@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.webapp.config", "com.excilys.computer.database.persistence.config"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
     @Autowired

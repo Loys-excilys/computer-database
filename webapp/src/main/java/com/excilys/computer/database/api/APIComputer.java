@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -126,13 +128,13 @@ public class APIComputer {
 	}
 
 	
-	@PostMapping(value = "/update", produces = "application/json")
+	@PutMapping(value = "/update", produces = "application/json")
 	public void UpdateComputer(@RequestParam String Name, @RequestParam LocalDate introduced, @RequestParam LocalDate discontinued, @RequestParam String company) {
 		this.serviceComputer.updateComputer(new ComputerBuilder().addName(Name).addIntroduced(introduced)
 				.addDiscontinued(discontinued).addCompany(this.serviceCompany.getCompany(company)).getComputer());
 	}
 	
-	@PostMapping(value = "/delete", produces = "application/json")
+	@DeleteMapping(value = "/delete", produces = "application/json")
 	public void UpdateComputer(@RequestParam int id) {
 		this.serviceComputer.deleteComputerById(id);
 	}
