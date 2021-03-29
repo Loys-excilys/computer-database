@@ -1,9 +1,11 @@
 package com.excilys.computer.database.view;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +43,10 @@ public class View {
 				boucle = this.controller.action(commande, boucle);
 			} catch (ErrorSaisieUser exception) {
 				exception.formatEntry();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}

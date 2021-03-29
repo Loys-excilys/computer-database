@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.dto.CompanyDTO;
 import com.excilys.computer.database.dto.CompanyDatabaseDTO;
+import com.excilys.computer.database.dto.CompanyStreamDTO;
 
 public class MapperCompany {
 
@@ -38,6 +39,21 @@ public class MapperCompany {
 	public CompanyDatabaseDTO companyToCompanyDatabaseDTO(Company company) {
 		if(company != null) {
 			return new CompanyDatabaseDTO(company.getId(), company.getName());
+		}else {
+			return null;
+		}
+		
+	}
+	
+	public Company companyStreamDTOToCompany(CompanyStreamDTO companyDTO) {
+		if(companyDTO != null) {
+			return new Company(companyDTO.getId(), companyDTO.getName());
+		}
+		return null;
+	}
+	public CompanyStreamDTO companyToCompanyStreamDTO(Company company) {
+		if(company != null) {
+			return new CompanyStreamDTO(company.getId(), company.getName());
 		}else {
 			return null;
 		}

@@ -1,5 +1,8 @@
 package com.excilys.computer.database.console.controller;
 
+import java.io.IOException;
+
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -8,6 +11,7 @@ import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.service.ServiceCompany;
 import com.excilys.computer.database.service.ServiceComputer;
+import com.excilys.computer.database.stream.httpStream;
 import com.excilys.computer.database.view.View;
 
 @Component
@@ -15,6 +19,7 @@ public class Controller {
 
 	private ServiceComputer serviceComputer;
 	private ServiceCompany serviceCompany;
+	private httpStream stream;
 	private View view;
 
 	private static final int LIST_COMPUTER = 1;
@@ -25,19 +30,20 @@ public class Controller {
 	private static final int DELETE_COMPUTER = 6;
 	private static final int DELETE_COMPANY = 7;
 
-	public Controller(ServiceComputer serviceComputer, ServiceCompany serviceCompany) {
+	public Controller(ServiceComputer serviceComputer, ServiceCompany serviceCompany, httpStream stream) {
 		this.serviceCompany = serviceCompany;
 		this.serviceComputer = serviceComputer;
+		this.stream = stream;
 	}
 
-	public boolean action(int commande, boolean boucle) throws ErrorSaisieUser {
+	public boolean action(int commande, boolean boucle) throws ErrorSaisieUser, JSONException, IOException {
 		Page page = new Page();
 		switch (commande) {
 		case LIST_COMPUTER:
-			this.view.getViewComputer().printListComputer(this.serviceComputer.getListComputer(page));
+			this.view.getViewComputer().printListComputer(this.stream.ComputerListStream("page/1/25"));
 			break;
 		case LIST_COMPANY:
-			this.view.getViewCompany().printListCompany(this.serviceCompany.getListCompany(0));
+			this.view.getViewCompany().printListCompany(this.stream.CompanyListStream("page/0"));
 			break;
 		case DETAIL_COMPUTER:
 			this.view.getViewComputer().printAskIdDetailComputer();

@@ -6,6 +6,6 @@ public class MyBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoi
 
 	 @Override
 	 public void afterPropertiesSet() {
-	 setRealmName("TEST REALM");
+		 setRealmName("TEST REALM");
 	 }
 }

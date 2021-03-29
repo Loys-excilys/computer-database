@@ -42,11 +42,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-        .antMatchers("/login")
+        .mvcMatchers("/login")
             .permitAll()
-        .anyRequest().authenticated()
-            .and()
-            .httpBasic().realmName("TEST REALM")
+        .anyRequest()
+        	.authenticated()
+        .and()
+            .httpBasic()
+            .realmName("TEST REALM")
             .authenticationEntryPoint(authenticationEntryPoint)
         .and()
             .formLogin()

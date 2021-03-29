@@ -40,6 +40,8 @@
 		<spring-security.version>5.2.0.RELEASE</spring-security.version>
 
 		<jackson.version>2.11.4</jackson.version>
+
+		<aspectJ.version>1.9.6</aspectJ.version>
 	</properties>
 
 	<dependencyManagement>
@@ -199,7 +201,16 @@
 				<artifactId>jackson-databind</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.ws.rs</groupId>
+				<artifactId>javax.ws.rs-api</artifactId>
+				<version>2.0</version>
+			</dependency>
 
 
 
@@ -207,20 +218,21 @@
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
-				<version>1.9.6</version>
+				<version>${aspectJ.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjrt</artifactId>
-				<version>1.9.6</version>
+				<version>${aspectJ.version}</version>
 			</dependency>
 
-			<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+			<!-- https://mvnrepository.com/artifact/org.json/json -->
 			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.17</version>
+				<groupId>org.json</groupId>
+				<artifactId>json</artifactId>
+				<version>20210307</version>
 			</dependency>
+
 
 
 

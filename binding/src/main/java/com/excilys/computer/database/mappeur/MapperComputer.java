@@ -15,6 +15,7 @@ import com.excilys.computer.database.dto.ComputerDTO;
 import com.excilys.computer.database.dto.ComputerDatabaseDTO;
 import com.excilys.computer.database.dto.ComputerFormAddDTO;
 import com.excilys.computer.database.dto.ComputerFormUpdateDTO;
+import com.excilys.computer.database.dto.ComputerStreamDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.validator.ValidateurComputer;
 
@@ -103,15 +104,30 @@ public class MapperComputer {
 	}
 
 	public Computer computerDatabaseDTOToComputer(ComputerDatabaseDTO computerDTO) throws ErrorSaisieUser {
-		return ValidateurComputer.getInstance().getValidate(new ComputerBuilder().addName(computerDTO.getName())
-				.addId(computerDTO.getId()).addIntroduced(computerDTO.getIntroduced())
-				.addDiscontinued(computerDTO.getDiscontinued())
-				.addCompany(new MapperCompany().companyDatabaseDTOToCompany(computerDTO.getCompany())).getComputer());
+		return ValidateurComputer.getInstance()
+				.getValidate(new ComputerBuilder().addName(computerDTO.getName()).addId(computerDTO.getId())
+						.addIntroduced(computerDTO.getIntroduced()).addDiscontinued(computerDTO.getDiscontinued())
+						.addCompany(new MapperCompany().companyDatabaseDTOToCompany(computerDTO.getCompany()))
+						.getComputer());
 	}
 
 	public ComputerDatabaseDTO computerToComputerDatabaseDTO(Computer computer) {
 		return new ComputerDatabaseDTO(computer.getId(), computer.getName(), computer.getIntroduced().orElse(null),
 				computer.getDiscontinued().orElse(null),
 				new MapperCompany().companyToCompanyDatabaseDTO(computer.getCompany().orElse(null)));
+	}
+
+	public Computer computerStreamDTOToComputer(ComputerStreamDTO computerDTO) throws ErrorSaisieUser {
+		return ValidateurComputer.getInstance().getValidate(new ComputerBuilder().addName(computerDTO.getName())
+				.addId(computerDTO.getId()).addIntroduced(computerDTO.getIntroduced() != null ? LocalDate.parse(computerDTO.getIntroduced()) : null)
+				.addDiscontinued(computerDTO.getDiscontinued() != null ? LocalDate.parse(computerDTO.getDiscontinued()) : null)
+				.addCompany(new MapperCompany().companyStreamDTOToCompany(computerDTO.getCompany())).getComputer());
+	}
+
+	public ComputerStreamDTO computerToComputerStreamDTO(Computer computer) {
+		return new ComputerStreamDTO(computer.getId(), computer.getName(),
+				computer.getIntroduced().orElse(null) != null ? computer.getIntroduced().get().toString() : null,
+				computer.getDiscontinued().orElse(null) != null ? computer.getDiscontinued().get().toString() : null,
+				new MapperCompany().companyToCompanyStreamDTO(computer.getCompany().orElse(null)));
 	}
 }
