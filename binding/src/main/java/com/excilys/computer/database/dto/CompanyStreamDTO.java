@@ -29,7 +29,7 @@ public class CompanyStreamDTO {
 		return this.name;
 	}
 
-	public String toString() {
-		return "Name : " + this.getName();
+	public String toJson() {
+		return "{\"id\":" + this.id + ",\"name\":\"" + this.name + "\"}";
 	}
 }

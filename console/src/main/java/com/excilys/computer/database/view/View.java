@@ -24,14 +24,6 @@ public class View {
 
 	protected Scanner saisieUser = new Scanner(System.in);
 
-//	public View(ViewComputer viewComputer, ViewCompany viewCompany) {
-//		this.viewComputer = viewComputer;
-//		this.viewCompany = viewCompany;
-//	}
-//	public void setController(Controller controller) {
-//		this.controller = controller;
-//	}
-	
 	public void cli() {
 		boolean boucle = true;
 		while (boucle) {

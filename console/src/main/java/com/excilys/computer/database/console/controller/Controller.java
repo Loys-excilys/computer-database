@@ -40,10 +40,10 @@ public class Controller {
 		Page page = new Page();
 		switch (commande) {
 		case LIST_COMPUTER:
-			this.view.getViewComputer().printListComputer(this.stream.ComputerListStream("page/1/25"));
+			this.view.getViewComputer().printListComputer(this.stream.getComputerListStream("page/0/25"));
 			break;
 		case LIST_COMPANY:
-			this.view.getViewCompany().printListCompany(this.stream.CompanyListStream("page/0"));
+			this.view.getViewCompany().printListCompany(this.stream.getCompanyListStream("page/0"));
 			break;
 		case DETAIL_COMPUTER:
 			this.view.getViewComputer().printAskIdDetailComputer();

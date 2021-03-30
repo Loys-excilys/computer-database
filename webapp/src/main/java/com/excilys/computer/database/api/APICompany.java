@@ -25,6 +25,13 @@ public class APICompany {
 	@Autowired
 	private ServiceCompany serviceCompany;
 
+	@GetMapping(value = "/{name}", produces = "application/json")
+	public ResponseEntity<CompanyStreamDTO> getCompany(@PathVariable String name) {
+		Company company = this.serviceCompany.getCompany(name);
+		CompanyStreamDTO companyDTO = new MapperCompany().companyToCompanyStreamDTO(company);
+		return new ResponseEntity<>(companyDTO, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/page/{numPage}", produces = "application/json")
 	public ResponseEntity<List<CompanyStreamDTO>> getCompany(@PathVariable int numPage) {
 		List<Company> listCompany = null;

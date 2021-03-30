@@ -1,7 +1,5 @@
 package com.excilys.computer.database.dto;
 
-
-
 public class ComputerStreamDTO {
 
 	private long id;
@@ -9,12 +7,11 @@ public class ComputerStreamDTO {
 	private String introduced;
 	private String discontinued;
 	private CompanyStreamDTO company;
-	
-	
+
 	public ComputerStreamDTO() {
-		
+
 	}
-	
+
 	public ComputerStreamDTO(long id, String name, String introduced, String discontinued, CompanyStreamDTO company) {
 		this.id = id;
 		this.name = name;
@@ -61,5 +58,11 @@ public class ComputerStreamDTO {
 
 	public CompanyStreamDTO getCompany() {
 		return this.company;
+	}
+
+	public String toJson() {
+		return "{\"id\":" + this.id + ",\"name\":\"" + this.name + "\",\"introduced\":\"" + this.introduced
+				+ "\",\"discontinued\":\"" + this.discontinued + "\",\"company\":"
+				+ (this.company != null ? this.company.toJson() : null) + "}";
 	}
 }

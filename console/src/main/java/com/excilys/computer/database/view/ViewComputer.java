@@ -1,8 +1,10 @@
 package com.excilys.computer.database.view;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,15 +15,13 @@ import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.service.ServiceCompany;
 import com.excilys.computer.database.service.ServiceComputer;
+import com.excilys.computer.database.stream.httpStream;
 
 @Component
 public class ViewComputer extends View {
 
 	@Autowired
-	protected ServiceComputer serviceComputer;
-
-	@Autowired
-	protected ServiceCompany serviceCompany;
+	protected httpStream stream;
 
 	public void printListComputer(List<Computer> listComputer) {
 		String actionPage = "";
@@ -38,7 +38,12 @@ public class ViewComputer extends View {
 					page.previous();
 				}
 				try {
-					listComputer = this.serviceComputer.getListComputer(page);
+					try {
+						listComputer = this.stream
+								.getComputerListStream("/page/" + page.getPage() + "/" + page.getMaxPrint());
+					} catch (JSONException | IOException e) {
+						e.printStackTrace();
+					}
 					if (listComputer.isEmpty()) {
 						page.previous();
 					}
@@ -67,25 +72,43 @@ public class ViewComputer extends View {
 	}
 
 	public void printAddComputer() {
-		Computer computer;
-		computer = new ComputerBuilder().addName(this.printAskEntryString("Can you give me the Name ? : "))
-				.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
-				.addDiscontinued(this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
-				.addCompany(this.serviceCompany
-						.getCompany(this.printAskEntryString("Can you give me the name company ? : ")))
-				.getComputer();
-		this.serviceComputer.addComputer(computer);
-		System.out.println("Done");
+		Computer computer = null;
+		try {
+			computer = new ComputerBuilder().addName(this.printAskEntryString("Can you give me the Name ? : "))
+					.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
+					.addDiscontinued(
+							this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
+					.addCompany(
+							this.stream
+									.getCompanyListStream(
+											this.printAskEntryString("Can you give me the name company ? : "))
+									.get(0))
+					.getComputer();
+		} catch (JSONException | IOException | ErrorSaisieUser e) {
+			e.printStackTrace();
+		}
+		try {
+			this.stream.addComputerStream(computer);
+		} catch (JSONException | IOException | ErrorSaisieUser e) {
+			e.printStackTrace();
+		}
 		this.space();
 	}
 
 	public void printUpdateComputer() {
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
-			optionalComputer = this.serviceComputer
-					.getComputer(this.printAskEntryInt("Can you give me the computer's id ? :"));
+			optionalComputer = Optional
+					.ofNullable(this.stream
+							.getComputerListStream(
+									String.valueOf(this.printAskEntryInt("Can you give me the computer's id ? :")))
+							.get(0));
 		} catch (ErrorSaisieUser exception) {
 			exception.formatEntry();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		if (optionalComputer.isPresent()) {
 			Computer computer = optionalComputer.get();
@@ -101,12 +124,16 @@ public class ViewComputer extends View {
 			computer.setCompany(this.verifAskNewValueCompanyComputer(
 					"What is the new company owner ? (actual = " + computer.getCompany().get().getName() + ") :",
 					computer.getCompany()));
-			this.serviceComputer.updateComputer(computer);
+			try {
+				this.stream.updateComputerStream(computer);
+			} catch (JSONException | IOException | ErrorSaisieUser e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void printDeleteComputer() {
-		this.serviceComputer.deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
+		this.stream.deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
 		System.out.println("done");
 
 		this.space();
@@ -122,7 +149,12 @@ public class ViewComputer extends View {
 	}
 
 	protected Company verifAskNewValueCompanyComputer(String message, Optional<Company> oldCompany) {
-		Company company = this.serviceCompany.getCompany(this.printAskEntryString(message));
+		Company company = null;
+		try {
+			company = this.stream.getCompanyListStream(this.printAskEntryString(message)).get(0);
+		} catch (JSONException | IOException | ErrorSaisieUser e) {
+			e.printStackTrace();
+		}
 		if (company != null) {
 			return company;
 		} else {

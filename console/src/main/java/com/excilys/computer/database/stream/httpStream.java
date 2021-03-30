@@ -36,6 +36,11 @@ public class httpStream {
 	}
 
 	private List<Computer> stringToComputer(String stringComputers) throws ErrorSaisieUser{
+		System.out.println(stringComputers);
+		if(stringComputers.charAt(0) != '[') {
+			stringComputers = "[" + stringComputers + "]";
+		}
+		
 		List<ComputerStreamDTO> listComputerDTO = null;
 		List<Computer> listComputers = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -52,6 +57,10 @@ public class httpStream {
 	}
 	
 	private List<Company> stringToCompany(String stringCompanies) throws ErrorSaisieUser{
+		System.out.println(stringCompanies);
+		if(stringCompanies.charAt(0) != '[') {
+			stringCompanies = "[" + stringCompanies + "]";
+		}
 		List<CompanyStreamDTO> listCompanyDTO = null;
 		List<Company> listCompanies = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -67,7 +76,7 @@ public class httpStream {
 		return listCompanies;
 	}
 
-	public List<Computer> ComputerListStream(String url) throws IOException, JSONException, ErrorSaisieUser {
+	public List<Computer> getComputerListStream(String url) throws IOException, JSONException, ErrorSaisieUser {
 		String serverUrl = "http://localhost:8080/webapp/APIComputer/";
 		String access = "--user user:user ";
 		Runtime runtime = Runtime.getRuntime();
@@ -82,7 +91,7 @@ public class httpStream {
 		}
 	}
 	
-	public List<Company> CompanyListStream(String url) throws IOException, JSONException, ErrorSaisieUser {
+	public List<Company> getCompanyListStream(String url) throws IOException, JSONException, ErrorSaisieUser {
 		String serverUrl = "http://localhost:8080/webapp/APICompany/";
 		String access = "--user user:user ";
 		Runtime runtime = Runtime.getRuntime();
@@ -94,6 +103,68 @@ public class httpStream {
 			return this.stringToCompany(jsonText);
 		} finally {
 			is.close();
+		}
+	}
+	
+	public void addComputerStream(Computer computer) throws IOException, JSONException, ErrorSaisieUser {
+		String serverUrl = "http://localhost:8080/webapp/APIComputer/add";
+		String access = "--user user:user ";
+		String header = "-H \"Content-Type: application/json\" -X POST ";
+		String data = "-d '" + new MapperComputer().computerToComputerStreamDTO(computer).toJson() + "' ";
+		Runtime runtime = Runtime.getRuntime();
+		InputStream is = runtime.exec("curl " + access + header + data + serverUrl).getInputStream();
+		System.out.println("curl " + access + header + data + serverUrl);
+		try {
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+			String jsonText = readAll(rd);
+			if(jsonText.contains("Ajout")) {
+				System.out.println("done");
+			}
+			
+		} finally {
+			is.close();
+		}
+	}
+	
+	public void updateComputerStream(Computer computer) throws IOException, JSONException, ErrorSaisieUser {
+		String serverUrl = "http://localhost:8080/webapp/APIComputer/update";
+		String access = "--user user:user ";
+		String header = "-H \"Content-Type: application/json\" -X PUT";
+		String data = "-d '" + new MapperComputer().computerToComputerStreamDTO(computer).toJson() + "' ";
+		Runtime runtime = Runtime.getRuntime();
+		InputStream is = runtime.exec("curl " + access + header + data + serverUrl).getInputStream();
+		try {
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+			String jsonText = readAll(rd);
+			if(jsonText.contains("update")) {
+				System.out.println("done");
+			}	
+		} finally {
+			is.close();
+		}
+	}
+	
+	public void deleteComputerById(int idComputerSelected) {
+		String serverUrl = "http://localhost:8080/webapp/APIComputer/delete?id=" + idComputerSelected ;
+		String access = "--user user:user ";
+		String header = "-X DELETE ";
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			runtime.exec("curl " + access + header+ serverUrl);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteCompanyById(int idCompanySelected) {
+		String serverUrl = "http://localhost:8080/webapp/APICompany/delete?id=" + idCompanySelected ;
+		String access = "--user user:user ";
+		String header = "-X DELETE";
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			runtime.exec("curl " + access + header+ serverUrl);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

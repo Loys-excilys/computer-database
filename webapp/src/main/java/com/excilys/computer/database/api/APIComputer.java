@@ -34,9 +34,6 @@ public class APIComputer {
 	@Autowired
 	private ServiceComputer serviceComputer;
 
-	@Autowired
-	private ServiceCompany serviceCompany;
-
 	@GetMapping(value = "/page/{numPage}/{maxEntry}", produces = "application/json")
 	public ResponseEntity<List<ComputerStreamDTO>> getComputer(@PathVariable int numPage, @PathVariable int maxEntry) {
 		Page page = new Page();
@@ -54,6 +51,19 @@ public class APIComputer {
 		}
 
 		return new ResponseEntity<>(listDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/{id}", produces = "application/json")
+	public ResponseEntity<ComputerStreamDTO> getComputer(@PathVariable int id) {
+		Computer computer = null;
+		try {
+			computer = this.serviceComputer.getComputer(id).orElse(null);
+		} catch (ErrorSaisieUser e) {
+			e.printStackTrace();
+		}
+		ComputerStreamDTO computerDTO = new MapperComputer().computerToComputerStreamDTO(computer);
+
+		return new ResponseEntity<>(computerDTO, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/search/page/{numPage}/{maxEntry}", produces = "application/json")
