@@ -1,6 +1,5 @@
 package com.excilys.computer.database.api;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.excilys.computer.database.builder.ComputerBuilder;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
-import com.excilys.computer.database.dto.ComputerDatabaseDTO;
 import com.excilys.computer.database.dto.ComputerStreamDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperComputer;
-import com.excilys.computer.database.service.ServiceCompany;
 import com.excilys.computer.database.service.ServiceComputer;
 
 @RestController
@@ -134,7 +130,7 @@ public class APIComputer {
 		return new ResponseEntity<>(this.serviceComputer.getSearchNumberComputer(search), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/add", produces = "application/json")
+	@PostMapping(value = "/add", produces = "application/json", consumes="application/json")
 	public ResponseEntity<String> AddComputer(@RequestBody ComputerStreamDTO computerDTO) {
 		try {
 			this.serviceComputer.addComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));
@@ -144,7 +140,7 @@ public class APIComputer {
 		return new ResponseEntity<>("Ajout effectuer", HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/update", produces = "application/json")
+	@PutMapping(value = "/update", produces = "application/json", consumes="application/json")
 	public ResponseEntity<String> UpdateComputer(@RequestBody ComputerStreamDTO computerDTO) {
 		try {
 			this.serviceComputer.updateComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));

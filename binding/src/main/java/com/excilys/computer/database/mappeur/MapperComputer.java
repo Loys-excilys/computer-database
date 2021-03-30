@@ -120,8 +120,8 @@ public class MapperComputer {
 	public Computer computerStreamDTOToComputer(ComputerStreamDTO computerDTO) throws ErrorSaisieUser {
 		return ValidateurComputer.getInstance().getValidate(new ComputerBuilder().addName(computerDTO.getName())
 				.addId(computerDTO.getId())
-				.addIntroduced(computerDTO.getIntroduced().compareTo("null") != 0 ? LocalDate.parse(computerDTO.getIntroduced()) : null)
-				.addDiscontinued(computerDTO.getDiscontinued().compareTo("null") != 0 ? LocalDate.parse(computerDTO.getDiscontinued()) : null)
+				.addIntroduced(computerDTO.getIntroduced() != null ? LocalDate.parse(computerDTO.getIntroduced()) : null)
+				.addDiscontinued(computerDTO.getDiscontinued() != null ? LocalDate.parse(computerDTO.getDiscontinued()) : null)
 				.addCompany(new MapperCompany().companyStreamDTOToCompany(computerDTO.getCompany())).getComputer());
 	}
 

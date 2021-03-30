@@ -17,8 +17,6 @@ import com.excilys.computer.database.view.View;
 @Component
 public class Controller {
 
-	private ServiceComputer serviceComputer;
-	private ServiceCompany serviceCompany;
 	private httpStream stream;
 	private View view;
 
@@ -30,9 +28,7 @@ public class Controller {
 	private static final int DELETE_COMPUTER = 6;
 	private static final int DELETE_COMPANY = 7;
 
-	public Controller(ServiceComputer serviceComputer, ServiceCompany serviceCompany, httpStream stream) {
-		this.serviceCompany = serviceCompany;
-		this.serviceComputer = serviceComputer;
+	public Controller(httpStream stream) {
 		this.stream = stream;
 	}
 
@@ -40,10 +36,10 @@ public class Controller {
 		Page page = new Page();
 		switch (commande) {
 		case LIST_COMPUTER:
-			this.view.getViewComputer().printListComputer(this.stream.getComputerListStream("page/0/25"));
+			this.view.getViewComputer().printListComputer(this.stream.getComputerListStream(new Page()));
 			break;
 		case LIST_COMPANY:
-			this.view.getViewCompany().printListCompany(this.stream.getCompanyListStream("page/0"));
+			this.view.getViewCompany().printListCompany(this.stream.getCompanyListStream(0));
 			break;
 		case DETAIL_COMPUTER:
 			this.view.getViewComputer().printAskIdDetailComputer();
@@ -67,15 +63,27 @@ public class Controller {
 	}
 
 	public void chooseIdDetailcomputer(int commande) throws ErrorSaisieUser {
-		this.view.getViewComputer().printDetailComputer(this.serviceComputer.getComputer(commande));
+		try {
+			this.view.getViewComputer().printDetailComputer(this.stream.getComputerStream(commande));
+		} catch (IOException | ErrorSaisieUser e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void changePageComputer(Page page) throws ErrorSaisieUser {
-		this.view.getViewComputer().printListComputer(this.serviceComputer.getListComputer(page));
+		try {
+			this.view.getViewComputer().printListComputer(this.stream.getComputerListStream(page));
+		} catch (JSONException | IOException | ErrorSaisieUser e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void changePageCompany(int page) {
-		this.view.getViewCompany().printListCompany(this.serviceCompany.getListCompany(page));
+		try {
+			this.view.getViewCompany().printListCompany(this.stream.getCompanyListStream(page));
+		} catch (JSONException | IOException | ErrorSaisieUser e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Autowired

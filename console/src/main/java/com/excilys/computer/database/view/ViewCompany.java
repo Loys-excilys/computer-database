@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.service.ServiceCompany;
 import com.excilys.computer.database.stream.httpStream;
 
 @Component
@@ -34,7 +33,7 @@ public class ViewCompany extends View {
 					page.previous();
 				}
 				try {
-					listCompany = this.stream.getCompanyListStream("page/" + page.getPage());
+					listCompany = this.stream.getCompanyListStream(page.getPage());
 				} catch (JSONException | IOException | ErrorSaisieUser e) {
 					e.printStackTrace();
 				}
@@ -48,7 +47,11 @@ public class ViewCompany extends View {
 
 	public void printDeleteCompany() {
 		int idCompanySelected = this.printAskEntryInt("Enter the id of the company : ");
-		this.stream.deleteCompanyById(idCompanySelected);
+		try {
+			this.stream.deleteCompanyById(idCompanySelected);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		System.out.println("done");
 		this.space();
 	}

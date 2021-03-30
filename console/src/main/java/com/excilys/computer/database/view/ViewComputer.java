@@ -13,8 +13,6 @@ import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.service.ServiceCompany;
-import com.excilys.computer.database.service.ServiceComputer;
 import com.excilys.computer.database.stream.httpStream;
 
 @Component
@@ -39,8 +37,7 @@ public class ViewComputer extends View {
 				}
 				try {
 					try {
-						listComputer = this.stream
-								.getComputerListStream("/page/" + page.getPage() + "/" + page.getMaxPrint());
+						listComputer = this.stream.getComputerListStream(page);
 					} catch (JSONException | IOException e) {
 						e.printStackTrace();
 					}
@@ -78,11 +75,9 @@ public class ViewComputer extends View {
 					.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
 					.addDiscontinued(
 							this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
-					.addCompany(
-							this.stream
-									.getCompanyListStream(
-											this.printAskEntryString("Can you give me the name company ? : "))
-									.get(0))
+					.addCompany(this.stream
+							.getCompanyStream(
+									this.printAskEntryString("Can you give me the name company ? : ")).orElse(null))
 					.getComputer();
 		} catch (JSONException | IOException | ErrorSaisieUser e) {
 			e.printStackTrace();
@@ -98,11 +93,9 @@ public class ViewComputer extends View {
 	public void printUpdateComputer() {
 		Optional<Computer> optionalComputer = Optional.empty();
 		try {
-			optionalComputer = Optional
-					.ofNullable(this.stream
-							.getComputerListStream(
-									String.valueOf(this.printAskEntryInt("Can you give me the computer's id ? :")))
-							.get(0));
+			optionalComputer = this.stream
+							.getComputerStream(
+									this.printAskEntryInt("Can you give me the computer's id ? :"));
 		} catch (ErrorSaisieUser exception) {
 			exception.formatEntry();
 		} catch (JSONException e) {
@@ -126,14 +119,18 @@ public class ViewComputer extends View {
 					computer.getCompany()));
 			try {
 				this.stream.updateComputerStream(computer);
-			} catch (JSONException | IOException | ErrorSaisieUser e) {
+			} catch (JSONException | IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
 	public void printDeleteComputer() {
-		this.stream.deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
+		try {
+			this.stream.deleteComputerById(this.printAskEntryInt("Can you give me the computer's id ? :"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		System.out.println("done");
 
 		this.space();
@@ -151,7 +148,7 @@ public class ViewComputer extends View {
 	protected Company verifAskNewValueCompanyComputer(String message, Optional<Company> oldCompany) {
 		Company company = null;
 		try {
-			company = this.stream.getCompanyListStream(this.printAskEntryString(message)).get(0);
+			company = this.stream.getCompanyListStream(this.printAskEntryInt(message)).get(0);
 		} catch (JSONException | IOException | ErrorSaisieUser e) {
 			e.printStackTrace();
 		}
