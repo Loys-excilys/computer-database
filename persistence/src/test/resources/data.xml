@@ -8,5 +8,5 @@
 	<computer id="2" name="computer_2" introduced="2000-10-10" discontinued="null" company_id="2"/>
 	<computer id="3" name="computer_3" introduced="2000-10-10" discontinued="2010-10-10" company_id="3"/>
 	<computer id="4" name="computer_4" introduced="null" discontinued="null" company_id="4"/>
-	<computer id="5" name="computer_5" introduced="2000-10-10" discontinued="" company_id="5"/>
+	<computer id="5" name="computer_5" introduced="2000-10-10" discontinued="null" company_id="5"/>
 </dataset>

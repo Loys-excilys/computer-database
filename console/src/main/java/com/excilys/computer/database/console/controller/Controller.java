@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.service.ServiceCompany;
-import com.excilys.computer.database.service.ServiceComputer;
 import com.excilys.computer.database.stream.httpStream;
 import com.excilys.computer.database.view.View;
 
@@ -33,7 +31,6 @@ public class Controller {
 	}
 
 	public boolean action(int commande, boolean boucle) throws ErrorSaisieUser, JSONException, IOException {
-		Page page = new Page();
 		switch (commande) {
 		case LIST_COMPUTER:
 			this.view.getViewComputer().printListComputer(this.stream.getComputerListStream(new Page()));

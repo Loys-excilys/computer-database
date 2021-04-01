@@ -32,6 +32,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class httpStream {
+	
+	String authHeaderValue = "Basic " + new String(Base64.getEncoder().encode("user:user".getBytes(StandardCharsets.UTF_8)));
 
 	private String readAll(BufferedReader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
@@ -87,14 +89,10 @@ public class httpStream {
 		URL serverUrl = new URL("http://localhost:8080/webapp/APIComputer/" + commande);
 		HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
 
-		String auth = "user:user";
-		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-		String authHeaderValue = "Basic " + new String(encodedAuth);
-
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Method", "GET");
-		connection.setRequestProperty("Authorization", authHeaderValue);
+		connection.setRequestProperty("Authorization", this.authHeaderValue);
 		InputStream is = connection.getInputStream();
 
 		try {
@@ -110,14 +108,10 @@ public class httpStream {
 		URL serverUrl = new URL("http://localhost:8080/webapp/APIComputer/page" + page.getPage() + "/" + page.getMaxPrint());
 		HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
 
-		String auth = "user:user";
-		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-		String authHeaderValue = "Basic " + new String(encodedAuth);
-
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Method", "GET");
-		connection.setRequestProperty("Authorization", authHeaderValue);
+		connection.setRequestProperty("Authorization", this.authHeaderValue);
 		InputStream is = connection.getInputStream();
 
 		try {
@@ -133,14 +127,10 @@ public class httpStream {
 		URL serverUrl = new URL("http://localhost:8080/webapp/APICompany/" + name);
 		HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
 
-		String auth = "user:user";
-		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-		String authHeaderValue = "Basic " + new String(encodedAuth);
-
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Method", "GET");
-		connection.setRequestProperty("Authorization", authHeaderValue);
+		connection.setRequestProperty("Authorization", this.authHeaderValue);
 		InputStream is = connection.getInputStream();
 
 		try {
@@ -156,14 +146,10 @@ public class httpStream {
 		URL serverUrl = new URL("http://localhost:8080/webapp/APICompany/page/" + page);
 		HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
 
-		String auth = "user:user";
-		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-		String authHeaderValue = "Basic " + new String(encodedAuth);
-
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Method", "GET");
-		connection.setRequestProperty("Authorization", authHeaderValue);
+		connection.setRequestProperty("Authorization", this.authHeaderValue);
 		InputStream is = connection.getInputStream();
 
 		try {
@@ -179,15 +165,11 @@ public class httpStream {
 		URL serverUrl = new URL("http://localhost:8080/webapp/APIComputer/add");
 		HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
 
-		String auth = "user:user";
-		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-		String authHeaderValue = "Basic " + new String(encodedAuth);
-
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty("Method", "POST");
-		connection.setRequestProperty("Authorization", authHeaderValue);
+		connection.setRequestProperty("Authorization", this.authHeaderValue);
 
 		OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 		writer.write(new MapperComputer().computerToComputerStreamDTO(computer).toJson());
@@ -201,15 +183,11 @@ public class httpStream {
 		URL serverUrl = new URL("http://localhost:8080/webapp/APIComputer/update");
 		HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
 
-		String auth = "user:user";
-		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-		String authHeaderValue = "Basic " + new String(encodedAuth);
-
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty("Method", "POST");
-		connection.setRequestProperty("Authorization", authHeaderValue);
+		connection.setRequestProperty("Authorization", this.authHeaderValue);
 
 		OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 		writer.write(new MapperComputer().computerToComputerStreamDTO(computer).toJson());
@@ -222,14 +200,10 @@ public class httpStream {
 		URL serverUrl = new URL("http://localhost:8080/webapp/APIComputer/delete?id=" + idComputerSelected);
 		HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
 
-		String auth = "user:user";
-		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-		String authHeaderValue = "Basic " + new String(encodedAuth);
-
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Method", "DELETE");
-		connection.setRequestProperty("Authorization", authHeaderValue);
+		connection.setRequestProperty("Authorization", this.authHeaderValue);
 
 		System.out.println(connection.getResponseCode());
 	}
@@ -238,14 +212,10 @@ public class httpStream {
 		URL serverUrl = new URL("http://localhost:8080/webapp/APICompany/delete?id=" + idCompanySelected);
 		HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
 
-		String auth = "user:user";
-		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-		String authHeaderValue = "Basic " + new String(encodedAuth);
-
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Method", "DELETE");
-		connection.setRequestProperty("Authorization", authHeaderValue);
+		connection.setRequestProperty("Authorization", this.authHeaderValue);
 
 		System.out.println(connection.getResponseCode());
 	}

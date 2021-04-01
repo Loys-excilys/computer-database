@@ -31,20 +31,20 @@ public class TestServiceCompany {
 	
 	private MockMvc mockMvc;
 	
-//	@BeforeEach
-//	public void setup() throws Exception {
-//	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-//	}
-//	
-//	@Test
-//	public void testGetListCompany() throws Exception {
-//
-//		assertEquals(ArrayList.class, serviceCompany.getListCompany(0).getClass());
-//	}
-//
-//	@Test
-//	public void testGetAllListCompany() throws Exception {
-//
-//		assertEquals(ArrayList.class, serviceCompany.getListCompany().getClass());
-//	}
+	@BeforeEach
+	public void setup() throws Exception {
+	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+	}
+	
+	@Test
+	public void testGetListCompany() throws Exception {
+
+		assertEquals(ArrayList.class, serviceCompany.getListCompany(0).getClass());
+	}
+
+	@Test
+	public void testGetAllListCompany() throws Exception {
+
+		assertEquals(ArrayList.class, serviceCompany.getListCompany().getClass());
+	}
 }

@@ -50,7 +50,7 @@ public class Computer {
 	public Optional<Company> getCompany() {
 		return Optional.ofNullable(this.company);
 	}
-
+	@Override
 	public String toString() {
 		return "Name : " + this.getName() + ", Date introduce : "
 				+ (Optional.ofNullable(this.introduced).isPresent() ? this.introduced : null) + ", Date discontinued : "

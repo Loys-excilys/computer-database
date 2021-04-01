@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.computer.database.data.Company;
-import com.excilys.computer.database.dto.CompanyDatabaseDTO;
 import com.excilys.computer.database.dto.CompanyStreamDTO;
 import com.excilys.computer.database.mappeur.MapperCompany;
 import com.excilys.computer.database.service.ServiceCompany;

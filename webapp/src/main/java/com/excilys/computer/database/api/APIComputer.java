@@ -40,6 +40,7 @@ public class APIComputer {
 			listComputer = this.serviceComputer.getListComputer(page);
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -56,6 +57,7 @@ public class APIComputer {
 			computer = this.serviceComputer.getComputer(id).orElse(null);
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
+			return new ResponseEntity<>(new ComputerStreamDTO(), HttpStatus.BAD_REQUEST);
 		}
 		ComputerStreamDTO computerDTO = new MapperComputer().computerToComputerStreamDTO(computer);
 
@@ -73,6 +75,7 @@ public class APIComputer {
 			listComputer = this.serviceComputer.getSearchComputer(search, page);
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -92,6 +95,7 @@ public class APIComputer {
 			listComputer = this.serviceComputer.getListComputerOrder(orderField, sort, page);
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -112,6 +116,7 @@ public class APIComputer {
 			listComputer = this.serviceComputer.getResearchComputerOrder(search, orderField, sort, page);
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -136,6 +141,7 @@ public class APIComputer {
 			this.serviceComputer.addComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
+			return new ResponseEntity<>("error ajout, verifié les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("Ajout effectuer", HttpStatus.OK);
 	}
@@ -146,6 +152,7 @@ public class APIComputer {
 			this.serviceComputer.updateComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
+			return new ResponseEntity<>("error update, verifié les données envoyées", HttpStatus.NOT_MODIFIED);
 		}
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}

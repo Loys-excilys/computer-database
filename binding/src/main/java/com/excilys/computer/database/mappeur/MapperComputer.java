@@ -24,7 +24,7 @@ public class MapperComputer {
 	public MapperComputer() {
 	}
 
-	public static ComputerDTO computerToComputerDTO(Computer computer) {
+	public ComputerDTO computerToComputerDTO(Computer computer) {
 		Optional<LocalDate> introduced = computer.getIntroduced();
 		Optional<LocalDate> discontinued = computer.getDiscontinued();
 		Optional<Company> company = computer.getCompany();
@@ -35,7 +35,7 @@ public class MapperComputer {
 				company.isPresent() ? company.get().getName() : "");
 	}
 
-	public static ComputerFormUpdateDTO computerToComputerFormUpdateDTO(Computer computer) {
+	public ComputerFormUpdateDTO computerToComputerFormUpdateDTO(Computer computer) {
 		Optional<LocalDate> introduced = computer.getIntroduced();
 		Optional<LocalDate> discontinued = computer.getDiscontinued();
 		Optional<Company> company = computer.getCompany();
@@ -46,7 +46,7 @@ public class MapperComputer {
 				company.isPresent() ? String.valueOf(company.get().getId()) : "");
 	}
 
-	public static List<ComputerDTO> listComputerToListComputerDTO(List<Computer> listComputer) {
+	public List<ComputerDTO> listComputerToListComputerDTO(List<Computer> listComputer) {
 		List<ComputerDTO> listComputerDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
 			listComputerDTO.add(computerToComputerDTO(computer));
@@ -54,18 +54,18 @@ public class MapperComputer {
 		return listComputerDTO;
 	}
 
-	public static ComputerFormAddDTO requestToComputerFormAddDTO(HttpServletRequest request) {
+	public ComputerFormAddDTO requestToComputerFormAddDTO(HttpServletRequest request) {
 		return new ComputerFormAddDTO(request.getParameter("computerName"), request.getParameter("dateIntroduced"),
 				request.getParameter("dateDiscontinued"), request.getParameter("companyName"));
 	}
 
-	public static ComputerFormUpdateDTO requestToComputerFormUpdateDTO(HttpServletRequest request) {
+	public ComputerFormUpdateDTO requestToComputerFormUpdateDTO(HttpServletRequest request) {
 		return new ComputerFormUpdateDTO(Long.parseLong(request.getSession().getAttribute("idComputer").toString()),
 				request.getParameter("computerName"), request.getParameter("dateIntroduced"),
 				request.getParameter("dateDiscontinued"), request.getParameter("companyName"));
 	}
 
-	public static Computer computerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO,
+	public Computer computerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO,
 			List<CompanyDTO> listCompany) throws ErrorSaisieUser {
 
 		return ValidateurComputer.getInstance()
@@ -77,13 +77,13 @@ public class MapperComputer {
 								? LocalDate.parse(computerFormAddDTO.getDiscontinued())
 								: null)
 						.addCompany(computerFormAddDTO.getCompanyId().compareTo("") != 0
-								? MapperCompany.companyDTOToCompany(
+								? new MapperCompany().companyDTOToCompany(
 										listCompany.get(Integer.parseInt(computerFormAddDTO.getCompanyId()) - 1))
 								: null)
 						.getComputer());
 	}
 
-	public static Computer computerFormUpdateDTOToComputer(ComputerFormUpdateDTO computerFormUpdateDTO,
+	public Computer computerFormUpdateDTOToComputer(ComputerFormUpdateDTO computerFormUpdateDTO,
 			List<CompanyDTO> listCompany) throws ErrorSaisieUser {
 
 		return ValidateurComputer.getInstance()
@@ -97,8 +97,8 @@ public class MapperComputer {
 										? LocalDate.parse(computerFormUpdateDTO.getDiscontinued())
 										: null)
 								.addCompany(computerFormUpdateDTO.getCompanyId().compareTo("") != 0
-										? MapperCompany.companyDTOToCompany(listCompany
-												.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId()) - 1))
+										? new MapperCompany().companyDTOToCompany(listCompany
+												.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId())))
 										: null)
 								.getComputer());
 	}

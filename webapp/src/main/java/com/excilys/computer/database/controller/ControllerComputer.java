@@ -83,19 +83,19 @@ public class ControllerComputer {
 		}
 		if (session.getSearch() != null && session.getOrderField() != null && session.getSort() != null) {
 			page.setMaxComputer(this.serviceComputer.getSearchNumberComputer(session.getSearch()));
-			return MapperComputer.listComputerToListComputerDTO(this.serviceComputer
+			return new MapperComputer().listComputerToListComputerDTO(this.serviceComputer
 					.getResearchComputerOrder(session.getSearch(), session.getOrderField(), session.getSort(), page));
 		} else if (session.getSearch() != null) {
 			page.setMaxComputer(this.serviceComputer.getSearchNumberComputer(session.getSearch()));
-			return MapperComputer
+			return new MapperComputer()
 					.listComputerToListComputerDTO(this.serviceComputer.getSearchComputer(session.getSearch(), page));
 		} else if (session.getOrderField() != null && session.getSort() != null) {
 			page.setMaxComputer(this.serviceComputer.getNumberComputer());
-			return MapperComputer.listComputerToListComputerDTO(
+			return new MapperComputer().listComputerToListComputerDTO(
 					this.serviceComputer.getListComputerOrder(session.getOrderField(), session.getSort(), page));
 		} else {
 			page.setMaxComputer(this.serviceComputer.getNumberComputer());
-			return MapperComputer.listComputerToListComputerDTO(this.serviceComputer.getListComputer(page));
+			return new MapperComputer().listComputerToListComputerDTO(this.serviceComputer.getListComputer(page));
 
 		}
 	}
@@ -119,7 +119,7 @@ public class ControllerComputer {
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("AddComputer");
 		Map<String, String> computerDTOs = new HashMap<String, String>();
-		List<CompanyDTO> list = MapperCompany.listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
+		List<CompanyDTO> list = new MapperCompany().listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
 		for (CompanyDTO company : list) {
 			computerDTOs.put(String.valueOf(company.getId()), company.getName());
 		}
@@ -130,11 +130,11 @@ public class ControllerComputer {
 
 	@PostMapping("/AddComputer")
 	public ModelAndView addComputer(@ModelAttribute("ComputerFormAddDTO")ComputerFormAddDTO computerFormAddDTO) {
-		List<CompanyDTO> listCompany = MapperCompany.listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
+		List<CompanyDTO> listCompany = new MapperCompany().listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("AddComputer");
 		try {
-			Computer computer = MapperComputer.computerFormAddDTOToComputer(computerFormAddDTO, listCompany);
+			Computer computer = new MapperComputer().computerFormAddDTOToComputer(computerFormAddDTO, listCompany);
 			this.serviceComputer.addComputer(computer);
 		} catch (ErrorSaisieUser errorUser) {
 			errorUser.formatEntry();
@@ -151,7 +151,7 @@ public class ControllerComputer {
 		System.out.println("\n\n" + id);
 		if (id != null) {
 			try {
-				computerFormUpdateDTO = MapperComputer
+				computerFormUpdateDTO = new MapperComputer()
 						.computerToComputerFormUpdateDTO(this.serviceComputer.getComputer(Integer.parseInt(id)).get());
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -162,7 +162,7 @@ public class ControllerComputer {
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("UpdateComputer");
 		Map<String, String> computerDTOs = new HashMap<String, String>();
-		List<CompanyDTO> list = MapperCompany.listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
+		List<CompanyDTO> list = new MapperCompany().listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
 		for (CompanyDTO company : list) {
 			computerDTOs.put(String.valueOf(company.getId()), company.getName());
 		}
@@ -173,11 +173,11 @@ public class ControllerComputer {
 
 	@PostMapping("/UpdateComputer")
 	public ModelAndView updateComputer(ComputerFormUpdateDTO computerFormAddDTO) {
-		List<CompanyDTO> listCompany = MapperCompany.listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
+		List<CompanyDTO> listCompany = new MapperCompany().listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("UpdateComputer");
 		try {
-			Computer computer = MapperComputer.computerFormUpdateDTOToComputer(computerFormAddDTO, listCompany);
+			Computer computer = new MapperComputer().computerFormUpdateDTOToComputer(computerFormAddDTO, listCompany);
 			this.serviceComputer.addComputer(computer);
 		} catch (ErrorSaisieUser errorUser) {
 			errorUser.formatEntry();
