@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.excilys.computer.database.builder.ComputerBuilder;
-import com.excilys.computer.database.service.config.ServiceConfigContext;
+import com.excilys.computer.database.config.ServiceConfigContext;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;

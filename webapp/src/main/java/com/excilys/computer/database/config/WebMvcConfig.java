@@ -1,9 +1,10 @@
-package com.excilys.computer.database.webapp.config;
+package com.excilys.computer.database.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan({ "com.excilys.computer.database.service", "com.excilys.computer.database.controller",
 	"com.excilys.computer.database.api" })
+@Import(SpringFoxConfig.class)
 public class WebMvcConfig implements WebMvcConfigurer {
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
@@ -60,6 +62,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("swagger-ui.html")
+	      .addResourceLocations("classpath:/META-INF/resources/");
+
+	    registry.addResourceHandler("/webjars/**")
+	      .addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 	
 	@Bean

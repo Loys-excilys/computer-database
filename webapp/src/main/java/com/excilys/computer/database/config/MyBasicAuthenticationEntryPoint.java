@@ -1,4 +1,4 @@
-package com.excilys.computer.database.webapp.config;
+package com.excilys.computer.database.config;
 
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 

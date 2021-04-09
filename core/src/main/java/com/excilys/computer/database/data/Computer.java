@@ -53,8 +53,8 @@ public class Computer {
 	@Override
 	public String toString() {
 		return "Name : " + this.getName() + ", Date introduce : "
-				+ (Optional.ofNullable(this.introduced).isPresent() ? this.introduced : null) + ", Date discontinued : "
-				+ (Optional.ofNullable(this.discontinued).isPresent() ? this.discontinued : null) + ", Company name : "
-				+ (Optional.ofNullable(this.company).isPresent() ? this.company.getName() : null);
+				+ this.introduced + ", Date discontinued : "
+				+ this.discontinued + ", Company name : "
+				+ this.company;
 	}
 }

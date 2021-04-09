@@ -28,6 +28,14 @@ public class ServiceCompany {
 	public List<Company> getListCompany(int page) {
 		return this.database.getListCompany(page);
 	}
+	
+	public void addCompany(Company company) {
+		this.database.insertCompany(company);
+	}
+	
+	public void updateCompany(Company company) {
+		this.database.updateCompany(company);
+	}
 
 	public void deleteCompanyById(int id) {
 		this.database.deleteCompanyById(id);

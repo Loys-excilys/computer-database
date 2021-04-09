@@ -45,6 +45,8 @@
 		<json.version>20210307</json.version>
 
 		<aspectJ.version>1.9.6</aspectJ.version>
+
+		<springFox.version>2.9.2</springFox.version>
 	</properties>
 
 	<dependencyManagement>
@@ -251,7 +253,16 @@
 
 
 
-
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${springFox.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${springFox.version}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>

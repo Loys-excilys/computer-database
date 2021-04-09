@@ -1,5 +1,7 @@
-package com.excilys.computer.database.persistence.config;
+package com.excilys.computer.database.config;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -14,14 +16,13 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.dto" })
+@ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.dto",
+		"com.excilys.computer.database.config" })
 public class PersistenceConfigContext {
 
 	@Bean
 	public DataSource getDataSource() {
-		HikariConfig config = new HikariConfig("/db.properties");
-		HikariDataSource connection = new HikariDataSource(config);
-		return connection;
+		return new HikariDataSource(new HikariConfig("/db.properties"));
 	}
 
 	@Bean
@@ -43,7 +44,11 @@ public class PersistenceConfigContext {
 
 	private Properties hibernateProperties() {
 		Properties hibernateProperties = new Properties();
-		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+		try (InputStream input = this.getClass().getResourceAsStream("/hibernate.properties")) {
+			hibernateProperties.load(input);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 
 		return hibernateProperties;
 	}

@@ -7,13 +7,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
+
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import com.excilys.computer.database.data.Company;
+import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.dto.CompanyDatabaseDTO;
 import com.excilys.computer.database.dto.ComputerDatabaseDTO;
 import com.excilys.computer.database.mappeur.MapperCompany;
+import com.excilys.computer.database.mappeur.MapperComputer;
+import com.excilys.computer.database.mappeur.MappeurDate;
 
 @Repository
 public class DAOCompany {
@@ -77,6 +84,34 @@ public class DAOCompany {
 		}
 		return result;
 	}
+	
+	public void insertCompany(Company company) {
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.save(new MapperCompany().companyToCompanyDatabaseDTO(company));
+		tx.commit();
+		session.close();
+		
+	}
+
+	public void updateCompany(Company company) {
+		CompanyDatabaseDTO companyDTO = new MapperCompany().companyToCompanyDatabaseDTO(company);
+		EntityManager em = this.sessionFactory.createEntityManager();
+		em.getTransaction().begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaUpdate<CompanyDatabaseDTO> query = cb.createCriteriaUpdate(CompanyDatabaseDTO.class);
+		Root<CompanyDatabaseDTO> rootComputer = query.from(CompanyDatabaseDTO.class);
+		
+		query.set("name", companyDTO.getName());
+		query.where(cb.equal(rootComputer.get("id"), companyDTO.getId()));
+		
+		em.createQuery(query).executeUpdate();
+		em.getTransaction().commit();
+		em.close();
+	}
+	
 	
 	public void deleteCompanyById(int id) {
 		EntityManager em = this.sessionFactory.createEntityManager();

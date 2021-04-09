@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.excilys.computer.database.service.config.ServiceConfigContext;
+import com.excilys.computer.database.config.ServiceConfigContext;
 import com.excilys.computer.database.service.ServiceCompany;
 
 @ExtendWith(SpringExtension.class)
