@@ -32,7 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder);
+		auth.jdbcAuthentication()
+		.dataSource(dataSource)
+		.passwordEncoder(passwordEncoder)
+		.usersByUsernameQuery("SELECT username, password, enabled "
+				+ "FROM users "
+				+ "WHERE username = ?")
+		.authoritiesByUsernameQuery("SELECT users.username, authorities.authority "
+				+ "FROM users "
+				+ "LEFT JOIN authorities ON users.authority = authorities.id "
+				+ "WHERE users.username = ?");
 	}
 
 	@Bean

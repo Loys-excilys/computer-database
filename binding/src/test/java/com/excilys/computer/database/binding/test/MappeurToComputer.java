@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.excilys.computer.database.builder.ComputerBuilder;
+import com.excilys.computer.database.builder.BuilderComputer;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.dto.CompanyDTO;
@@ -41,7 +41,7 @@ public class MappeurToComputer {
 	@BeforeEach
 	public void setUp() {
 		company = new Company(0, "testCompany");
-		computer = new ComputerBuilder().addId(0).addName("test").addIntroduced(LocalDate.parse("2019-04-20")).addDiscontinued(null).addCompany(company).getComputer();
+		computer = new BuilderComputer().addId(0).addName("test").addIntroduced(LocalDate.parse("2019-04-20")).addDiscontinued(null).addCompany(company).build();
 	}
 		
 	@Test

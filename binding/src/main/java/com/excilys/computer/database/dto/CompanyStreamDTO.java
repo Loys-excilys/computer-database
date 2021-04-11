@@ -30,6 +30,6 @@ public class CompanyStreamDTO {
 	}
 
 	public String toJson() {
-		return "{\"id\":" + this.id + ",\"name\":\"" + this.name + "\"}";
+		return "{id:" + this.id + ",name:\"" + this.name + "\"}";
 	}
 }

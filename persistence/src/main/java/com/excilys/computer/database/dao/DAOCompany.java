@@ -130,6 +130,5 @@ public class DAOCompany {
 		em.createQuery(queryCompany).executeUpdate();
 		em.getTransaction().commit();
 		em.close();
-
 	}
 }

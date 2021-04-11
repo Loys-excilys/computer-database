@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.excilys.computer.database.builder.ComputerBuilder;
+import com.excilys.computer.database.builder.BuilderComputer;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
@@ -71,14 +71,14 @@ public class ViewComputer extends View {
 	public void printAddComputer() {
 		Computer computer = null;
 		try {
-			computer = new ComputerBuilder().addName(this.printAskEntryString("Can you give me the Name ? : "))
+			computer = new BuilderComputer().addName(this.printAskEntryString("Can you give me the Name ? : "))
 					.addIntroduced(this.printAskEntryDate("Can you give me the date of introduce ?(yyyy-mm-dd) : "))
 					.addDiscontinued(
 							this.printAskEntryDate("Can you give me the date of discontinue ? (yyyy-mm-dd) : "))
 					.addCompany(this.stream
 							.getCompanyStream(
 									this.printAskEntryString("Can you give me the name company ? : ")).orElse(null))
-					.getComputer();
+					.build();
 		} catch (JSONException | IOException | ErrorSaisieUser e) {
 			e.printStackTrace();
 		}

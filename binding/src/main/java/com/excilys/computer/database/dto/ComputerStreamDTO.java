@@ -61,8 +61,8 @@ public class ComputerStreamDTO {
 	}
 
 	public String toJson() {
-		return "{\"id\":" + this.id + ",\"name\":\"" + this.name + "\",\"introduced\":\"" + this.introduced
-				+ "\",\"discontinued\":\"" + this.discontinued + "\",\"company\":"
+		return "{id:" + this.id + ",name:\"" + this.name + "\",introduced:\"" + this.introduced
+				+ "\",discontinued:\"" + this.discontinued + "\",company:"
 				+ (this.company != null ? this.company.toJson() : null) + "}";
 	}
 }

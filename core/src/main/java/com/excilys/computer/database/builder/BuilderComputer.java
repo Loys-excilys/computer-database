@@ -5,39 +5,39 @@ import java.time.LocalDate;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
 
-public class ComputerBuilder {
+public class BuilderComputer {
 	private Computer computer;
 	
-	public ComputerBuilder() {
+	public BuilderComputer() {
 		this.computer = new Computer();
 	}
 	
-	public ComputerBuilder addId(long id) {
+	public BuilderComputer addId(long id) {
 		this.computer.setId(id);
 		return this;
 	}
 	
-	public ComputerBuilder addName(String name) {
+	public BuilderComputer addName(String name) {
 		this.computer.setName(name);
 		return this;
 	}
 	
-	public ComputerBuilder addIntroduced(LocalDate localDate) {
+	public BuilderComputer addIntroduced(LocalDate localDate) {
 		this.computer.setIntroduced(localDate);
 		return this;
 	}
 	
-	public ComputerBuilder addDiscontinued(LocalDate discontinued) {
+	public BuilderComputer addDiscontinued(LocalDate discontinued) {
 		this.computer.setDiscontinued(discontinued);
 		return this;
 	}
 	
-	public ComputerBuilder addCompany(Company company) {
+	public BuilderComputer addCompany(Company company) {
 		this.computer.setCompany(company);
 		return this;
 	}
 	
-	public Computer getComputer() {
+	public Computer build() {
 		return this.computer;
 	}
 }
