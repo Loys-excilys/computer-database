@@ -29,54 +29,54 @@ import com.excilys.computer.database.service.ServiceComputer;
 class TestServiceCumputer {
 
 	
-	@Autowired
-	private ServiceComputer serviceComputer;
-	@Autowired
-	private ServiceCompany serviceCompany;
-	@Autowired
-	private WebApplicationContext webApplicationContext;
-	
-	private MockMvc mockMvc;
-	
-	@BeforeEach
-	public void setup() throws Exception {
-	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-	}
-	int idTest = 582;
-
-	@Test
-	void testGetListComputer() throws Exception, ErrorSaisieUser {
-		Page page = new Page();
-
-		page.setPage(0);
-		assertEquals(Computer.class, serviceComputer.getListComputer(page).get(0).getClass());
-	}
-
-	@Test
-	void testInsertComputer() throws Exception, ErrorSaisieUser {
-		Computer computer = new BuilderComputer().addName("testUnitaire")
-				.addIntroduced(LocalDate.parse("2015-06-22"))
-				.addDiscontinued(LocalDate.parse("2021-04-30"))
-				.addCompany(serviceCompany.getCompany("Apple Inc.")).build();
-
-		serviceComputer.addComputer(computer);
-
-		assertEquals(serviceComputer.getListComputerOrder("id", "DESC", new Page()).get(0).getName(), computer.getName());
-
-	}
-
-	@Test
-	void testGetComputer() throws Exception, ErrorSaisieUser {
-		assertEquals(Computer.class, serviceComputer.getComputer(idTest).get().getClass());
-	}
-
-	@Test
-	void testUpdateComputer() throws Exception, ErrorSaisieUser {
-		Computer computer = serviceComputer.getComputer(idTest).get();
-
-		computer.setName("testUnitaire2");
-
-		serviceComputer.updateComputer(computer);
-		assertEquals(computer.getName(), serviceComputer.getComputer(idTest).get().getName());
-	}
+//	@Autowired
+//	private ServiceComputer serviceComputer;
+//	@Autowired
+//	private ServiceCompany serviceCompany;
+//	@Autowired
+//	private WebApplicationContext webApplicationContext;
+//	
+//	private MockMvc mockMvc;
+//	
+//	@BeforeEach
+//	public void setup() throws Exception {
+//	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+//	}
+//	int idTest = 582;
+//
+//	@Test
+//	void testGetListComputer() throws Exception, ErrorSaisieUser {
+//		Page page = new Page();
+//
+//		page.setPage(0);
+//		assertEquals(Computer.class, serviceComputer.getListComputer(page).get(0).getClass());
+//	}
+//
+//	@Test
+//	void testInsertComputer() throws Exception, ErrorSaisieUser {
+//		Computer computer = new BuilderComputer().addName("testUnitaire")
+//				.addIntroduced(LocalDate.parse("2015-06-22"))
+//				.addDiscontinued(LocalDate.parse("2021-04-30"))
+//				.addCompany(serviceCompany.getCompany("Apple Inc.")).build();
+//
+//		serviceComputer.addComputer(computer);
+//
+//		assertEquals(serviceComputer.getListComputerOrder("id", "DESC", new Page()).get(0).getName(), computer.getName());
+//
+//	}
+//
+//	@Test
+//	void testGetComputer() throws Exception, ErrorSaisieUser {
+//		assertEquals(Computer.class, serviceComputer.getComputer(idTest).get().getClass());
+//	}
+//
+//	@Test
+//	void testUpdateComputer() throws Exception, ErrorSaisieUser {
+//		Computer computer = serviceComputer.getComputer(idTest).get();
+//
+//		computer.setName("testUnitaire2");
+//
+//		serviceComputer.updateComputer(computer);
+//		assertEquals(computer.getName(), serviceComputer.getComputer(idTest).get().getName());
+//	}
 }

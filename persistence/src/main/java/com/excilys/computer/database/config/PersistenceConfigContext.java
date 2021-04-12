@@ -27,7 +27,15 @@ public class PersistenceConfigContext {
 
 	@Bean
 	public DataSource getDataSource() {
-		return new HikariDataSource(new HikariConfig("/db.properties"));
+		HikariConfig config = new HikariConfig("/db.properties");
+//		config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//		config.setJdbcUrl("jdbc:mysql://localhost:3306/computer-database-db?generateSimpleParameterMetadata=true");
+//		config.setUsername("admincdb");
+//		config.setPassword("qwerty1234");
+//		config.addDataSourceProperty("cachePrepStmts", "true");
+//		config.addDataSourceProperty("prepStmtCacheSize", "250");
+//		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+		return new HikariDataSource(config);
 	}
 
 	@Bean

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,8 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
-	@Autowired
-	protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication()
 		.dataSource(dataSource)
 		.passwordEncoder(passwordEncoder)
@@ -40,13 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				+ "WHERE users.username = ?");
 	}
 	
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) 
-//      throws Exception {
-//        auth.inMemoryAuthentication()
-//          .withUser("john").password("123").roles("USER");
-//    }
-//	
 //    @Override
 //    @Bean
 //    public AuthenticationManager authenticationManagerBean() 
@@ -71,10 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest()
 				.authenticated()
 			.and()
-			.httpBasic()
-				.realmName("TEST REALM")
-				.authenticationEntryPoint(authenticationEntryPoint)
-			.and()
+//			.httpBasic()
+//				.realmName("TEST REALM")
+//				.authenticationEntryPoint(authenticationEntryPoint)
+//			.and()
 				.formLogin()
 				.loginPage("/login")
 				.defaultSuccessUrl("/Computer")

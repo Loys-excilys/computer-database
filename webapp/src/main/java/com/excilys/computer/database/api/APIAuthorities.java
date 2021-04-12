@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.computer.database.data.Authorities;
 import com.excilys.computer.database.dto.AuthoritiesStreamDTO;
@@ -19,6 +21,9 @@ import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperAuthorities;
 import com.excilys.computer.database.service.ServiceAuthorities;
 
+
+@RestController
+@RequestMapping("/APIAuthorities")
 public class APIAuthorities {
 	
 	@Autowired

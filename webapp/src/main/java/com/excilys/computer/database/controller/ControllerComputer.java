@@ -24,7 +24,7 @@ import com.excilys.computer.database.mappeur.MapperComputer;
 import com.excilys.computer.database.service.ServiceCompany;
 import com.excilys.computer.database.service.ServiceComputer;
 
-@Controller
+
 public class ControllerComputer {
 
 	@Autowired
