@@ -11,9 +11,12 @@ import com.excilys.computer.database.data.User;
 @Entity(name = "AuthoritiesDatabaseDTO")
 @Table(name = "authorities")
 public class AuthoritiesDatabaseDTO {
+	
 	@Id
 	private int id;
 	private String authority;
+	
+	public AuthoritiesDatabaseDTO() {}
 	
 	public AuthoritiesDatabaseDTO(int id, String authority) {
 		this.id = id;

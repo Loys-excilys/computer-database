@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -40,23 +41,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				+ "WHERE username = ?")
 		.authoritiesByUsernameQuery("SELECT users.username, authorities.authority "
 				+ "FROM users "
-				+ "LEFT JOIN authorities ON users.authority = authorities.id "
+				+ "LEFT JOIN authorities ON users.authority_id = authorities.id "
 				+ "WHERE users.username = ?");
 	}
-
-	@Bean
-	public TokenStore tokenStore() {
-		return new JdbcTokenStore(dataSource);
-	}
-
-	@Bean
-	@Primary
-	public DefaultTokenServices tokenServices() {
-		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-		defaultTokenServices.setTokenStore(tokenStore());
-		defaultTokenServices.setSupportRefreshToken(true);
-		return defaultTokenServices;
-	}
+	
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) 
+//      throws Exception {
+//        auth.inMemoryAuthentication()
+//          .withUser("john").password("123").roles("USER");
+//    }
+//	
+//    @Override
+//    @Bean
+//    public AuthenticationManager authenticationManagerBean() 
+//      throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -66,13 +67,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/", "/ csrf", "/ v2 / api-docs", "/ swagger-resources / configuration / ui",
+			.mvcMatchers("/", "/ csrf", "/ v2 / api-docs", "/ swagger-resources / configuration / ui",
 						"/ configuration / ui", "/ swagger-resources", "/ swagger-resources / configuration / security",
 						"/ configuration / security", "/swagger-ui.html", "/ webjars / **")
-				.permitAll().mvcMatchers("/login").permitAll().anyRequest().authenticated().and().httpBasic()
-				.realmName("TEST REALM").authenticationEntryPoint(authenticationEntryPoint).and().formLogin()
-				.loginPage("/login").defaultSuccessUrl("/Computer").failureUrl("/login?error=true").permitAll().and()
-				.logout().logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true).permitAll().and().csrf()
+				.permitAll()
+			.mvcMatchers("/login")
+				.permitAll()
+			.anyRequest()
+				.authenticated()
+			.and()
+			.httpBasic()
+				.realmName("TEST REALM")
+				.authenticationEntryPoint(authenticationEntryPoint)
+			.and()
+				.formLogin()
+				.loginPage("/login")
+				.defaultSuccessUrl("/Computer")
+				.failureUrl("/login?error=true")
+				.permitAll()
+			.and()
+				.logout()
+				.logoutSuccessUrl("/login?logout=true")
+				.invalidateHttpSession(true)
+				.permitAll()
+			.and()
+				.csrf()
 				.disable();
 	}
 }

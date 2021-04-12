@@ -2,6 +2,7 @@ package com.excilys.computer.database.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity(name = "UserDatabaseDTO")
@@ -13,7 +14,10 @@ public class UserDatabaseDTO {
 	private String username;
 	private String password;
 	private int enabled;
+	@ManyToOne
 	private AuthoritiesDatabaseDTO authority;
+	
+	public UserDatabaseDTO() {}
 	
 	
 	public UserDatabaseDTO(int id, String username, String password, int enabled, AuthoritiesDatabaseDTO authority) {

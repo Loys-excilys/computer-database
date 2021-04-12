@@ -15,7 +15,7 @@
 	</welcome-file-list>
 
 
-	<error-page>
+<!-- 	<error-page>
 		<error-code>500</error-code>
 		<location>/views/500.html</location>
 	</error-page>
@@ -26,6 +26,6 @@
 	<error-page>
 		<error-code>404</error-code>
 		<location>/views/404.html</location>
-	</error-page>
+	</error-page> -->
 
 </web-app>
