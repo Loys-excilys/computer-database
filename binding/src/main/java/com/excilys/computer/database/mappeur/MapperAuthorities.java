@@ -18,7 +18,7 @@ public class MapperAuthorities {
 				authorities.getAuthority());
 	}
 
-	public Authorities authoritiesStreamDTOToauthorities(AuthoritiesStreamDTO authoritiesDTO) {
+	public Authorities authoritiesStreamDTOToAuthorities(AuthoritiesStreamDTO authoritiesDTO) {
 		return new BuilderAuthorities().addId(authoritiesDTO.getId())
 				.addAthority(authoritiesDTO.getAuthority()).build();
 	}

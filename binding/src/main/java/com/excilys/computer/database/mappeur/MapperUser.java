@@ -20,13 +20,13 @@ public class MapperUser {
 	}
 
 	public UserStreamDTO userToUserStreamDTO(User user) {
-		return new UserStreamDTO(user.getId(), user.getUsername(), user.getPassword(), user.getEnabled(),
+		return new UserStreamDTO(user.getId(), user.getUsername(), user.getEnabled(),
 				new MapperAuthorities().authoritiesToAuthoritiesStreamDTO(user.getAuthority()));
 	}
 
 	public User userStreamDTOToUser(UserStreamDTO userDTO) {
 		return new BuilderUser().addId(userDTO.getId()).addUsername(userDTO.getUsername())
-				.addPassword(userDTO.getPassword()).addEnabled(userDTO.getEnabled())
+				.addEnabled(userDTO.getEnabled())
 				.addAuthority(new MapperAuthorities().authoritiesStreamDTOToauthorities(userDTO.getAuthority()))
 				.build();
 	}

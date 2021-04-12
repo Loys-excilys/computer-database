@@ -61,4 +61,8 @@ public class ServiceComputer {
 			throws ErrorSaisieUser {
 		return this.database.getSearchComputerOrder(search, orderField, sort, page);
 	}
+	
+	public List<Computer> getListComputerByCompany(Page page, int companyId) throws ErrorSaisieUser{
+		return this.database.getListComputerByCompany(page, companyId);
+	}
 }

@@ -49,7 +49,7 @@ public class APIComputer {
 
 		return new ResponseEntity<>(listDTO, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/{id}", produces = "application/json")
 	public ResponseEntity<ComputerStreamDTO> getComputer(@PathVariable int id) {
 		Computer computer = null;
@@ -62,6 +62,27 @@ public class APIComputer {
 		ComputerStreamDTO computerDTO = new MapperComputer().computerToComputerStreamDTO(computer);
 
 		return new ResponseEntity<>(computerDTO, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/ByCompany/{id}/page/{numPage}/{maxEntry}", produces = "application/json")
+	public ResponseEntity<List<ComputerStreamDTO>> getComputer(@PathVariable int numPage, @PathVariable int maxEntry,
+			@PathVariable int id) {
+		Page page = new Page();
+		page.setMaxPrint(maxEntry);
+		page.setPage(numPage);
+		List<Computer> listComputer = null;
+		try {
+			listComputer = this.serviceComputer.getListComputerByCompany(page, id);
+		} catch (ErrorSaisieUser e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+		}
+		List<ComputerStreamDTO> listDTO = new ArrayList<>();
+		for (Computer computer : listComputer) {
+			listDTO.add(new MapperComputer().computerToComputerStreamDTO(computer));
+		}
+
+		return new ResponseEntity<>(listDTO, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/search/page/{numPage}/{maxEntry}", produces = "application/json")
@@ -135,7 +156,7 @@ public class APIComputer {
 		return new ResponseEntity<>(this.serviceComputer.getSearchNumberComputer(search), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/add", produces = "application/json", consumes="application/json")
+	@PostMapping(value = "/add", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<String> AddComputer(@RequestBody ComputerStreamDTO computerDTO) {
 		try {
 			this.serviceComputer.addComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));
@@ -146,7 +167,7 @@ public class APIComputer {
 		return new ResponseEntity<>("Ajout effectuer", HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/update", produces = "application/json", consumes="application/json")
+	@PutMapping(value = "/update", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<String> UpdateComputer(@RequestBody ComputerStreamDTO computerDTO) {
 		try {
 			this.serviceComputer.updateComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));

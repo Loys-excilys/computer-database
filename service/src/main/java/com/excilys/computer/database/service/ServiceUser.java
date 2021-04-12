@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.computer.database.dao.DAOUser;
 import com.excilys.computer.database.data.User;
+import com.excilys.computer.database.error.ErrorSaisieUser;
 
 @Service
 public class ServiceUser {
@@ -16,7 +17,7 @@ public class ServiceUser {
 		this.database = dao;
 	}
 	
-	public void addUser(User user) {
+	public void addUser(User user) throws ErrorSaisieUser{
 		this.database.addUser(user);
 	}
 	
@@ -24,11 +25,11 @@ public class ServiceUser {
 		return this.database.getUserList();
 	}
 	
-	public void updateUser(User user) {
+	public void updateUser(User user) throws ErrorSaisieUser {
 		this.database.updateUser(user);
 	}
 	
-	public void deleteUser(int id) {
+	public void deleteUser(int id) throws ErrorSaisieUser {
 		this.database.deleteUser(id);
 	}
 	

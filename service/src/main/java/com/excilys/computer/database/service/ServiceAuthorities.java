@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.computer.database.dao.DAOAuthorities;
 import com.excilys.computer.database.data.Authorities;
+import com.excilys.computer.database.error.ErrorSaisieUser;
 
 @Service
 public class ServiceAuthorities {
@@ -16,19 +17,19 @@ public class ServiceAuthorities {
 		this.database = dao;
 	}
 	
-	public void addAuthorities(Authorities authorities) {
+	public void addAuthorities(Authorities authorities) throws ErrorSaisieUser {
 		this.database.addAuthorities(authorities);
 	}
 	
-	public List<Authorities> getUserList(){
+	public List<Authorities> getAuthoritiesList(){
 		return this.database.getAuthorities();
 	}
 	
-	public void updateUser(Authorities authorities) {
+	public void updateAuthorities(Authorities authorities) throws ErrorSaisieUser {
 		this.database.updateAuthorities(authorities);
 	}
 	
-	public void deleteUser(int id) {
+	public void deleteAuthorities(int id) throws ErrorSaisieUser {
 		this.database.deleteAuthorities(id);
 	}
 }

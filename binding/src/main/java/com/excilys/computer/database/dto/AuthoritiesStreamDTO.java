@@ -5,6 +5,8 @@ public class AuthoritiesStreamDTO {
 	private int id;
 	private String authority;
 	
+	public AuthoritiesStreamDTO() {}
+	
 	public AuthoritiesStreamDTO(int id, String authority) {
 		this.id = id;
 		this.authority = authority;

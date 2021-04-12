@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import com.excilys.computer.database.data.User;
 import com.excilys.computer.database.dto.AuthoritiesDatabaseDTO;
 import com.excilys.computer.database.dto.UserDatabaseDTO;
+import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperUser;
 
 @Repository
@@ -30,12 +31,13 @@ public class DAOUser {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public void addUser(User user) {
+	public void addUser(User user) throws ErrorSaisieUser {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		session.save(new MapperUser().userToUserDatabaseDTO(user));
 		tx.commit();
 		session.close();
+		
 	}
 	
 	public List<User> getUserList(){
@@ -56,7 +58,7 @@ public class DAOUser {
 		return result;
 	}
 	
-	public void updateUser(User user) {
+	public void updateUser(User user) throws ErrorSaisieUser {
 		UserDatabaseDTO userDTO = new MapperUser().userToUserDatabaseDTO(user);
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -74,7 +76,7 @@ public class DAOUser {
 		em.close();
 	}
 	
-	public void deleteUser(int id) {
+	public void deleteUser(int id) throws ErrorSaisieUser {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
 		CriteriaBuilder cb = em.getCriteriaBuilder();

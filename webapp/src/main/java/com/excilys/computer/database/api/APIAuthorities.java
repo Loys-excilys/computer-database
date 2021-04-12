@@ -11,39 +11,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.excilys.computer.database.data.User;
-import com.excilys.computer.database.dto.ComputerStreamDTO;
-import com.excilys.computer.database.dto.UserStreamDTO;
+import com.excilys.computer.database.data.Authorities;
+import com.excilys.computer.database.dto.AuthoritiesStreamDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.mappeur.MapperComputer;
-import com.excilys.computer.database.mappeur.MapperUser;
-import com.excilys.computer.database.service.ServiceUser;
+import com.excilys.computer.database.mappeur.MapperAuthorities;
+import com.excilys.computer.database.service.ServiceAuthorities;
 
-@RestController
-@RequestMapping("/APIUser")
-public class APIUser {
+public class APIAuthorities {
 	
 	@Autowired
-	private ServiceUser serviceUser;
+	private ServiceAuthorities serviceAuthorities;
 	
 	@GetMapping(value = "/list", produces = "application/json")
-	public ResponseEntity<List<UserStreamDTO>> getUserList(){
-		List<User> listUser = this.serviceUser.getUserList();
-		List<UserStreamDTO> listUserDTO = new ArrayList<>();
-		for (User user : listUser) {
-			listUserDTO.add(new MapperUser().userToUserStreamDTO(user));
+	public ResponseEntity<List<AuthoritiesStreamDTO>> getAuthoritiesList(){
+		List<Authorities> listAuthorities = this.serviceAuthorities.getAuthoritiesList();
+		List<AuthoritiesStreamDTO> listAuthoritiesDTO = new ArrayList<>();
+		for (Authorities authorities : listAuthorities) {
+			listAuthoritiesDTO.add(new MapperAuthorities().authoritiesToAuthoritiesStreamDTO(authorities));
 		}
-		return new ResponseEntity<>(listUserDTO, HttpStatus.OK);
+		return new ResponseEntity<>(listAuthoritiesDTO, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/add", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<String> AddComputer(@RequestBody UserStreamDTO userDTO) {
+	public ResponseEntity<String> AddAuthorities(@RequestBody AuthoritiesStreamDTO AuthoritiesDTO) {
 		try {
-			this.serviceUser.addUser(new MapperUser().userStreamDTOToUser(userDTO));
+			this.serviceAuthorities.addAuthorities(new MapperAuthorities().authoritiesStreamDTOToAuthorities(AuthoritiesDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("error ajout, verifié les données envoyées", HttpStatus.BAD_REQUEST);
@@ -52,9 +46,9 @@ public class APIUser {
 	}
 
 	@PutMapping(value = "/update", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<String> UpdateComputer(@RequestBody UserStreamDTO userDTO) {
+	public ResponseEntity<String> UpdateAuthorities(@RequestBody AuthoritiesStreamDTO AuthoritiesDTO) {
 		try {
-			this.serviceUser.updateUser(new MapperUser().userStreamDTOToUser(userDTO));
+			this.serviceAuthorities.updateAuthorities(new MapperAuthorities().authoritiesStreamDTOToAuthorities(AuthoritiesDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("error update, verifié les données envoyées", HttpStatus.NOT_MODIFIED);
@@ -63,13 +57,14 @@ public class APIUser {
 	}
 
 	@DeleteMapping(value = "/delete", produces = "application/json")
-	public ResponseEntity<String> UpdateComputer(@RequestParam int id) {
+	public ResponseEntity<String> UpdateAuthorities(@RequestParam int id) {
 		try {
-			this.serviceUser.deleteUser(id);
+			this.serviceAuthorities.deleteAuthorities(id);
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("error delete, verifié les données envoyées", HttpStatus.NOT_MODIFIED);
 		}
 		return new ResponseEntity<>("delete effectuer", HttpStatus.OK);
 	}
+
 }

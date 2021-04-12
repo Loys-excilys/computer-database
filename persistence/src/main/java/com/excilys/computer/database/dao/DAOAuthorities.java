@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import com.excilys.computer.database.data.Authorities;
 import com.excilys.computer.database.dto.AuthoritiesDatabaseDTO;
 import com.excilys.computer.database.dto.UserDatabaseDTO;
+import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperAuthorities;
 
 @Repository
@@ -29,7 +30,7 @@ public class DAOAuthorities {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public void addAuthorities(Authorities authorities) {
+	public void addAuthorities(Authorities authorities) throws ErrorSaisieUser {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		session.save(new MapperAuthorities().authoritiesToAuthoritiesDatabaseDTO(authorities));
@@ -58,7 +59,7 @@ public class DAOAuthorities {
 		return result;
 	}
 		
-	public void updateAuthorities(Authorities authorities) {
+	public void updateAuthorities(Authorities authorities) throws ErrorSaisieUser {
 		AuthoritiesDatabaseDTO authoritiesDTO = new MapperAuthorities().authoritiesToAuthoritiesDatabaseDTO(authorities);
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -75,7 +76,7 @@ public class DAOAuthorities {
 		em.close();
 	}
 	
-	public void deleteAuthorities(int id) {
+	public void deleteAuthorities(int id) throws ErrorSaisieUser {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
