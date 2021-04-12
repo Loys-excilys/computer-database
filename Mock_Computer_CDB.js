@@ -1,4 +1,4 @@
-export const MOCK = [
+export const MOCK_Computer = [
 	{
 		"id":1,
 		"name":"MacBook Pro 15.4 inch",
