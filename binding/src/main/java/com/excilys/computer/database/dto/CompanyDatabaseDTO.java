@@ -13,13 +13,15 @@ public class CompanyDatabaseDTO {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
+	private String logo;
 
 	public CompanyDatabaseDTO() {
 	}
 
-	public CompanyDatabaseDTO(long l, String name) {
-		this.setId(l);
-		this.setName(name);
+	public CompanyDatabaseDTO(long id, String name, String logo) {
+		this.id = id;
+		this.name = name;
+		this.logo = logo;
 	}
 
 	public void setId(long id) {
@@ -40,5 +42,13 @@ public class CompanyDatabaseDTO {
 
 	public String toString() {
 		return "Name : " + this.getName();
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 }

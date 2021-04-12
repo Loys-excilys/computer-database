@@ -27,7 +27,7 @@ public class MapperUser {
 	public User userStreamDTOToUser(UserStreamDTO userDTO) {
 		return new BuilderUser().addId(userDTO.getId()).addUsername(userDTO.getUsername())
 				.addEnabled(userDTO.getEnabled())
-				.addAuthority(new MapperAuthorities().authoritiesStreamDTOToauthorities(userDTO.getAuthority()))
+				.addAuthority(new MapperAuthorities().authoritiesStreamDTOToAuthorities(userDTO.getAuthority()))
 				.build();
 	}
 }

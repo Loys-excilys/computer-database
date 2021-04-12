@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.dto.CompanyStreamDTO;
-import com.excilys.computer.database.dto.ComputerStreamDTO;
-import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperCompany;
-import com.excilys.computer.database.mappeur.MapperComputer;
 import com.excilys.computer.database.service.ServiceCompany;
 
 @RestController

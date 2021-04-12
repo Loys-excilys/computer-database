@@ -10,10 +10,12 @@ public class CompanyDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private long id;
 	private String name;
+	private String logo;
 
-	public CompanyDTO(long id, String name) {
+	public CompanyDTO(long id, String name, String logo) {
 		this.setId(id);
 		this.setName(name);
+		this.logo = logo;
 	}
 
 	public String getName() {
@@ -30,5 +32,13 @@ public class CompanyDTO implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 }

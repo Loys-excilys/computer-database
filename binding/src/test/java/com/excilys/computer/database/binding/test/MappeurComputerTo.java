@@ -36,7 +36,7 @@ public class MappeurComputerTo {
 	 */
 	@BeforeEach
 	public void setUp() {
-		Company = new Company(0, "testCompany");
+		//Company = new Company(0, "testCompany");
 		Computer = new BuilderComputer().addId(0).addName("test").addIntroduced(LocalDate.parse("2019-04-20")).addDiscontinued(null).addCompany(Company).build();
 	}
 	

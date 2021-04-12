@@ -2,6 +2,8 @@ package com.excilys.computer.database.mappeur;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.excilys.computer.database.builder.BuilderCompany;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.dto.CompanyDTO;
 import com.excilys.computer.database.dto.CompanyDatabaseDTO;
@@ -13,7 +15,7 @@ public class MapperCompany {
 	}
 
 	public CompanyDTO companyToCompanyDTO(Company company) {
-		return new CompanyDTO(company.getId(), company.getName());
+		return new CompanyDTO(company.getId(), company.getName(), company.getLogo());
 	}
 
 	public List<CompanyDTO> listCompanyToListCompanyDTO(List<Company> listCompany) {
@@ -25,18 +27,18 @@ public class MapperCompany {
 	}
 
 	public Company companyDTOToCompany(CompanyDTO companyDTO) {
-		return new Company(companyDTO.getId(), companyDTO.getName());
+		return new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build();
 	}
 	
 	public Company companyDatabaseDTOToCompany(CompanyDatabaseDTO companyDTO) {
 		if(companyDTO != null) {
-			return new Company(companyDTO.getId(), companyDTO.getName());
+			return new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build();
 		}
 		return null;
 	}
 	public CompanyDatabaseDTO companyToCompanyDatabaseDTO(Company company) {
 		if(company != null) {
-			return new CompanyDatabaseDTO(company.getId(), company.getName());
+			return new CompanyDatabaseDTO(company.getId(), company.getName(), company.getLogo());
 		}else {
 			return null;
 		}
@@ -45,13 +47,13 @@ public class MapperCompany {
 	
 	public Company companyStreamDTOToCompany(CompanyStreamDTO companyDTO) {
 		if(companyDTO != null) {
-			return new Company(companyDTO.getId(), companyDTO.getName());
+			return new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build();
 		}
 		return null;
 	}
 	public CompanyStreamDTO companyToCompanyStreamDTO(Company company) {
 		if(company != null) {
-			return new CompanyStreamDTO(company.getId(), company.getName());
+			return new CompanyStreamDTO(company.getId(), company.getName(), company.getLogo());
 		}else {
 			return null;
 		}

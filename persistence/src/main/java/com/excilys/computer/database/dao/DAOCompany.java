@@ -15,12 +15,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import com.excilys.computer.database.data.Company;
-import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.dto.CompanyDatabaseDTO;
 import com.excilys.computer.database.dto.ComputerDatabaseDTO;
 import com.excilys.computer.database.mappeur.MapperCompany;
-import com.excilys.computer.database.mappeur.MapperComputer;
-import com.excilys.computer.database.mappeur.MappeurDate;
 
 @Repository
 public class DAOCompany {
@@ -104,6 +101,7 @@ public class DAOCompany {
 		CriteriaUpdate<CompanyDatabaseDTO> query = cb.createCriteriaUpdate(CompanyDatabaseDTO.class);
 		Root<CompanyDatabaseDTO> rootComputer = query.from(CompanyDatabaseDTO.class);
 		
+		query.set("logo", companyDTO.getLogo());
 		query.set("name", companyDTO.getName());
 		query.where(cb.equal(rootComputer.get("id"), companyDTO.getId()));
 		

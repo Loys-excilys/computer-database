@@ -5,11 +5,7 @@ public class Company {
 
 	private long id;
 	private String name;
-
-	public Company(long l, String name) {
-		this.setId(l);
-		this.setName(name);
-	}
+	private String logo;
 
 	public void setId(long id) {
 		this.id = id;
@@ -29,6 +25,14 @@ public class Company {
 
 	public String toString() {
 		return "Name : " + this.getName();
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
 }

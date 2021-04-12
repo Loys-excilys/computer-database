@@ -16,7 +16,6 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computer.database.data.User;
-import com.excilys.computer.database.dto.AuthoritiesDatabaseDTO;
 import com.excilys.computer.database.dto.UserDatabaseDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperUser;

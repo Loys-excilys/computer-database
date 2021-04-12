@@ -1,24 +1,17 @@
 package com.excilys.computer.database.binding.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
+import com.excilys.computer.database.builder.BuilderCompany;
 import com.excilys.computer.database.builder.BuilderComputer;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.dto.CompanyDTO;
-import com.excilys.computer.database.dto.ComputerDTO;
 import com.excilys.computer.database.dto.ComputerFormUpdateDTO;
 import com.excilys.computer.database.dto.ComputerFormAddDTO;
 import com.excilys.computer.database.dto.ComputerStreamDTO;
@@ -40,7 +33,7 @@ public class MappeurToComputer {
 	 */
 	@BeforeEach
 	public void setUp() {
-		company = new Company(0, "testCompany");
+		company = new BuilderCompany().addId(0).addName("testCompany").build();
 		computer = new BuilderComputer().addId(0).addName("test").addIntroduced(LocalDate.parse("2019-04-20")).addDiscontinued(null).addCompany(company).build();
 	}
 		

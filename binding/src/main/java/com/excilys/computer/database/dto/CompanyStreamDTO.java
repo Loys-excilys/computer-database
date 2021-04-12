@@ -4,13 +4,15 @@ public class CompanyStreamDTO {
 
 	private long id;
 	private String name;
+	private String logo;
 
 	public CompanyStreamDTO() {
 	}
 
-	public CompanyStreamDTO(long l, String name) {
+	public CompanyStreamDTO(long l, String name, String logo) {
 		this.setId(l);
 		this.setName(name);
+		this.setLogo(logo);
 	}
 
 	public void setId(long id) {
@@ -30,6 +32,14 @@ public class CompanyStreamDTO {
 	}
 
 	public String toJson() {
-		return "{id:" + this.id + ",name:\"" + this.name + "\"}";
+		return "{id:" + this.id + ",name:\"" + this.name + "\", logo:\"" + this.logo + "\"}";
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 }

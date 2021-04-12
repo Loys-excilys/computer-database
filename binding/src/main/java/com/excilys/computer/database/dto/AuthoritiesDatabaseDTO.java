@@ -2,10 +2,7 @@ package com.excilys.computer.database.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.excilys.computer.database.data.User;
 
 
 @Entity(name = "AuthoritiesDatabaseDTO")

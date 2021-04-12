@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.computer.database.data.User;
-import com.excilys.computer.database.dto.ComputerStreamDTO;
 import com.excilys.computer.database.dto.UserStreamDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.mappeur.MapperComputer;
 import com.excilys.computer.database.mappeur.MapperUser;
 import com.excilys.computer.database.service.ServiceUser;
 
