@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan({ "com.excilys.computer.database.service", "com.excilys.computer.database.controller",
-	"com.excilys.computer.database.api" })
+		"com.excilys.computer.database.api" })
 @Import(SpringFoxConfig.class)
 public class WebMvcConfig implements WebMvcConfigurer {
 	@Bean
@@ -62,16 +63,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-		registry.addResourceHandler("swagger-ui.html")
-	      .addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
 
-	    registry.addResourceHandler("/webjars/**")
-	      .addResourceLocations("classpath:/META-INF/resources/webjars/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+	}
+
+	@Bean
+	public MyBasicAuthenticationEntryPoint myBasicAuthenticationEntryPoint() {
+		return new MyBasicAuthenticationEntryPoint();
 	}
 	
-	@Bean
-	public MyBasicAuthenticationEntryPoint myBasicAuthenticationEntryPoint()
-	{
-	return new MyBasicAuthenticationEntryPoint();
-	}
+	   @Override
+	    public void addCorsMappings(CorsRegistry registry) {
+	        registry.addMapping("/**");
+	    }
 }
