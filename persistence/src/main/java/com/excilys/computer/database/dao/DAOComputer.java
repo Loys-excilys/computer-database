@@ -67,10 +67,10 @@ public class DAOComputer {
 
 		query.select(computer).where(cb.equal(computer.get("id"), id));
 
-		Optional<ComputerDatabaseDTO> resultDTO = Optional.ofNullable(em.createQuery(query).getSingleResult());
+		ComputerDatabaseDTO resultDTO = em.createQuery(query).getSingleResult();
 		em.close();
 		
-		return Optional.ofNullable(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.orElseThrow()));
+		return Optional.ofNullable(new MapperComputer().computerDatabaseDTOToComputer(resultDTO));
 	}
 
 	public List<Computer> getListComputer(Page page) throws ErrorSaisieUser {

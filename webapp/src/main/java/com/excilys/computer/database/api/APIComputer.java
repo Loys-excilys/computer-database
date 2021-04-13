@@ -162,7 +162,7 @@ public class APIComputer {
 			this.serviceComputer.addComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("error ajout, verifié les données envoyées", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("error ajout, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("Ajout effectuer", HttpStatus.OK);
 	}
@@ -173,7 +173,7 @@ public class APIComputer {
 			this.serviceComputer.updateComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("error update, verifié les données envoyées", HttpStatus.NOT_MODIFIED);
+			return new ResponseEntity<>("error update, verifiez les données envoyées", HttpStatus.NOT_MODIFIED);
 		}
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}

@@ -41,12 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				+ "WHERE users.username = ?");
 	}
 	
-//    @Override
-//    @Bean
-//    public AuthenticationManager authenticationManagerBean() 
-//      throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() 
+      throws Exception {
+        return super.authenticationManagerBean();
+    }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -55,32 +55,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-			.mvcMatchers("/", "/ csrf", "/ v2 / api-docs", "/ swagger-resources / configuration / ui",
-						"/ configuration / ui", "/ swagger-resources", "/ swagger-resources / configuration / security",
-						"/ configuration / security", "/swagger-ui.html", "/ webjars / **")
-				.permitAll()
-			.mvcMatchers("/login")
-				.permitAll()
-			.anyRequest()
-				.authenticated()
-			.and()
-//			.httpBasic()
-//				.realmName("TEST REALM")
-//				.authenticationEntryPoint(authenticationEntryPoint)
-//			.and()
-				.formLogin()
-				.loginPage("/login")
-				.defaultSuccessUrl("/Computer")
-				.failureUrl("/login?error=true")
-				.permitAll()
-			.and()
-				.logout()
-				.logoutSuccessUrl("/login?logout=true")
-				.invalidateHttpSession(true)
-				.permitAll()
-			.and()
-				.csrf()
-				.disable();
+		http.antMatcher("/**")
+        .authorizeRequests()
+        	.mvcMatchers("/oauth/authorize**", "/login**", "/error**")
+        		.permitAll()
+        .and()
+        	.authorizeRequests()
+        	.anyRequest()
+        		.authenticated()
+        .and()
+        	.formLogin()
+        	.permitAll();
 	}
 }
