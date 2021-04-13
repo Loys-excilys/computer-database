@@ -34,6 +34,8 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter
 					.invalidateHttpSession(true)
 					.permitAll()
 				.and()
+					.cors()
+				.and()
 					.csrf()
 					.disable();
 	    }
