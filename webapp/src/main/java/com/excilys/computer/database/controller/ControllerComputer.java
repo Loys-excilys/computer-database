@@ -105,7 +105,7 @@ public class ControllerComputer {
 		for (String id : selection.split(",")) {
 			try {
 				this.serviceComputer.deleteComputerById(Integer.parseInt(id));
-			} catch (NumberFormatException exceptionUser) {
+			} catch (NumberFormatException | ErrorSaisieUser exceptionUser) {
 				new ErrorSaisieUser(this.getClass()).formatEntry();
 			}
 		}
@@ -130,7 +130,7 @@ public class ControllerComputer {
 
 	@PostMapping("/AddComputer")
 	public ModelAndView addComputer(@ModelAttribute("ComputerFormAddDTO")ComputerFormAddDTO computerFormAddDTO) {
-		List<CompanyDTO> listCompany = new MapperCompany().listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
+		List<CompanyDTO> listCompany =  new MapperCompany().listCompanyToListCompanyDTO(this.serviceCompany.getListCompany());
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("AddComputer");
 		try {

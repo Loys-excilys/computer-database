@@ -45,7 +45,7 @@ public class APIAuthorities {
 			this.serviceAuthorities.addAuthorities(new MapperAuthorities().authoritiesStreamDTOToAuthorities(AuthoritiesDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("error ajout, verifié les données envoyées", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("error ajout, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("Ajout effectuer", HttpStatus.OK);
 	}
@@ -56,7 +56,7 @@ public class APIAuthorities {
 			this.serviceAuthorities.updateAuthorities(new MapperAuthorities().authoritiesStreamDTOToAuthorities(AuthoritiesDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("error update, verifié les données envoyées", HttpStatus.NOT_MODIFIED);
+			return new ResponseEntity<>("error update, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}
@@ -66,8 +66,8 @@ public class APIAuthorities {
 		try {
 			this.serviceAuthorities.deleteAuthorities(id);
 		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
-			return new ResponseEntity<>("error delete, verifié les données envoyées", HttpStatus.NOT_MODIFIED);
+			e.formatEntry();;
+			return new ResponseEntity<>("error delete, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("delete effectuer", HttpStatus.OK);
 	}

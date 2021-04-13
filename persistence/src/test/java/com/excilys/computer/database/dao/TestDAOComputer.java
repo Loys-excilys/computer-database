@@ -49,11 +49,7 @@ public class TestDAOComputer {
 	@Test
 	@DatabaseSetup("classpath:data.xml")
 	public void testGetListComputer() {
-		try {
-			assertEquals(4, DAOComputer.getListComputer(new Page()).size());
-		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
-		}
+		assertEquals(4, DAOComputer.getListComputer(new Page()).size());
 	}
 	
 	@Test

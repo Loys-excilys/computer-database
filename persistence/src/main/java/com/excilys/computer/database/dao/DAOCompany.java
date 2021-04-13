@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Repository;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.dto.CompanyDatabaseDTO;
 import com.excilys.computer.database.dto.ComputerDatabaseDTO;
+import com.excilys.computer.database.error.ErrorDAOCompany;
+import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperCompany;
 
 @Repository
@@ -30,7 +34,7 @@ public class DAOCompany {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public Company getCompany(String name) {
+	public Company getCompany(String name) throws ErrorSaisieUser {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -38,8 +42,14 @@ public class DAOCompany {
 		Root<CompanyDatabaseDTO> company = query.from(CompanyDatabaseDTO.class);
 
 		query.select(company).where(cb.equal(company.get("name"), name));
-
-		CompanyDatabaseDTO result = em.createQuery(query).getSingleResult();
+		CompanyDatabaseDTO result;
+		try {
+			result = em.createQuery(query).getSingleResult();
+		}catch (NoResultException | NonUniqueResultException errorResult){
+			new ErrorDAOCompany(this.getClass()).idInvalid(errorResult);
+			throw new ErrorSaisieUser(this.getClass());
+		}
+		
 		em.close();
 		
 		return new MapperCompany().companyDatabaseDTOToCompany(result);
@@ -59,7 +69,11 @@ public class DAOCompany {
 		em.close();
 		List<Company> result = new ArrayList<>();
 		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperCompany().companyDatabaseDTOToCompany(resultDTO.get(i)));
+			try {
+				result.add(new MapperCompany().companyDatabaseDTOToCompany(resultDTO.get(i)));
+			} catch (ErrorSaisieUser e) {
+				e.databaseCorrupt();
+			}
 		}
 		return result;
 	}
@@ -77,7 +91,11 @@ public class DAOCompany {
 		em.close();
 		List<Company> result = new ArrayList<>();
 		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperCompany().companyDatabaseDTOToCompany(resultDTO.get(i)));
+			try {
+				result.add(new MapperCompany().companyDatabaseDTOToCompany(resultDTO.get(i)));
+			} catch (ErrorSaisieUser e) {
+				e.databaseCorrupt();
+			}
 		}
 		return result;
 	}
@@ -111,7 +129,7 @@ public class DAOCompany {
 	}
 	
 	
-	public void deleteCompanyById(int id) {
+	public void deleteCompanyById(int id) throws ErrorSaisieUser {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -125,7 +143,9 @@ public class DAOCompany {
 		queryCompany.where(cb.equal(rootCompany.get("id"), id));
 		
 		em.createQuery(queryComputer).executeUpdate();
-		em.createQuery(queryCompany).executeUpdate();
+		if (em.createQuery(queryCompany).executeUpdate() == 0) {
+			throw new ErrorSaisieUser(this.getClass());
+		}
 		em.getTransaction().commit();
 		em.close();
 	}

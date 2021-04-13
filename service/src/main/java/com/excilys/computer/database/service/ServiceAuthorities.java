@@ -17,15 +17,15 @@ public class ServiceAuthorities {
 		this.database = dao;
 	}
 	
-	public void addAuthorities(Authorities authorities) throws ErrorSaisieUser {
+	public void addAuthorities(Authorities authorities){
 		this.database.addAuthorities(authorities);
 	}
 	
-	public List<Authorities> getAuthoritiesList(){
+	public List<Authorities> getAuthoritiesList() {
 		return this.database.getAuthorities();
 	}
 	
-	public void updateAuthorities(Authorities authorities) throws ErrorSaisieUser {
+	public void updateAuthorities(Authorities authorities){
 		this.database.updateAuthorities(authorities);
 	}
 	

@@ -70,21 +70,19 @@ public class DAOComputer {
 
 		query.select(computer).where(cb.equal(computer.get("id"), id));
 		ComputerDatabaseDTO resultDTO;
-		
+
 		try {
 			resultDTO = em.createQuery(query).getSingleResult();
-		}catch (NoResultException | NonUniqueResultException errorResult){
-			
+		} catch (NoResultException | NonUniqueResultException errorResult) {
 			new ErrorDAOComputer(null).idInvalid(errorResult);
 			throw new ErrorSaisieUser(this.getClass());
 		}
-		
+
 		em.close();
-		
 		return Optional.ofNullable(new MapperComputer().computerDatabaseDTOToComputer(resultDTO));
 	}
 
-	public List<Computer> getListComputer(Page page) throws ErrorSaisieUser {
+	public List<Computer> getListComputer(Page page) {
 
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -93,21 +91,25 @@ public class DAOComputer {
 		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer);
-		
+
 		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
-		
+
 		List<Computer> result = new ArrayList<>();
-		
-		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+
+		for (int i = 0; i < resultDTO.size(); i++) {
+			try {
+				result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+			} catch (ErrorSaisieUser e) {
+				e.databaseCorrupt();
+			}
 		}
-		
+
 		return result;
 	}
-	
-	public List<Computer> getListComputerByCompany(Page page, int companyId) throws ErrorSaisieUser {
+
+	public List<Computer> getListComputerByCompany(Page page, int companyId) {
 
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -116,21 +118,25 @@ public class DAOComputer {
 		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer).where(cb.equal(computer.get("company"), companyId));
-		
+
 		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
-		
+
 		List<Computer> result = new ArrayList<>();
-		
-		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+
+		for (int i = 0; i < resultDTO.size(); i++) {
+			try {
+				result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+			} catch (ErrorSaisieUser e) {
+				e.databaseCorrupt();
+			}
 		}
-		
+
 		return result;
 	}
 
-	public List<Computer> getSearchComputer(String search, Page page) throws ErrorSaisieUser {
+	public List<Computer> getSearchComputer(String search, Page page) {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -139,15 +145,18 @@ public class DAOComputer {
 
 		query.select(computer).where(cb.like(computer.get("name"), "%" + search + "%"));
 
-		
 		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
-		
+
 		List<Computer> result = new ArrayList<>();
-		
-		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+
+		for (int i = 0; i < resultDTO.size(); i++) {
+			try {
+				result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+			} catch (ErrorSaisieUser e) {
+				e.databaseCorrupt();
+			}
 		}
 		return result;
 	}
@@ -159,22 +168,28 @@ public class DAOComputer {
 		CriteriaQuery<ComputerDatabaseDTO> query = cb.createQuery(ComputerDatabaseDTO.class);
 		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
-		query.select(computer);		
+		query.select(computer);
 		if (sort.compareTo("ASC") == 0) {
 			query.orderBy(cb.asc(computer.get(orderField)));
 		} else if (sort.compareTo("DESC") == 0) {
-			
+
 			query.orderBy(cb.desc(computer.get(orderField)));
+		} else {
+			throw new ErrorSaisieUser(this.getClass());
 		}
-		
+
 		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
-		
+
 		List<Computer> result = new ArrayList<>();
-		
-		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+
+		for (int i = 0; i < resultDTO.size(); i++) {
+			try {
+				result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+			} catch (ErrorSaisieUser error) {
+				error.databaseCorrupt();
+			}
 		}
 		return result;
 	}
@@ -188,33 +203,39 @@ public class DAOComputer {
 		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer).where(cb.like(computer.get("name"), "%" + search + "%"));
-		
+
 		if (sort.compareTo("ASC") == 0) {
 			query.orderBy(cb.asc(computer.get(orderField)));
 		} else if (sort.compareTo("DESC") == 0) {
 			query.orderBy(cb.desc(computer.get(orderField)));
+		} else {
+			throw new ErrorSaisieUser(this.getClass());
 		}
 
 		List<ComputerDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
-		
+
 		List<Computer> result = new ArrayList<>();
-		
-		for(int i = 0; i < resultDTO.size(); i++) {
+
+		for (int i = 0; i < resultDTO.size(); i++) {
+			try {
 			result.add(new MapperComputer().computerDatabaseDTOToComputer(resultDTO.get(i)));
+			}catch(ErrorSaisieUser e) {
+				e.databaseCorrupt();
+			}
 		}
 		return result;
 	}
 
 	public void insertComputer(Computer computer) {
-		
+
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		session.save(new MapperComputer().computerToComputerDatabaseDTO(computer));
 		tx.commit();
 		session.close();
-		
+
 	}
 
 	public void updateComputer(Computer computer) {
@@ -225,19 +246,19 @@ public class DAOComputer {
 
 		CriteriaUpdate<ComputerDatabaseDTO> query = cb.createCriteriaUpdate(ComputerDatabaseDTO.class);
 		Root<ComputerDatabaseDTO> rootComputer = query.from(ComputerDatabaseDTO.class);
-		
+
 		query.set("name", computerDTO.getName());
 		query.set("introduced", MappeurDate.localDateToDate(computerDTO.getIntroduced()));
 		query.set("discontinued", MappeurDate.localDateToDate(computerDTO.getDiscontinued()));
 		query.set("company_id", computerDTO.getCompany().getId());
 		query.where(cb.equal(rootComputer.get("id"), computerDTO.getId()));
-		
+
 		em.createQuery(query).executeUpdate();
 		em.getTransaction().commit();
 		em.close();
 	}
-	
-	public void deleteComputerById(int id) {
+
+	public void deleteComputerById(int id) throws ErrorSaisieUser {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -245,9 +266,9 @@ public class DAOComputer {
 		CriteriaDelete<ComputerDatabaseDTO> query = cb.createCriteriaDelete(ComputerDatabaseDTO.class);
 		Root<ComputerDatabaseDTO> rootComputer = query.from(ComputerDatabaseDTO.class);
 		query.where(cb.equal(rootComputer.get("id"), id));
-		
-		if( em.createQuery(query).executeUpdate() == 0) {
-			new ErrorDAOComputer(this.getClass()).deleteError(null);;
+
+		if (em.createQuery(query).executeUpdate() == 0) {
+			throw new ErrorSaisieUser(this.getClass());
 		}
 		em.getTransaction().commit();
 		em.close();

@@ -23,23 +23,22 @@ import com.excilys.computer.database.mappeur.MapperUser;
 @Repository
 public class DAOUser {
 
-	
 	private SessionFactory sessionFactory;
 
 	public DAOUser(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
-	public void addUser(User user) throws ErrorSaisieUser {
+
+	public void addUser(User user) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		session.save(new MapperUser().userToUserDatabaseDTO(user));
 		tx.commit();
 		session.close();
-		
+
 	}
-	
-	public List<User> getUserList(){
+
+	public List<User> getUserList() {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -51,13 +50,17 @@ public class DAOUser {
 		List<UserDatabaseDTO> resultDTO = em.createQuery(query).getResultList();
 		em.close();
 		List<User> result = new ArrayList<>();
-		for(int i = 0; i < resultDTO.size(); i++) {
-			result.add(new MapperUser().userDatabaseDTOToUser(resultDTO.get(i)));
+		for (int i = 0; i < resultDTO.size(); i++) {
+			try {
+				result.add(new MapperUser().userDatabaseDTOToUser(resultDTO.get(i)));
+			} catch (ErrorSaisieUser e) {
+				e.databaseCorrupt();
+			}
 		}
 		return result;
 	}
-	
-	public void updateUser(User user) throws ErrorSaisieUser {
+
+	public void updateUser(User user) {
 		UserDatabaseDTO userDTO = new MapperUser().userToUserDatabaseDTO(user);
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -65,16 +68,16 @@ public class DAOUser {
 
 		CriteriaUpdate<UserDatabaseDTO> query = cb.createCriteriaUpdate(UserDatabaseDTO.class);
 		Root<UserDatabaseDTO> rootUser = query.from(UserDatabaseDTO.class);
-		
+
 		query.set("authority", userDTO.getAuthority());
 		query.set("enabled", userDTO.getEnabled());
 		query.where(cb.equal(rootUser.get("id"), userDTO.getId()));
-		
+
 		em.createQuery(query).executeUpdate();
 		em.getTransaction().commit();
 		em.close();
 	}
-	
+
 	public void deleteUser(int id) throws ErrorSaisieUser {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -83,8 +86,10 @@ public class DAOUser {
 		CriteriaDelete<UserDatabaseDTO> queryCompany = cb.createCriteriaDelete(UserDatabaseDTO.class);
 		Root<UserDatabaseDTO> rootUser = queryCompany.from(UserDatabaseDTO.class);
 		queryCompany.where(cb.equal(rootUser.get("id"), id));
-		
-		em.createQuery(queryCompany).executeUpdate();
+
+		if(em.createQuery(queryCompany).executeUpdate() == 0) {
+			throw new ErrorSaisieUser(this.getClass());
+		}
 		em.getTransaction().commit();
 		em.close();
 	}

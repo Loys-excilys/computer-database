@@ -35,7 +35,7 @@ public class ServiceComputer {
 		this.database.updateComputer(computer);
 	}
 
-	public void deleteComputerById(int id) {
+	public void deleteComputerById(int id) throws ErrorSaisieUser{
 		if (id != -1) {
 			this.database.deleteComputerById(id);
 		}

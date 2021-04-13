@@ -43,7 +43,8 @@ public class APIComputer {
 			}
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
-			return new ResponseEntity<>("Page obtenu vide, veuillez vérifié le numéro de page demandé", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Page obtenu vide, veuillez vérifié le numéro de page demandé",
+					HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -54,13 +55,13 @@ public class APIComputer {
 	}
 
 	@GetMapping(value = "/{id}", produces = "application/json")
-	public ResponseEntity<ComputerStreamDTO> getComputer(@PathVariable int id) {
+	public ResponseEntity<?> getComputer(@PathVariable int id) {
 		Computer computer = null;
 		try {
 			computer = this.serviceComputer.getComputer(id).orElse(null);
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
-			return new ResponseEntity<>(new ComputerStreamDTO(0, "id invalide", null, null, null), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("id invalide", HttpStatus.BAD_REQUEST);
 		}
 		ComputerStreamDTO computerDTO = new MapperComputer().computerToComputerStreamDTO(computer);
 
@@ -68,17 +69,19 @@ public class APIComputer {
 	}
 
 	@GetMapping(value = "/ByCompany/{id}/page/{numPage}/{maxEntry}", produces = "application/json")
-	public ResponseEntity<?> getComputer(@PathVariable int numPage, @PathVariable int maxEntry,
-			@PathVariable int id) {
+	public ResponseEntity<?> getComputer(@PathVariable int numPage, @PathVariable int maxEntry, @PathVariable int id) {
 		Page page = new Page();
 		page.setMaxPrint(maxEntry);
 		page.setPage(numPage);
 		List<Computer> listComputer = null;
 		try {
 			listComputer = this.serviceComputer.getListComputerByCompany(page, id);
+			if (listComputer.size() == 0) {
+				throw new ErrorSaisieUser(getClass());
+			}
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("id company ou numéro de page incorrect", HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -89,17 +92,21 @@ public class APIComputer {
 	}
 
 	@GetMapping(value = "/search/page/{numPage}/{maxEntry}", produces = "application/json")
-	public ResponseEntity<List<ComputerStreamDTO>> getSearchComputer(@RequestParam String search,
-			@PathVariable int numPage, @PathVariable int maxEntry) {
+	public ResponseEntity<?> getSearchComputer(@RequestParam String search, @PathVariable int numPage,
+			@PathVariable int maxEntry) {
 		Page page = new Page();
 		page.setMaxPrint(maxEntry);
 		page.setPage(numPage);
 		List<Computer> listComputer = null;
 		try {
 			listComputer = this.serviceComputer.getSearchComputer(search, page);
+			if (listComputer.size() == 0) {
+				throw new ErrorSaisieUser(getClass());
+			}
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Aucun résultat trouvé, vérifiez le numéro de page et la recherche demandé",
+					HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -109,7 +116,7 @@ public class APIComputer {
 	}
 
 	@GetMapping(value = "/order/page/{numPage}/{maxEntry}", produces = "application/json")
-	public ResponseEntity<List<ComputerStreamDTO>> getComputerOrder(@RequestParam String sort,
+	public ResponseEntity<?> getComputerOrder(@RequestParam String sort,
 			@RequestParam String orderField, @PathVariable int numPage, @PathVariable int maxEntry) {
 		Page page = new Page();
 		page.setMaxPrint(maxEntry);
@@ -117,9 +124,12 @@ public class APIComputer {
 		List<Computer> listComputer = null;
 		try {
 			listComputer = this.serviceComputer.getListComputerOrder(orderField, sort, page);
+			if (listComputer.size() == 0) {
+				throw new ErrorSaisieUser(getClass());
+			}
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Aucun résultat trouvé, vérifiez le numéro de page et le tri demandé", HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -129,7 +139,7 @@ public class APIComputer {
 	}
 
 	@GetMapping(value = "/search/order/page/{numPage}/{maxEntry}", produces = "application/json")
-	public ResponseEntity<List<ComputerStreamDTO>> getSearchComputerOrder(@RequestParam String sort,
+	public ResponseEntity<?> getSearchComputerOrder(@RequestParam String sort,
 			@RequestParam String orderField, @RequestParam String search, @PathVariable int numPage,
 			@PathVariable int maxEntry) {
 		Page page = new Page();
@@ -138,9 +148,12 @@ public class APIComputer {
 		List<Computer> listComputer = null;
 		try {
 			listComputer = this.serviceComputer.getResearchComputerOrder(search, orderField, sort, page);
+			if (listComputer.size() == 0) {
+				throw new ErrorSaisieUser(getClass());
+			}
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Aucun résultat trouvé, vérifiez le numéro de page, la recherche et le tri demandé", HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -176,14 +189,19 @@ public class APIComputer {
 			this.serviceComputer.updateComputer(new MapperComputer().computerStreamDTOToComputer(computerDTO));
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("error update, verifiez les données envoyées", HttpStatus.NOT_MODIFIED);
+			return new ResponseEntity<>("error update, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/delete", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<String> UpdateComputer(@RequestBody int id) {
-		this.serviceComputer.deleteComputerById(id);
+		try {
+			this.serviceComputer.deleteComputerById(id);
+		} catch (ErrorSaisieUser e) {
+			e.formatEntry();
+			new ResponseEntity<>("error delete, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>("delete effectuer", HttpStatus.OK);
 	}
 }

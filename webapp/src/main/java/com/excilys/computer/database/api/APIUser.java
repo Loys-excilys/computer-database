@@ -43,7 +43,7 @@ public class APIUser {
 		try {
 			this.serviceUser.addUser(new MapperUser().userStreamDTOToUser(userDTO));
 		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
+			e.formatEntry();
 			return new ResponseEntity<>("error ajout, verifié les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("Ajout effectuer", HttpStatus.OK);
@@ -54,8 +54,8 @@ public class APIUser {
 		try {
 			this.serviceUser.updateUser(new MapperUser().userStreamDTOToUser(userDTO));
 		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
-			return new ResponseEntity<>("error update, verifié les données envoyées", HttpStatus.NOT_MODIFIED);
+			e.formatEntry();
+			return new ResponseEntity<>("error update, verifié les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}
@@ -65,8 +65,8 @@ public class APIUser {
 		try {
 			this.serviceUser.deleteUser(id);
 		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
-			return new ResponseEntity<>("error delete, verifié les données envoyées", HttpStatus.NOT_MODIFIED);
+			e.formatEntry();
+			return new ResponseEntity<>("error delete, verifié les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("delete effectuer", HttpStatus.OK);
 	}

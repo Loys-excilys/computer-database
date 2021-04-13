@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.computer.database.dao.DAOCompany;
 import com.excilys.computer.database.data.Company;
+import com.excilys.computer.database.error.ErrorSaisieUser;
 
 @Service
 public class ServiceCompany {
@@ -17,7 +18,7 @@ public class ServiceCompany {
 		this.database = database;
 	}
 	
-	public Company getCompany(String nameCompany) {
+	public Company getCompany(String nameCompany) throws ErrorSaisieUser {
 		return this.database.getCompany(nameCompany);
 	}
 
@@ -37,7 +38,7 @@ public class ServiceCompany {
 		this.database.updateCompany(company);
 	}
 
-	public void deleteCompanyById(int id) {
+	public void deleteCompanyById(int id) throws ErrorSaisieUser {
 		this.database.deleteCompanyById(id);
 	}
 }

@@ -8,6 +8,8 @@ import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.dto.CompanyDTO;
 import com.excilys.computer.database.dto.CompanyDatabaseDTO;
 import com.excilys.computer.database.dto.CompanyStreamDTO;
+import com.excilys.computer.database.error.ErrorSaisieUser;
+import com.excilys.computer.database.validator.ValidateurCompany;
 
 public class MapperCompany {
 
@@ -26,13 +28,13 @@ public class MapperCompany {
 		return listCompanyDTO;
 	}
 
-	public Company companyDTOToCompany(CompanyDTO companyDTO) {
-		return new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build();
+	public Company companyDTOToCompany(CompanyDTO companyDTO) throws ErrorSaisieUser {
+		return new ValidateurCompany().Valide(new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build());
 	}
 	
-	public Company companyDatabaseDTOToCompany(CompanyDatabaseDTO companyDTO) {
+	public Company companyDatabaseDTOToCompany(CompanyDatabaseDTO companyDTO) throws ErrorSaisieUser {
 		if(companyDTO != null) {
-			return new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build();
+			return new ValidateurCompany().Valide(new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build());
 		}
 		return null;
 	}
@@ -45,9 +47,9 @@ public class MapperCompany {
 		
 	}
 	
-	public Company companyStreamDTOToCompany(CompanyStreamDTO companyDTO) {
+	public Company companyStreamDTOToCompany(CompanyStreamDTO companyDTO) throws ErrorSaisieUser {
 		if(companyDTO != null) {
-			return new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build();
+			return new ValidateurCompany().Valide(new BuilderCompany().addId(companyDTO.getId()).addName(companyDTO.getName()).addLogo(companyDTO.getLogo()).build());
 		}
 		return null;
 	}

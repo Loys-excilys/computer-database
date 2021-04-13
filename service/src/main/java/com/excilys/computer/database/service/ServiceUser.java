@@ -17,7 +17,7 @@ public class ServiceUser {
 		this.database = dao;
 	}
 	
-	public void addUser(User user) throws ErrorSaisieUser{
+	public void addUser(User user) {
 		this.database.addUser(user);
 	}
 	
@@ -25,7 +25,7 @@ public class ServiceUser {
 		return this.database.getUserList();
 	}
 	
-	public void updateUser(User user) throws ErrorSaisieUser {
+	public void updateUser(User user) {
 		this.database.updateUser(user);
 	}
 	

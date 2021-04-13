@@ -18,4 +18,9 @@ public class ErrorSaisieUser extends Throwable {
 	public void formatEntry() {
 		logger.error("entrée invalide");
 	}
+
+	public void databaseCorrupt() {
+		logger.error("Database Corrupt");
+		
+	}
 }

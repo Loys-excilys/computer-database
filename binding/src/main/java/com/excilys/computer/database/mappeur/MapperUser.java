@@ -4,6 +4,8 @@ import com.excilys.computer.database.builder.BuilderUser;
 import com.excilys.computer.database.data.User;
 import com.excilys.computer.database.dto.UserDatabaseDTO;
 import com.excilys.computer.database.dto.UserStreamDTO;
+import com.excilys.computer.database.error.ErrorSaisieUser;
+import com.excilys.computer.database.validator.ValidateurUser;
 
 public class MapperUser {
 
@@ -12,11 +14,11 @@ public class MapperUser {
 				new MapperAuthorities().authoritiesToAuthoritiesDatabaseDTO(user.getAuthority()));
 	}
 
-	public User userDatabaseDTOToUser(UserDatabaseDTO userDTO) {
-		return new BuilderUser().addId(userDTO.getId()).addUsername(userDTO.getUsername())
+	public User userDatabaseDTOToUser(UserDatabaseDTO userDTO) throws ErrorSaisieUser {
+		return new ValidateurUser().valide(new BuilderUser().addId(userDTO.getId()).addUsername(userDTO.getUsername())
 				.addPassword(userDTO.getPassword()).addEnabled(userDTO.getEnabled())
 				.addAuthority(new MapperAuthorities().authoritiesDatabaseDTOToAuthorities(userDTO.getAuthority()))
-				.build();
+				.build());
 	}
 
 	public UserStreamDTO userToUserStreamDTO(User user) {
@@ -24,10 +26,10 @@ public class MapperUser {
 				new MapperAuthorities().authoritiesToAuthoritiesStreamDTO(user.getAuthority()));
 	}
 
-	public User userStreamDTOToUser(UserStreamDTO userDTO) {
-		return new BuilderUser().addId(userDTO.getId()).addUsername(userDTO.getUsername())
+	public User userStreamDTOToUser(UserStreamDTO userDTO) throws ErrorSaisieUser {
+		return new ValidateurUser().valide(new BuilderUser().addId(userDTO.getId()).addUsername(userDTO.getUsername())
 				.addEnabled(userDTO.getEnabled())
 				.addAuthority(new MapperAuthorities().authoritiesStreamDTOToAuthorities(userDTO.getAuthority()))
-				.build();
+				.build());
 	}
 }

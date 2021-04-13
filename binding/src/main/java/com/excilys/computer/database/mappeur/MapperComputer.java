@@ -21,18 +21,11 @@ import com.excilys.computer.database.validator.ValidateurComputer;
 
 public class MapperComputer {
 
-	public MapperComputer() {
-	}
-
 	public ComputerDTO computerToComputerDTO(Computer computer) {
-		Optional<LocalDate> introduced = computer.getIntroduced();
-		Optional<LocalDate> discontinued = computer.getDiscontinued();
-		Optional<Company> company = computer.getCompany();
-
 		return new ComputerDTO(computer.getId(), computer.getName(),
-				introduced.isPresent() ? introduced.get().toString() : "",
-				discontinued.isPresent() ? discontinued.get().toString() : "",
-				company.isPresent() ? company.get().getName() : "");
+				computer.getIntroduced().isPresent() ? computer.getIntroduced().get().toString() : "",
+				computer.getDiscontinued().isPresent() ? computer.getDiscontinued().get().toString() : "",
+				computer.getCompany().isPresent() ? computer.getCompany().get().getName() : "");
 	}
 
 	public ComputerFormUpdateDTO computerToComputerFormUpdateDTO(Computer computer) {
@@ -65,8 +58,8 @@ public class MapperComputer {
 				request.getParameter("dateDiscontinued"), request.getParameter("companyName"));
 	}
 
-	public Computer computerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO,
-			List<CompanyDTO> listCompany) throws ErrorSaisieUser {
+	public Computer computerFormAddDTOToComputer(ComputerFormAddDTO computerFormAddDTO, List<CompanyDTO> listCompany)
+			throws ErrorSaisieUser {
 
 		return ValidateurComputer.getInstance()
 				.getValidate(new BuilderComputer().addName(computerFormAddDTO.getName())
@@ -97,8 +90,8 @@ public class MapperComputer {
 										? LocalDate.parse(computerFormUpdateDTO.getDiscontinued())
 										: null)
 								.addCompany(computerFormUpdateDTO.getCompanyId().compareTo("") != 0
-										? new MapperCompany().companyDTOToCompany(listCompany
-												.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId())))
+										? new MapperCompany().companyDTOToCompany(
+												listCompany.get(Integer.parseInt(computerFormUpdateDTO.getCompanyId())))
 										: null)
 								.build());
 	}
@@ -107,8 +100,7 @@ public class MapperComputer {
 		return ValidateurComputer.getInstance()
 				.getValidate(new BuilderComputer().addName(computerDTO.getName()).addId(computerDTO.getId())
 						.addIntroduced(computerDTO.getIntroduced()).addDiscontinued(computerDTO.getDiscontinued())
-						.addCompany(new MapperCompany().companyDatabaseDTOToCompany(computerDTO.getCompany()))
-						.build());
+						.addCompany(new MapperCompany().companyDatabaseDTOToCompany(computerDTO.getCompany())).build());
 	}
 
 	public ComputerDatabaseDTO computerToComputerDatabaseDTO(Computer computer) {
@@ -120,8 +112,10 @@ public class MapperComputer {
 	public Computer computerStreamDTOToComputer(ComputerStreamDTO computerDTO) throws ErrorSaisieUser {
 		return ValidateurComputer.getInstance().getValidate(new BuilderComputer().addName(computerDTO.getName())
 				.addId(computerDTO.getId())
-				.addIntroduced(computerDTO.getIntroduced() != null ? LocalDate.parse(computerDTO.getIntroduced()) : null)
-				.addDiscontinued(computerDTO.getDiscontinued() != null ? LocalDate.parse(computerDTO.getDiscontinued()) : null)
+				.addIntroduced(
+						computerDTO.getIntroduced() != null ? LocalDate.parse(computerDTO.getIntroduced()) : null)
+				.addDiscontinued(
+						computerDTO.getDiscontinued() != null ? LocalDate.parse(computerDTO.getDiscontinued()) : null)
 				.addCompany(new MapperCompany().companyStreamDTOToCompany(computerDTO.getCompany())).build());
 	}
 
