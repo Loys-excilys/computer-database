@@ -1,5 +1,7 @@
 package com.excilys.computer.database.config;
 
+import java.util.ArrayList;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import antlr.collections.List;
 
 @Configuration
 @EnableWebSecurity
@@ -65,6 +72,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         		.authenticated()
         .and()
         	.formLogin()
-        	.permitAll();
+        	.permitAll()
+        	.and().cors().and().csrf().disable();
+	}
+	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+	    CorsConfiguration configuration = new CorsConfiguration();
+	    ArrayList<String> list = new ArrayList<>();
+	    list.add("*");
+	    configuration.setAllowedOrigins(list);
+	    configuration.addAllowedHeader("*");
+	    configuration.addAllowedMethod("*");
+	    configuration.setAllowCredentials(true);
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", configuration);
+	    return source;
 	}
 }

@@ -2,6 +2,8 @@ package com.excilys.computer.database.error;
 
 import java.sql.SQLException;
 
+import javax.persistence.PersistenceException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +17,8 @@ public class ErrorDAOComputer extends SQLException {
 		this.logger = LoggerFactory.getLogger(classe.getName());
 	}
 
-	public void idInvalid(SQLException exception) {
-		logger.error("Id renseigner incorrect : ", exception);
+	public void idInvalid(PersistenceException errorResult) {
+		logger.error("Id renseigner incorrect : ", errorResult);
 	}
 
 	public void connectionLost(SQLException exception) {
@@ -34,7 +36,6 @@ public class ErrorDAOComputer extends SQLException {
 	}
 
 	public void deleteError(SQLException exception) {
-		logger.error("Delete computer impossible, vérifier les valeurs données et la connection à la base de donnée : ",
-				exception);
+		logger.error("aucun element supprimer, vérifier les valeurs données et la connection à la base de donnée");
 	}
 }

@@ -31,16 +31,19 @@ public class APIComputer {
 	private ServiceComputer serviceComputer;
 
 	@GetMapping(value = "/page/{numPage}/{maxEntry}", produces = "application/json")
-	public ResponseEntity<List<ComputerStreamDTO>> getComputer(@PathVariable int numPage, @PathVariable int maxEntry) {
+	public ResponseEntity<?> getComputer(@PathVariable int numPage, @PathVariable int maxEntry) {
 		Page page = new Page();
 		page.setMaxPrint(maxEntry);
 		page.setPage(numPage);
 		List<Computer> listComputer = null;
 		try {
 			listComputer = this.serviceComputer.getListComputer(page);
+			if (listComputer.size() == 0) {
+				throw new ErrorSaisieUser(getClass());
+			}
 		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+			e.formatEntry();
+			return new ResponseEntity<>("Page obtenu vide, veuillez vérifié le numéro de page demandé", HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {
@@ -56,8 +59,8 @@ public class APIComputer {
 		try {
 			computer = this.serviceComputer.getComputer(id).orElse(null);
 		} catch (ErrorSaisieUser e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(new ComputerStreamDTO(), HttpStatus.BAD_REQUEST);
+			e.formatEntry();
+			return new ResponseEntity<>(new ComputerStreamDTO(0, "id invalide", null, null, null), HttpStatus.BAD_REQUEST);
 		}
 		ComputerStreamDTO computerDTO = new MapperComputer().computerToComputerStreamDTO(computer);
 
@@ -65,7 +68,7 @@ public class APIComputer {
 	}
 
 	@GetMapping(value = "/ByCompany/{id}/page/{numPage}/{maxEntry}", produces = "application/json")
-	public ResponseEntity<List<ComputerStreamDTO>> getComputer(@PathVariable int numPage, @PathVariable int maxEntry,
+	public ResponseEntity<?> getComputer(@PathVariable int numPage, @PathVariable int maxEntry,
 			@PathVariable int id) {
 		Page page = new Page();
 		page.setMaxPrint(maxEntry);
@@ -75,7 +78,7 @@ public class APIComputer {
 			listComputer = this.serviceComputer.getListComputerByCompany(page, id);
 		} catch (ErrorSaisieUser e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 		}
 		List<ComputerStreamDTO> listDTO = new ArrayList<>();
 		for (Computer computer : listComputer) {

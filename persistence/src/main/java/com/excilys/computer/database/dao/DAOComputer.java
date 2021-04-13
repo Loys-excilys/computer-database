@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,6 +19,7 @@ import org.hibernate.Transaction;
 import com.excilys.computer.database.data.Computer;
 import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.dto.ComputerDatabaseDTO;
+import com.excilys.computer.database.error.ErrorDAOComputer;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperComputer;
 import com.excilys.computer.database.mappeur.MappeurDate;
@@ -66,8 +69,16 @@ public class DAOComputer {
 		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
 		query.select(computer).where(cb.equal(computer.get("id"), id));
-
-		ComputerDatabaseDTO resultDTO = em.createQuery(query).getSingleResult();
+		ComputerDatabaseDTO resultDTO;
+		
+		try {
+			resultDTO = em.createQuery(query).getSingleResult();
+		}catch (NoResultException | NonUniqueResultException errorResult){
+			
+			new ErrorDAOComputer(null).idInvalid(errorResult);
+			throw new ErrorSaisieUser(this.getClass());
+		}
+		
 		em.close();
 		
 		return Optional.ofNullable(new MapperComputer().computerDatabaseDTOToComputer(resultDTO));
@@ -235,7 +246,9 @@ public class DAOComputer {
 		Root<ComputerDatabaseDTO> rootComputer = query.from(ComputerDatabaseDTO.class);
 		query.where(cb.equal(rootComputer.get("id"), id));
 		
-		em.createQuery(query).executeUpdate();
+		if( em.createQuery(query).executeUpdate() == 0) {
+			new ErrorDAOComputer(this.getClass()).deleteError(null);;
+		}
 		em.getTransaction().commit();
 		em.close();
 	}
