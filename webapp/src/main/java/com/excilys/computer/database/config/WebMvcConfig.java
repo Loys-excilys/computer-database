@@ -72,9 +72,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public MyBasicAuthenticationEntryPoint myBasicAuthenticationEntryPoint() {
 		return new MyBasicAuthenticationEntryPoint();
 	}
-	
-	   @Override
-	    public void addCorsMappings(CorsRegistry registry) {
-	        registry.addMapping("/**").allowedOrigins("*");
-	    }
+
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**").allowedOrigins("*");
+	}
 }

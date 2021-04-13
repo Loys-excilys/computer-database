@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.config" })
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -71,7 +73,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         	.formLogin()
         	.permitAll()
-        	.and().cors().and().csrf().disable();
+        	.and()
+        		.cors()
+        	.and()
+        		.csrf()
+        		.disable();
 	}
 	
 	@Bean
