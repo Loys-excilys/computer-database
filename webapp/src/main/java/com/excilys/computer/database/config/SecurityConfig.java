@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,16 +24,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.config" })
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	DataSource dataSource;
 	@Autowired
 	PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,12 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				+ "WHERE users.username = ?");
 	}
 	
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() 
-      throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Override
+//    @Bean
+//    public AuthenticationManager authenticationManagerBean() 
+//      throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -62,22 +60,50 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.antMatcher("/**")
+//		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll();
+//		http.antMatcher("/**")
+//        .authorizeRequests()
+//        	.mvcMatchers("/oauth/**", "/login**", "/error**")
+//        		.permitAll()
+//        	.anyRequest()
+//        		.authenticated()
+//        .and()
+//        	.httpBasic()
+//        .and()
+//        	.formLogin()
+//        	.permitAll()
+//        	.and()
+//        		.cors()
+//        	.and()
+//        		.csrf()
+//        		.disable();
+		
+        http
         .authorizeRequests()
-        	.mvcMatchers("/oauth/authorize**", "/login**", "/error**")
+        	.mvcMatchers("/", "/csrf", "/v2/api-docs", "/swagger-resources/configuration/ui",
+				"/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security",
+				"/configuration/security", "/swagger-ui.html", "/webjars/**")
         		.permitAll()
-        .and()
-        	.authorizeRequests()
         	.anyRequest()
         		.authenticated()
         .and()
-        	.formLogin()
-        	.permitAll()
-        	.and()
-        		.cors()
-        	.and()
-        		.csrf()
-        		.disable();
+        	.httpBasic()
+        .and()
+			.formLogin()
+			.loginPage("/login")
+			.defaultSuccessUrl("/Computer")
+			.failureUrl("/login?error=true")
+			.permitAll()
+		.and()
+			.logout()
+			.logoutSuccessUrl("/login?logout=true")
+			.invalidateHttpSession(true)
+			.permitAll()
+		.and()
+			.cors()
+		.and()
+			.csrf()
+			.disable();
 	}
 	
 	@Bean
