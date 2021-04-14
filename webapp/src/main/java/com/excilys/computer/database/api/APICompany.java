@@ -92,7 +92,7 @@ public class APICompany {
 			e.formatEntry();
 			return new ResponseEntity<>("Ajout non effectué, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>("Ajout effectuer", HttpStatus.OK);
+		return new ResponseEntity<>("Ajout effectué", HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/update", produces = "application/json", consumes="application/json")
@@ -101,8 +101,8 @@ public class APICompany {
 			this.serviceCompany.updateCompany(new MapperCompany().companyStreamDTOToCompany(companyDTO));
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
-			return new ResponseEntity<>("aucune modification n'a été effectué ou à rencontrer un problème, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("aucune modification n'a été effectué ou a rencontrer un problème, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
+		return new ResponseEntity<>("update effectué", HttpStatus.OK);
 	}
 }
