@@ -2,8 +2,11 @@ package com.excilys.computer.database.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,11 +16,15 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computer.database.data.User;
+import com.excilys.computer.database.dto.ComputerDatabaseDTO;
 import com.excilys.computer.database.dto.UserDatabaseDTO;
+import com.excilys.computer.database.error.ErrorDAOComputer;
 import com.excilys.computer.database.error.ErrorSaisieUser;
+import com.excilys.computer.database.mappeur.MapperComputer;
 import com.excilys.computer.database.mappeur.MapperUser;
 
 @Repository
@@ -27,6 +34,27 @@ public class DAOUser {
 
 	public DAOUser(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+
+	public boolean login(String username, String password) throws ErrorSaisieUser {
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<UserDatabaseDTO> query = cb.createQuery(UserDatabaseDTO.class);
+		Root<UserDatabaseDTO> User = query.from(UserDatabaseDTO.class);
+
+		query.select(User).where(cb.equal(User.get("username"), username));
+		UserDatabaseDTO resultDTO;
+
+		try {
+			resultDTO = em.createQuery(query).getSingleResult();
+		} catch (NoResultException | NonUniqueResultException errorResult) {
+			new ErrorDAOComputer(null).idInvalid(errorResult);
+			throw new ErrorSaisieUser(this.getClass());
+		}
+		em.close();
+		
+		return BCrypt.checkpw(username, resultDTO.getPassword());
 	}
 
 	public void addUser(User user) {
@@ -87,7 +115,7 @@ public class DAOUser {
 		Root<UserDatabaseDTO> rootUser = queryCompany.from(UserDatabaseDTO.class);
 		queryCompany.where(cb.equal(rootUser.get("id"), id));
 
-		if(em.createQuery(queryCompany).executeUpdate() == 0) {
+		if (em.createQuery(queryCompany).executeUpdate() == 0) {
 			throw new ErrorSaisieUser(this.getClass());
 		}
 		em.getTransaction().commit();

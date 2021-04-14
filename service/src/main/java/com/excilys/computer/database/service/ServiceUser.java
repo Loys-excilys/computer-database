@@ -33,4 +33,8 @@ public class ServiceUser {
 		this.database.deleteUser(id);
 	}
 	
+	public boolean login(String username, String password) throws ErrorSaisieUser {
+		return this.database.login(username, password);
+	}
+	
 }

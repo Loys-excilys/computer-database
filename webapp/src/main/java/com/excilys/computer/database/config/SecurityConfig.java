@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,7 +22,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @ComponentScan({ "com.excilys.computer.database.dao", "com.excilys.computer.database.config" })
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -46,12 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				+ "WHERE users.username = ?");
 	}
 	
-//    @Override
-//    @Bean
-//    public AuthenticationManager authenticationManagerBean() 
-//      throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() 
+      throws Exception {
+        return super.authenticationManagerBean();
+    }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -60,8 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-//		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll();
-//		http.antMatcher("/**")
+//		http
 //        .authorizeRequests()
 //        	.mvcMatchers("/oauth/**", "/login**", "/error**")
 //        		.permitAll()
@@ -78,27 +74,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        		.csrf()
 //        		.disable();
 		
-        http
+		http
         .authorizeRequests()
         	.mvcMatchers("/", "/csrf", "/v2/api-docs", "/swagger-resources/configuration/ui",
 				"/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security",
-				"/configuration/security", "/swagger-ui.html", "/webjars/**")
+				"/configuration/security", "/swagger-ui.html", "/webjars/**", "/Login")
         		.permitAll()
         	.anyRequest()
         		.authenticated()
         .and()
         	.httpBasic()
-        .and()
-			.formLogin()
-			.loginPage("/login")
-			.defaultSuccessUrl("/Computer")
-			.failureUrl("/login?error=true")
-			.permitAll()
-		.and()
-			.logout()
-			.logoutSuccessUrl("/login?logout=true")
-			.invalidateHttpSession(true)
-			.permitAll()
 		.and()
 			.cors()
 		.and()

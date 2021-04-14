@@ -200,7 +200,7 @@ public class APIComputer {
 			this.serviceComputer.deleteComputerById(id);
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
-			new ResponseEntity<>("error delete, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("error delete, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("delete effectuer", HttpStatus.OK);
 	}
