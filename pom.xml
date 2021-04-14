@@ -38,6 +38,7 @@
 
 		<spring.version>5.2.0.RELEASE</spring.version>
 		<spring-security.version>5.2.0.RELEASE</spring-security.version>
+		<spring.security.oauth2.version>2.5.1.RELEASE</spring.security.oauth2.version>
 
 		<jackson.version>2.11.4</jackson.version>
 
@@ -217,6 +218,12 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-taglibs</artifactId>
 				<version>${spring-security.version}</version>
+			</dependency>
+
+ 			<dependency>
+				<groupId>org.springframework.security.oauth</groupId>
+				<artifactId>spring-security-oauth2</artifactId>
+				<version>${spring.security.oauth2.version}</version>
 			</dependency>
 
 
