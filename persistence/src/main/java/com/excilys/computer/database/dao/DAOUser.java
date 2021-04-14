@@ -2,8 +2,6 @@ package com.excilys.computer.database.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -20,11 +18,9 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computer.database.data.User;
-import com.excilys.computer.database.dto.ComputerDatabaseDTO;
 import com.excilys.computer.database.dto.UserDatabaseDTO;
 import com.excilys.computer.database.error.ErrorDAOComputer;
 import com.excilys.computer.database.error.ErrorSaisieUser;
-import com.excilys.computer.database.mappeur.MapperComputer;
 import com.excilys.computer.database.mappeur.MapperUser;
 
 @Repository
@@ -88,7 +84,7 @@ public class DAOUser {
 		return result;
 	}
 
-	public void updateUser(User user) {
+	public void updateUser(User user) throws ErrorSaisieUser {
 		UserDatabaseDTO userDTO = new MapperUser().userToUserDatabaseDTO(user);
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -101,7 +97,9 @@ public class DAOUser {
 		query.set("enabled", userDTO.getEnabled());
 		query.where(cb.equal(rootUser.get("id"), userDTO.getId()));
 
-		em.createQuery(query).executeUpdate();
+		if(em.createQuery(query).executeUpdate() == 0) {
+			throw new ErrorSaisieUser(this.getClass());
+		}
 		em.getTransaction().commit();
 		em.close();
 	}

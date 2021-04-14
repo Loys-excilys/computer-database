@@ -31,7 +31,7 @@ public class ServiceComputer {
 		this.database.insertComputer(computer);
 	}
 
-	public void updateComputer(Computer computer) {
+	public void updateComputer(Computer computer) throws ErrorSaisieUser {
 		this.database.updateComputer(computer);
 	}
 

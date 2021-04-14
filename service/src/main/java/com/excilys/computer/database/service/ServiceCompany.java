@@ -34,7 +34,7 @@ public class ServiceCompany {
 		this.database.insertCompany(company);
 	}
 	
-	public void updateCompany(Company company) {
+	public void updateCompany(Company company) throws ErrorSaisieUser {
 		this.database.updateCompany(company);
 	}
 

@@ -101,7 +101,7 @@ public class APICompany {
 			this.serviceCompany.updateCompany(new MapperCompany().companyStreamDTOToCompany(companyDTO));
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
-			new ResponseEntity<>("modification non effectué, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
+			new ResponseEntity<>("aucune modification n'a été effectué ou à rencontrer un problème, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}

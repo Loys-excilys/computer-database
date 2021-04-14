@@ -1,5 +1,11 @@
 package com.excilys.computer.database.api;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +26,7 @@ public class APILogin {
 	private ServiceUser serviceUser;
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
-	public ResponseEntity<String> loginPage(@RequestBody LoginDTO login) {
-		
+	public ResponseEntity<String> login(@RequestBody LoginDTO login) {	
 		try {
 			if(this.serviceUser.login(login.getUsername(), login.getPassword())) {
 				return new ResponseEntity<>("authentification ok", HttpStatus.OK);
@@ -32,5 +37,27 @@ public class APILogin {
 			e.formatEntry();
 			return new ResponseEntity<>("authentification failed", HttpStatus.NOT_ACCEPTABLE);
 		}		
+	}
+	
+	
+	@PostMapping(value="/Oauth", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<String> Oauth(@RequestBody LoginDTO login) throws IOException{
+		URL url = new URL("http://localhost:8080/webapp/oauth/token?username=" + login.getUsername() + "&password=" + login.getPassword() + "&grant_type=password&client_id=clientIdPassword");
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("POST");
+		conn.addRequestProperty("content-type", "application/json");
+		conn.setDoOutput(true);
+		
+		conn.setRequestProperty("Authorization", "Basic Y2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=");
+		conn.connect();
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+		 
+	    StringBuilder builder = new StringBuilder();
+	    for(String line = reader.readLine(); line != null; line = reader.readLine()) {
+	      builder.append(line + "\n");
+	    }
+	    
+	    return new ResponseEntity<>(builder.toString(), HttpStatus.OK);	
 	}
 }

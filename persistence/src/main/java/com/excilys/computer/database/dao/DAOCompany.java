@@ -110,7 +110,7 @@ public class DAOCompany {
 		
 	}
 
-	public void updateCompany(Company company) {
+	public void updateCompany(Company company) throws ErrorSaisieUser {
 		CompanyDatabaseDTO companyDTO = new MapperCompany().companyToCompanyDatabaseDTO(company);
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -123,7 +123,9 @@ public class DAOCompany {
 		query.set("name", companyDTO.getName());
 		query.where(cb.equal(rootComputer.get("id"), companyDTO.getId()));
 		
-		em.createQuery(query).executeUpdate();
+		if(em.createQuery(query).executeUpdate() < 1 ) {
+			throw new ErrorSaisieUser(this.getClass());
+		}
 		em.getTransaction().commit();
 		em.close();
 	}

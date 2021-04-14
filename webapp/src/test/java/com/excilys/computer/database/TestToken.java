@@ -10,7 +10,7 @@ public class TestToken {
 
 	@Test
 	public void ComputerFormAddDTO() throws IOException {
-		URL url = new URL("http://localhost:8080/webapp/oauth/token");
+		URL url = new URL("http://localhost:8080/webapp/oauth/token?username=admin&password=admin&grant_type=password&client_id=clientIdPassword");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.addRequestProperty("content-type", "application/json");

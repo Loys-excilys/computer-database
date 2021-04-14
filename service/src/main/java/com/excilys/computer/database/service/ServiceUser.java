@@ -25,7 +25,7 @@ public class ServiceUser {
 		return this.database.getUserList();
 	}
 	
-	public void updateUser(User user) {
+	public void updateUser(User user) throws ErrorSaisieUser {
 		this.database.updateUser(user);
 	}
 	

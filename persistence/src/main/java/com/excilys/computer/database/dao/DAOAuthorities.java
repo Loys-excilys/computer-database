@@ -63,7 +63,7 @@ public class DAOAuthorities {
 		return result;
 	}
 
-	public void updateAuthorities(Authorities authorities) {
+	public void updateAuthorities(Authorities authorities) throws ErrorSaisieUser {
 		AuthoritiesDatabaseDTO authoritiesDTO = new MapperAuthorities()
 				.authoritiesToAuthoritiesDatabaseDTO(authorities);
 		EntityManager em = this.sessionFactory.createEntityManager();
@@ -76,7 +76,9 @@ public class DAOAuthorities {
 		query.set("authority", authoritiesDTO.getAuthority());
 		query.where(cb.equal(rootUser.get("id"), authoritiesDTO.getId()));
 
-		em.createQuery(query).executeUpdate();
+		if(em.createQuery(query).executeUpdate() < 1) {
+			throw new ErrorSaisieUser(this.getClass());
+		}
 		em.getTransaction().commit();
 		em.close();
 	}

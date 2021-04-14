@@ -25,7 +25,7 @@ public class ServiceAuthorities {
 		return this.database.getAuthorities();
 	}
 	
-	public void updateAuthorities(Authorities authorities){
+	public void updateAuthorities(Authorities authorities) throws ErrorSaisieUser{
 		this.database.updateAuthorities(authorities);
 	}
 	

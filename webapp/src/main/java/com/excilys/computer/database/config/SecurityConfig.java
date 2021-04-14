@@ -57,38 +57,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-//		http
-//        .authorizeRequests()
-//        	.mvcMatchers("/oauth/**", "/login**", "/error**")
-//        		.permitAll()
-//        	.anyRequest()
-//        		.authenticated()
-//        .and()
-//        	.httpBasic()
-//        .and()
-//        	.formLogin()
-//        	.permitAll()
-//        	.and()
-//        		.cors()
-//        	.and()
-//        		.csrf()
-//        		.disable();
-		
 		http
         .authorizeRequests()
-        	.mvcMatchers("/", "/csrf", "/v2/api-docs", "/swagger-resources/configuration/ui",
-				"/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security",
-				"/configuration/security", "/swagger-ui.html", "/webjars/**", "/Login")
+        	.mvcMatchers("/oauth/**", "/login**", "/error**")
         		.permitAll()
         	.anyRequest()
-        		.authenticated()
+        		.fullyAuthenticated()
         .and()
-        	.httpBasic()
-		.and()
-			.cors()
-		.and()
-			.csrf()
-			.disable();
+        	.formLogin()
+        	.permitAll()
+        	.and()
+        		.cors()
+        	.and()
+        		.csrf()
+        		.disable();
 	}
 	
 	@Bean

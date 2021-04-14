@@ -238,7 +238,7 @@ public class DAOComputer {
 
 	}
 
-	public void updateComputer(Computer computer) {
+	public void updateComputer(Computer computer) throws ErrorSaisieUser {
 		ComputerDatabaseDTO computerDTO = new MapperComputer().computerToComputerDatabaseDTO(computer);
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -253,7 +253,9 @@ public class DAOComputer {
 		query.set("company_id", computerDTO.getCompany().getId());
 		query.where(cb.equal(rootComputer.get("id"), computerDTO.getId()));
 
-		em.createQuery(query).executeUpdate();
+		if(em.createQuery(query).executeUpdate() < 1){
+			throw new ErrorSaisieUser(this.getClass());
+		}
 		em.getTransaction().commit();
 		em.close();
 	}
