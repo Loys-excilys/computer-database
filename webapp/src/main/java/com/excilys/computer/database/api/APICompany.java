@@ -79,7 +79,7 @@ public class APICompany {
 			this.serviceCompany.deleteCompanyById(id);
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
-			new ResponseEntity<>("error delete, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("error delete, verifiez les données envoyées", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("delete effectuer", HttpStatus.OK);
 	}
@@ -90,7 +90,7 @@ public class APICompany {
 			this.serviceCompany.addCompany(new MapperCompany().companyStreamDTOToCompany(companyDTO));
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
-			new ResponseEntity<>("Ajout non effectué, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Ajout non effectué, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("Ajout effectuer", HttpStatus.OK);
 	}
@@ -101,7 +101,7 @@ public class APICompany {
 			this.serviceCompany.updateCompany(new MapperCompany().companyStreamDTOToCompany(companyDTO));
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
-			new ResponseEntity<>("aucune modification n'a été effectué ou à rencontrer un problème, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("aucune modification n'a été effectué ou à rencontrer un problème, veuillez vérifier les informations données", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}

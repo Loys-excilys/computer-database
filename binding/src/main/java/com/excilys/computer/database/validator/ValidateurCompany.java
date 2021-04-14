@@ -6,7 +6,7 @@ import com.excilys.computer.database.error.ErrorSaisieUser;
 public class ValidateurCompany {
 
 	public Company Valide(Company company) throws ErrorSaisieUser {
-		if(company.getId() < 1 || company.getName().trim().isBlank()) {
+		if(company.getName().trim().isBlank()) {
 			throw new ErrorSaisieUser(this.getClass());
 		}
 		return company;
