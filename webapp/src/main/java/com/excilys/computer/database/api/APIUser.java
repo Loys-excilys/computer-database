@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.computer.database.data.User;
+import com.excilys.computer.database.dto.UserStreamAddDTO;
 import com.excilys.computer.database.dto.UserStreamDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperUser;
@@ -29,7 +30,7 @@ public class APIUser {
 	private ServiceUser serviceUser;
 	
 	@GetMapping(value = "/list", produces = "application/json")
-	public ResponseEntity<List<UserStreamDTO>> getUserList(){
+	public ResponseEntity<List<UserStreamDTO>> getList(){
 		List<User> listUser = this.serviceUser.getUserList();
 		List<UserStreamDTO> listUserDTO = new ArrayList<>();
 		for (User user : listUser) {
@@ -39,9 +40,9 @@ public class APIUser {
 	}
 	
 	@PostMapping(value = "/add", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<String> AddComputer(@RequestBody UserStreamDTO userDTO) {
+	public ResponseEntity<String> Add(@RequestBody UserStreamAddDTO userDTO) {
 		try {
-			this.serviceUser.addUser(new MapperUser().userStreamDTOToUser(userDTO));
+			this.serviceUser.addUser(new MapperUser().userStreamAddDTOToUser(userDTO));
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
 			return new ResponseEntity<>("error ajout, verifié les données envoyées", HttpStatus.BAD_REQUEST);
@@ -50,7 +51,7 @@ public class APIUser {
 	}
 
 	@PutMapping(value = "/update", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<String> UpdateComputer(@RequestBody UserStreamDTO userDTO) {
+	public ResponseEntity<String> Update(@RequestBody UserStreamDTO userDTO) {
 		try {
 			this.serviceUser.updateUser(new MapperUser().userStreamDTOToUser(userDTO));
 		} catch (ErrorSaisieUser e) {
@@ -59,9 +60,22 @@ public class APIUser {
 		}
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}
+	
+	@PutMapping(value = "/resetpassword", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<String> ResetPassword(@RequestBody UserStreamDTO userDTO) {
+		try {
+			User user = new MapperUser().userStreamDTOToUser(userDTO);
+			user.setPassword("excilys");
+			this.serviceUser.updateUser(user);
+		} catch (ErrorSaisieUser e) {
+			e.formatEntry();
+			return new ResponseEntity<>("error reset, verifié les données envoyées", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>("reset effectuer", HttpStatus.OK);
+	}
 
 	@DeleteMapping(value = "/delete", produces = "application/json")
-	public ResponseEntity<String> UpdateComputer(@RequestParam int id) {
+	public ResponseEntity<String> Delete(@RequestParam int id) {
 		try {
 			this.serviceUser.deleteUser(id);
 		} catch (ErrorSaisieUser e) {
