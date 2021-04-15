@@ -1,7 +1,5 @@
 package com.excilys.computer.database.config;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 @Configuration
 @EnableAuthorizationServer
@@ -62,17 +59,6 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 
 		endpoints.tokenStore(tokenStore()).reuseRefreshTokens(true)
         .authenticationManager(authenticationManager);
-		
-        endpoints.addInterceptor(new HandlerInterceptorAdapter() {
-            @Override
-            public boolean preHandle(HttpServletRequest hsr, HttpServletResponse rs, Object o) throws Exception {
-                rs.setHeader("Access-Control-Allow-Origin", "*");
-                rs.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-                rs.setHeader("Access-Control-Max-Age", "3600");
-                rs.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-                return true;
-            }
-        });
 	}
 
 	@Bean

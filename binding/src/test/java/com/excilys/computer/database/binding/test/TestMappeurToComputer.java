@@ -23,7 +23,7 @@ import com.excilys.computer.database.mappeur.MapperComputer;
 /**
  * Unit test for simple App.
  */
-public class MappeurToComputer {
+public class TestMappeurToComputer {
 
 	private Company company;
 	private Computer computer;

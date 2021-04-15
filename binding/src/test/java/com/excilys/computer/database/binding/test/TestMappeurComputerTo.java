@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import com.excilys.computer.database.builder.BuilderCompany;
 import com.excilys.computer.database.builder.BuilderComputer;
 import com.excilys.computer.database.data.Company;
 import com.excilys.computer.database.data.Computer;
@@ -26,7 +27,7 @@ import com.excilys.computer.database.mappeur.MapperComputer;
 /**
  * Unit test for simple App.
  */
-public class MappeurComputerTo {
+public class TestMappeurComputerTo {
 
 	private Company Company;
 	private Computer Computer;
@@ -36,7 +37,7 @@ public class MappeurComputerTo {
 	 */
 	@BeforeEach
 	public void setUp() {
-		//Company = new Company(0, "testCompany");
+		Company = new BuilderCompany().addId(0).addName("testCompany").build();
 		Computer = new BuilderComputer().addId(0).addName("test").addIntroduced(LocalDate.parse("2019-04-20")).addDiscontinued(null).addCompany(Company).build();
 	}
 	
