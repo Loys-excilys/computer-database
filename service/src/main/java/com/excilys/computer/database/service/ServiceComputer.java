@@ -62,6 +62,10 @@ public class ServiceComputer {
 		return this.database.getSearchComputerOrder(search, orderField, sort, page);
 	}
 	
+	public long getNumberComputerByCompany(int companyId) {
+		return this.database.getNumberComputerByCompany(companyId);
+	}
+	
 	public List<Computer> getListComputerByCompany(Page page, int companyId) throws ErrorSaisieUser{
 		return this.database.getListComputerByCompany(page, companyId);
 	}

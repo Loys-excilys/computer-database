@@ -108,6 +108,20 @@ public class DAOComputer {
 
 		return result;
 	}
+	
+	
+	public long getNumberComputerByCompany(int companyId) {
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Long> query = cb.createQuery(Long.class);
+		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
+		query.select(cb.count(computer)).where(cb.equal(computer.get("company"), companyId));
+		
+		long result = em.createQuery(query).getSingleResult();
+		em.close();
+		return result;
+	}
 
 	public List<Computer> getListComputerByCompany(Page page, int companyId) {
 

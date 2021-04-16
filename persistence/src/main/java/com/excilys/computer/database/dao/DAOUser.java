@@ -124,6 +124,9 @@ public class DAOUser {
 
 		query.set("authority", userDTO.getAuthority());
 		query.set("enabled", userDTO.getEnabled());
+		if (user.getPassword() != null) {
+			query.set("password", userDTO.getPassword());
+		}
 		query.where(cb.equal(rootUser.get("id"), userDTO.getId()));
 
 		if(em.createQuery(query).executeUpdate() == 0) {

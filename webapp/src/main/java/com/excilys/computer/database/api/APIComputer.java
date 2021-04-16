@@ -67,6 +67,10 @@ public class APIComputer {
 
 		return new ResponseEntity<>(computerDTO, HttpStatus.OK);
 	}
+	@GetMapping(value = "/count/ByCompany/{companyId}")
+	public ResponseEntity<?> getCountByCompany(@PathVariable int companyId){
+		return new ResponseEntity<>(this.serviceComputer.getNumberComputerByCompany(companyId), HttpStatus.OK);
+	}
 
 	@GetMapping(value = "/ByCompany/{id}/page/{numPage}/{maxEntry}", produces = "application/json")
 	public ResponseEntity<?> getComputer(@PathVariable int numPage, @PathVariable int maxEntry, @PathVariable int id) {
