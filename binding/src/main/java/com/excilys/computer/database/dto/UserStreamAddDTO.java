@@ -2,7 +2,6 @@ package com.excilys.computer.database.dto;
 
 public class UserStreamAddDTO {
 
-	private int id;
 	private String username;
 	private String password;
 	private int enabled;
@@ -11,20 +10,13 @@ public class UserStreamAddDTO {
 	public UserStreamAddDTO() {}
 	
 	
-	public UserStreamAddDTO(int id, String username, String password, int enabled, AuthoritiesStreamDTO authority) {
-		this.id = id;
+	public UserStreamAddDTO(String username, String password, int enabled, AuthoritiesStreamDTO authority) {
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
 		this.authority = authority;
 	}
 	
-	public int getId() {
-		return this.id;
-	}
-	public void serId(int id) {
-		this.id = id;
-	}
 	
 	public String getUsername() {
 		return username;

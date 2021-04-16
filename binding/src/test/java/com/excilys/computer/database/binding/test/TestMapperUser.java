@@ -2,8 +2,11 @@ package com.excilys.computer.database.binding.test;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import com.excilys.computer.database.builder.BuilderAuthorities;
 import com.excilys.computer.database.builder.BuilderUser;
@@ -42,7 +45,7 @@ public class TestMapperUser {
 		authoritiesStreamDTOReference = new AuthoritiesStreamDTO(1, "ROLE_USER");
 		userStreamDTOReference = new UserStreamDTO(1, "admin", 1, authoritiesStreamDTOReference);
 		
-		userStreamAddDTOReference = new UserStreamAddDTO(1, "admin", "admin", 1, authoritiesStreamDTOReference);
+		userStreamAddDTOReference = new UserStreamAddDTO("admin", "admin", 1, authoritiesStreamDTOReference);
 	}
 	
 	@Test
@@ -50,7 +53,7 @@ public class TestMapperUser {
 		UserDatabaseDTO userDTO = new MapperUser().userToUserDatabaseDTO(this.userReference);
 		assertEquals(this.userDatabaseDTOReference.getId(), userDTO.getId());
 		assertEquals(this.userDatabaseDTOReference.getUsername(), userDTO.getUsername());
-		assertEquals(this.userDatabaseDTOReference.getPassword(), userDTO.getPassword());
+		assertTrue(BCrypt.checkpw(this.userDatabaseDTOReference.getPassword(), userDTO.getPassword()));
 		assertEquals(this.userDatabaseDTOReference.getAuthority().getId(), userDTO.getAuthority().getId());
 		assertEquals(this.userDatabaseDTOReference.getAuthority().getAuthority(), userDTO.getAuthority().getAuthority());
 	}
@@ -98,8 +101,8 @@ public class TestMapperUser {
 		} catch (ErrorSaisieUser e) {
 			e.formatEntry();
 		}
-		assertEquals(this.userReference.getId(), user.getId());
 		assertEquals(this.userReference.getUsername(), user.getUsername());
+		assertEquals(this.userReference.getPassword(), user.getPassword());
 		assertEquals(this.userReference.getAuthority().getId(), user.getAuthority().getId());
 		assertEquals(this.userReference.getAuthority().getAuthority(), user.getAuthority().getAuthority());
 	}

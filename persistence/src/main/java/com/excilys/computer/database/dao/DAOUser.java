@@ -17,10 +17,14 @@ import org.hibernate.Transaction;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.computer.database.data.Company;
+import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.data.User;
+import com.excilys.computer.database.dto.CompanyDatabaseDTO;
 import com.excilys.computer.database.dto.UserDatabaseDTO;
 import com.excilys.computer.database.error.ErrorDAOComputer;
 import com.excilys.computer.database.error.ErrorSaisieUser;
+import com.excilys.computer.database.mappeur.MapperCompany;
 import com.excilys.computer.database.mappeur.MapperUser;
 
 @Repository
@@ -83,6 +87,31 @@ public class DAOUser {
 		}
 		return result;
 	}
+	
+	public List<User> getListUser(Page page) {
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<UserDatabaseDTO> query = cb.createQuery(UserDatabaseDTO.class);
+		Root<UserDatabaseDTO> user = query.from(UserDatabaseDTO.class);
+
+		query.select(user);
+
+		List<UserDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint())
+				.setMaxResults(page.getMaxPrint()).getResultList();
+		em.close();
+		List<User> result = new ArrayList<>();
+		for (int i = 0; i < resultDTO.size(); i++) {
+			try {
+				result.add(new MapperUser().userDatabaseDTOToUser(resultDTO.get(i)));
+			} catch (ErrorSaisieUser e) {
+				e.databaseCorrupt();
+			}
+		}
+		return result;
+	}
+	
+	
 
 	public void updateUser(User user) throws ErrorSaisieUser {
 		UserDatabaseDTO userDTO = new MapperUser().userToUserDatabaseDTO(user);

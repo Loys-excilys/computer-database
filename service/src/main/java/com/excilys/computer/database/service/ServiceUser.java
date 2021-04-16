@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.excilys.computer.database.dao.DAOUser;
+import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.data.User;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 
@@ -23,6 +24,10 @@ public class ServiceUser {
 	
 	public List<User> getUserList(){
 		return this.database.getUserList();
+	}
+	
+	public List<User> getUserList(Page page){
+		return this.database.getListUser(page);
 	}
 	
 	public void updateUser(User user) throws ErrorSaisieUser {

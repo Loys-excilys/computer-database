@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.computer.database.dao.DAOCompany;
 import com.excilys.computer.database.data.Company;
+import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 
 @Service
@@ -26,7 +27,7 @@ public class ServiceCompany {
 		return this.database.getListCompany();
 	}
 
-	public List<Company> getListCompany(int page) {
+	public List<Company> getListCompany(Page page) {
 		return this.database.getListCompany(page);
 	}
 	

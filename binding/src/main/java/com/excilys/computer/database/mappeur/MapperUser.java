@@ -37,7 +37,7 @@ public class MapperUser {
 	}
 
 	public User userStreamAddDTOToUser(UserStreamAddDTO userDTO) throws ErrorSaisieUser {
-		return new ValidateurUser().valide(new BuilderUser().addId(userDTO.getId()).addUsername(userDTO.getUsername())
+		return new ValidateurUser().valide(new BuilderUser().addUsername(userDTO.getUsername())
 				.addPassword(userDTO.getPassword()).addEnabled(userDTO.getEnabled())
 				.addAuthority(new MapperAuthorities().authoritiesStreamDTOToAuthorities(userDTO.getAuthority()))
 				.build());

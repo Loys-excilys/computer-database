@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.computer.database.data.Company;
+import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.dto.CompanyStreamDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.mappeur.MapperCompany;
@@ -42,11 +43,14 @@ public class APICompany {
 		return new ResponseEntity<>(companyDTO, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/page/{numPage}", produces = "application/json")
-	public ResponseEntity<?> getCompany(@PathVariable int numPage) {
+	@GetMapping(value = "/page/{numPage}/{maxEntry}", produces = "application/json")
+	public ResponseEntity<?> getCompany(@PathVariable int numPage, @PathVariable int maxEntry) {
+		Page page = new Page();
+		page.setPage(numPage);
+		page.setMaxPrint(maxEntry);
 		List<Company> listCompany = null;
 		try {
-			listCompany = this.serviceCompany.getListCompany(numPage);
+			listCompany = this.serviceCompany.getListCompany(page);
 			if(listCompany.size() == 0) {
 				throw new ErrorSaisieUser(this.getClass());
 			}

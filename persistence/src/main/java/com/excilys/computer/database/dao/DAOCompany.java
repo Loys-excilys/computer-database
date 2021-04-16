@@ -17,6 +17,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import com.excilys.computer.database.data.Company;
+import com.excilys.computer.database.data.Page;
 import com.excilys.computer.database.dto.CompanyDatabaseDTO;
 import com.excilys.computer.database.dto.ComputerDatabaseDTO;
 import com.excilys.computer.database.error.ErrorDAOCompany;
@@ -25,8 +26,6 @@ import com.excilys.computer.database.mappeur.MapperCompany;
 
 @Repository
 public class DAOCompany {
-
-	private static final int MAX_ENTRY_PRINT = 25;
 
 	private SessionFactory sessionFactory;
 
@@ -55,7 +54,7 @@ public class DAOCompany {
 		return new MapperCompany().companyDatabaseDTOToCompany(result);
 	}
 
-	public List<Company> getListCompany(int page) {
+	public List<Company> getListCompany(Page page) {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -64,8 +63,8 @@ public class DAOCompany {
 
 		query.select(computer);
 
-		List<CompanyDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(MAX_ENTRY_PRINT * page)
-				.setMaxResults(MAX_ENTRY_PRINT).getResultList();
+		List<CompanyDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint())
+				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
 		List<Company> result = new ArrayList<>();
 		for(int i = 0; i < resultDTO.size(); i++) {
