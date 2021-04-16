@@ -8,6 +8,8 @@ import java.net.URL;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +21,17 @@ import com.excilys.computer.database.dto.LoginDTO;
 import com.excilys.computer.database.error.ErrorSaisieUser;
 import com.excilys.computer.database.service.ServiceUser;
 
+
+@PropertySource("classpath:server.properties")
 @RestController
 @RequestMapping("/login")
 public class APILogin {
 
 	@Autowired
 	private ServiceUser serviceUser;
+	
+	@Value("${url}")
+	private String url;
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<String> login(@RequestBody LoginDTO login) {
@@ -43,8 +50,9 @@ public class APILogin {
 	@PostMapping(value = "/Oauth", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<String> Oauth(@RequestBody LoginDTO login) {
 		StringBuilder builder = new StringBuilder();
+		System.out.println(this.url);
 		try {
-			URL url = new URL("http://localhost:8080/webapp/oauth/token?username=" + login.getUsername() + "&password="
+			URL url = new URL("http://" + this.url + "/oauth/token?username=" + login.getUsername() + "&password="
 					+ login.getPassword() + "&grant_type=password&client_id=clientIdPassword");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");

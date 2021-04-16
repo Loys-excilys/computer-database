@@ -4,9 +4,12 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -20,6 +23,7 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
+@PropertySource("classpath:server.properties")
 public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
 	@Autowired
@@ -32,7 +36,9 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
-
+	@Value("${url}")
+	private String url;
+	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
 		oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
@@ -70,7 +76,7 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 	@Bean
 	public RemoteTokenServices tokenService() {
 		RemoteTokenServices tokenService = new RemoteTokenServices();
-		tokenService.setCheckTokenEndpointUrl("http://localhost:8080/webapp/oauth/check_token");
+		tokenService.setCheckTokenEndpointUrl("http://" + this.url + "/oauth/check_token");
 		tokenService.setClientId("clientIdPassword");
 		tokenService.setClientSecret("secret");
 		return tokenService;
