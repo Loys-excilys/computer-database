@@ -1,3 +1,5 @@
+use `computer-database-db`;
+
 SET SQL_MODE='ALLOW_INVALID_DATES';
 
 drop table if exists oauth_client_details;

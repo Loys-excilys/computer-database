@@ -28,8 +28,6 @@ public class PersistenceConfigContext {
 	@Bean
 	public DataSource getDataSource() {
 		HikariConfig config = new HikariConfig("/db.properties");
-		config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		config.setJdbcUrl("jdbc:mysql://localhost:3306/computer-database-db?generateSimpleParameterMetadata=true");
 		return new HikariDataSource(config);
 	}
 
