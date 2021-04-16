@@ -63,7 +63,7 @@ public class DAOCompany {
 
 		query.select(computer);
 
-		List<CompanyDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint())
+		List<CompanyDatabaseDTO> resultDTO = em.createQuery(query).setFirstResult(page.getMaxPrint() * page.getPage())
 				.setMaxResults(page.getMaxPrint()).getResultList();
 		em.close();
 		List<Company> result = new ArrayList<>();
