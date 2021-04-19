@@ -69,7 +69,13 @@ public class APILogin {
 		} catch (IOException error) {
 			return new ResponseEntity<>("invalid login", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(builder.toString(), HttpStatus.OK);
+		String authority = null;
+		try {
+			authority = this.serviceUser.getUserByUsername(login.getUsername()).getAuthority().getAuthority();
+		} catch (ErrorSaisieUser e) {
+			e.formatEntry();
+		}
+		return new ResponseEntity<>(builder.toString().replace("}", ",") + "\"role\":\"" + authority + "\"}", HttpStatus.OK);
 	}
 	
 	
