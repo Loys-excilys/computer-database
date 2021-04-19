@@ -25,9 +25,12 @@ import com.zaxxer.hikari.HikariDataSource;
 		"com.excilys.computer.database.config" })
 public class PersistenceConfigContext {
 
+	String path = System.getenv("dbProperties");
+	
 	@Bean
 	public DataSource getDataSource() {
-		HikariConfig config = new HikariConfig("/db.properties");
+		System.out.println(path);
+		HikariConfig config = new HikariConfig(path);
 		return new HikariDataSource(config);
 	}
 

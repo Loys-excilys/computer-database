@@ -35,8 +35,8 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
-	@Value("${url}")
-	private String url;
+	//@Value("${url}")
+	private String url = System.getenv("urlServer");
 	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {

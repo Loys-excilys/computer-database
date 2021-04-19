@@ -31,8 +31,8 @@ public class APILogin {
 	@Autowired
 	private ServiceUser serviceUser;
 	
-	@Value("${url}")
-	private String url;
+	//@Value("${url}")
+	private String url = System.getenv("urlServer");
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<String> login(@RequestBody LoginDTO login) {
@@ -50,6 +50,7 @@ public class APILogin {
 
 	@PostMapping(value = "/Oauth", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<String> Oauth(@RequestBody LoginDTO login) {
+		System.out.println(this.url);
 		StringBuilder builder = new StringBuilder();
 		try {
 			URL url = new URL("http://" + this.url + "/oauth/token?username=" + login.getUsername() + "&password="
