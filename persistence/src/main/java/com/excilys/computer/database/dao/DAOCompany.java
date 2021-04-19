@@ -33,6 +33,18 @@ public class DAOCompany {
 		this.sessionFactory = sessionFactory;
 	}
 	
+	public long countCompany() {
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Long> query = cb.createQuery(Long.class);
+		Root<CompanyDatabaseDTO> computer = query.from(CompanyDatabaseDTO.class);
+		query.select(cb.count(computer));
+		long result = em.createQuery(query).getSingleResult();
+		em.close();
+		return result;
+	}
+	
 	public Company getCompany(String name) throws ErrorSaisieUser {
 		EntityManager em = this.sessionFactory.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();

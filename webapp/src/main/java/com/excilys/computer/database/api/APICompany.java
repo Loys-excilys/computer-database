@@ -30,6 +30,13 @@ public class APICompany {
 	@Autowired
 	private ServiceCompany serviceCompany;
 
+	@GetMapping(value = "/count", produces = "application/json")
+	public ResponseEntity<?> getCountCompany() {
+		long count = 0;
+		count = this.serviceCompany.countCompany();
+		return new ResponseEntity<>(count, HttpStatus.OK);
+	}
+		
 	@GetMapping(value = "/{name}", produces = "application/json")
 	public ResponseEntity<?> getCompany(@PathVariable String name) {
 		Company company = null;

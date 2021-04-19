@@ -19,6 +19,10 @@ public class ServiceCompany {
 		this.database = database;
 	}
 	
+	public long countCompany() {
+		return this.database.countCompany();
+	}
+	
 	public Company getCompany(String nameCompany) throws ErrorSaisieUser {
 		return this.database.getCompany(nameCompany);
 	}
