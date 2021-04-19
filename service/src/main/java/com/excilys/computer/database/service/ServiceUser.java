@@ -22,6 +22,10 @@ public class ServiceUser {
 		this.database.addUser(user);
 	}
 	
+	public User getUserByUsername(String Username) throws ErrorSaisieUser {
+		return this.database.getUserByName(Username);
+	}
+	
 	public List<User> getUserList(){
 		return this.database.getUserList();
 	}

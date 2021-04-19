@@ -3,6 +3,7 @@ package com.excilys.computer.database.config;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -22,6 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	DataSource dataSource;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Bean
+	  public UserDetailsService userDetailsService() {
+	    return new MyUserDetailsService();
+	  };
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,4 +55,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	
+	@Autowired
+	public void setApplicationContext(ApplicationContext context) {
+	    super.setApplicationContext(context);
+	    AuthenticationManagerBuilder globalAuthBuilder = context
+	            .getBean(AuthenticationManagerBuilder.class);
+	    try {
+	        globalAuthBuilder.userDetailsService(userDetailsService());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
 }

@@ -65,6 +65,28 @@ public class DAOUser {
 		session.close();
 
 	}
+	
+	
+	public User getUserByName(String username) throws ErrorSaisieUser {
+		EntityManager em = this.sessionFactory.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<UserDatabaseDTO> query = cb.createQuery(UserDatabaseDTO.class);
+		Root<UserDatabaseDTO> User = query.from(UserDatabaseDTO.class);
+
+		query.select(User).where(cb.equal(User.get("username"), username));
+		UserDatabaseDTO resultDTO;
+
+		try {
+			resultDTO = em.createQuery(query).getSingleResult();
+		} catch (NoResultException | NonUniqueResultException errorResult) {
+			new ErrorDAOComputer(null).idInvalid(errorResult);
+			throw new ErrorSaisieUser(this.getClass());
+		}
+		em.close();
+		
+		return new MapperUser().userDatabaseDTOToUser(resultDTO);
+	}
 
 	public List<User> getUserList() {
 		EntityManager em = this.sessionFactory.createEntityManager();
