@@ -11,6 +11,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.hibernate.Session;
@@ -182,12 +184,23 @@ public class DAOComputer {
 		CriteriaQuery<ComputerDatabaseDTO> query = cb.createQuery(ComputerDatabaseDTO.class);
 		Root<ComputerDatabaseDTO> computer = query.from(ComputerDatabaseDTO.class);
 
+		
+		
 		query.select(computer);
 		if (sort.compareTo("ASC") == 0) {
-			query.orderBy(cb.asc(computer.get(orderField)));
+			if(orderField.compareTo("company") == 0) {
+				Join<Object, Object> company = computer.join("company", JoinType.LEFT);
+				query.orderBy(cb.asc(company.get("name")));
+			}else {
+				query.orderBy(cb.asc(computer.get(orderField)));
+			}
 		} else if (sort.compareTo("DESC") == 0) {
-
-			query.orderBy(cb.desc(computer.get(orderField)));
+			if(orderField.compareTo("company") == 0) {
+				Join<Object, Object> company = computer.join("company", JoinType.LEFT);
+				query.orderBy(cb.desc(company.get("name")));
+			}else {
+				query.orderBy(cb.desc(computer.get(orderField)));
+			}
 		} else {
 			throw new ErrorSaisieUser(this.getClass());
 		}
@@ -219,9 +232,19 @@ public class DAOComputer {
 		query.select(computer).where(cb.like(computer.get("name"), "%" + search + "%"));
 
 		if (sort.compareTo("ASC") == 0) {
-			query.orderBy(cb.asc(computer.get(orderField)));
+			if(orderField.compareTo("company") == 0) {
+				Join<Object, Object> company = computer.join("company", JoinType.LEFT);
+				query.orderBy(cb.asc(company.get("name")));
+			}else {
+				query.orderBy(cb.asc(computer.get(orderField)));
+			}
 		} else if (sort.compareTo("DESC") == 0) {
-			query.orderBy(cb.desc(computer.get(orderField)));
+			if(orderField.compareTo("company") == 0) {
+				Join<Object, Object> company = computer.join("company", JoinType.LEFT);
+				query.orderBy(cb.desc(company.get("name")));
+			}else {
+				query.orderBy(cb.desc(computer.get(orderField)));
+			}
 		} else {
 			throw new ErrorSaisieUser(this.getClass());
 		}

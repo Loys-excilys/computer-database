@@ -31,13 +31,12 @@ drop schema if exists `computer-database-db`;
 
   create table users (
     id 			      bigint not null auto_increment,
-    username		      varchar(50) not null,
+    username		      varchar(50) not null unique,
     password		      varchar(100) not null,
     enabled		      tinyint(4) not null default 1,
     authority_id	      bigint not null,
     primary key (id),
-    foreign key (authority_id) references authorities(id)
-    constraint pk_users UNIQUE (username))
+    foreign key (authority_id) references authorities(id))
   ;
 
   alter table computer add constraint fk_computer_company_1 foreign key (company_id) references company (id) on delete restrict on update restrict;
