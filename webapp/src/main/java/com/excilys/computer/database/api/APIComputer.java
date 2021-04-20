@@ -198,7 +198,7 @@ public class APIComputer {
 		return new ResponseEntity<>("update effectuer", HttpStatus.OK);
 	}
 
-	@DeleteMapping(value = "/delete", consumes = "application/json", produces = "application/json")
+	@DeleteMapping(value = "/delete", produces = "application/json")
 	public ResponseEntity<String> UpdateComputer(@RequestParam int id) {
 		try {
 			this.serviceComputer.deleteComputerById(id);
