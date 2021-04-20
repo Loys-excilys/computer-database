@@ -91,6 +91,19 @@ public class APIUser {
 		}
 		return new ResponseEntity<>("reset effectuer", HttpStatus.OK);
 	}
+	
+	@PutMapping(value = "/updatepassword", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<String> UpdatePassword(@RequestBody String username , @RequestBody String password) {
+		try {
+			User user = this.serviceUser.getUserByUsername(username);
+			user.setPassword(password);
+			this.serviceUser.updateUser(user);
+		} catch (ErrorSaisieUser e) {
+			e.formatEntry();
+			return new ResponseEntity<>("error set password, verifié les données envoyées", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>("reset effectuer", HttpStatus.OK);
+	}
 
 	@DeleteMapping(value = "/delete", produces = "application/json")
 	public ResponseEntity<String> Delete(@RequestParam int id) {

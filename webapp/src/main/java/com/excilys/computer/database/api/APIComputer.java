@@ -199,7 +199,7 @@ public class APIComputer {
 	}
 
 	@DeleteMapping(value = "/delete", produces = "application/json")
-	public ResponseEntity<String> UpdateComputer(@RequestParam int id) {
+	public ResponseEntity<String> DeleteComputer(@RequestParam int id) {
 		try {
 			this.serviceComputer.deleteComputerById(id);
 		} catch (ErrorSaisieUser e) {
