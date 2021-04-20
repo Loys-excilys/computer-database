@@ -146,11 +146,11 @@ public class DAOUser {
 
 		query.set("authority", userDTO.getAuthority());
 		query.set("enabled", userDTO.getEnabled());
+		query.set("username", userDTO.getUsername());
 		if (user.getPassword() != null) {
 			query.set("password", userDTO.getPassword());
 		}
 		query.where(cb.equal(rootUser.get("id"), userDTO.getId()));
-
 		if(em.createQuery(query).executeUpdate() == 0) {
 			throw new ErrorSaisieUser(this.getClass());
 		}

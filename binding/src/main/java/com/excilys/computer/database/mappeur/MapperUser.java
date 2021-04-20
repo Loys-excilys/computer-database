@@ -13,7 +13,9 @@ import com.excilys.computer.database.validator.ValidateurUser;
 public class MapperUser {
 
 	public UserDatabaseDTO userToUserDatabaseDTO(User user) {
-		return new UserDatabaseDTO(user.getId(), user.getUsername(), BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()), user.getEnabled(),
+		return new UserDatabaseDTO(user.getId(), user.getUsername(),
+				user.getPassword() != null ? BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()) : null,
+						user.getEnabled(),
 				new MapperAuthorities().authoritiesToAuthoritiesDatabaseDTO(user.getAuthority()));
 	}
 

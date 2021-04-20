@@ -29,7 +29,6 @@ public class PersistenceConfigContext {
 	
 	@Bean
 	public DataSource getDataSource() {
-		System.out.println(path);
 		HikariConfig config = new HikariConfig(path);
 		return new HikariDataSource(config);
 	}
