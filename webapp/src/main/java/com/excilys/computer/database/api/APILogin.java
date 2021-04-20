@@ -31,8 +31,8 @@ public class APILogin {
 	@Autowired
 	private ServiceUser serviceUser;
 	
-	//@Value("${url}")
-	private String url = System.getenv("urlServer");
+	@Value("${url}")
+	private String url;
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<String> login(@RequestBody LoginDTO login) {
