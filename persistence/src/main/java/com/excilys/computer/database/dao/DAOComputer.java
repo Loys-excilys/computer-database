@@ -285,8 +285,8 @@ public class DAOComputer {
 		Root<ComputerDatabaseDTO> rootComputer = query.from(ComputerDatabaseDTO.class);
 
 		query.set("name", computerDTO.getName());
-		query.set("introduced", MappeurDate.localDateToDate(computerDTO.getIntroduced()));
-		query.set("discontinued", MappeurDate.localDateToDate(computerDTO.getDiscontinued()));
+		query.set("introduced", computerDTO.getIntroduced());
+		query.set("discontinued", computerDTO.getDiscontinued());
 		query.set("company", computerDTO.getCompany() != null ? computerDTO.getCompany().getId() : null);
 		query.where(cb.equal(rootComputer.get("id"), computerDTO.getId()));
 
